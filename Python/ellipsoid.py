@@ -38,6 +38,7 @@ def _get_ellipsoid_error(A, c, points, tolerance):
             counter += 1
     return counter / points.shape[0]
 
+
 def _get_best_ellipsoid_number_and_error(A_list, c_list, row):
     point = np.asmatrix(row) - c_list[0]
     min_dist = point * A_list[0] * np.transpose(point)
@@ -51,6 +52,7 @@ def _get_best_ellipsoid_number_and_error(A_list, c_list, row):
             best_ellipse = i
 
     return best_ellipse, float(min_dist)
+
 
 def ellipsoids(tolerance):
     """
@@ -67,7 +69,7 @@ def ellipsoids(tolerance):
     tests = []
 
     for i in range(0, 10):
-        [points, test] = loading.load_number_set(i, 0.5)
+        [points, test] = loading.load_number_set(i, 0.7)
         tests.append(np.concatenate((points, test), axis = 0))
         A, c = _mvee(points, 0.01)
         A_list.append(A)
@@ -80,6 +82,7 @@ def ellipsoids(tolerance):
             ratios[i+2, j] = _get_ellipsoid_error(A_list[j], c_list[j], tests[i], tolerance)
 
     return ratios
+
 
 def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01):
     """
@@ -95,7 +98,7 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01):
 
     # Creating ellipsoids
     for i in range(0, 10):
-        [train, test] = loading.load_number_set(i, 0.5)
+        [train, test] = loading.load_number_set(i, 0.7)
         train_points.append(train)
         test_points.append(test)
         A, c = _mvee(train, accuracy)

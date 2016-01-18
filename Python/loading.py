@@ -22,9 +22,11 @@ def load_number_set(number_to_load, division_ratio = 0.5):
             data.append(row)
 
     matrix = numpy.array(data).astype('double')
-    #    number_of_elements = normalized_matrix.shape[1]
-    #    half = int(number_of_elements * division_ratio)
-    return numpy.array_split(matrix, 2)
+    number_of_elements = matrix.shape[0]
+    half = int(number_of_elements * division_ratio)
+    train = matrix[:half, :]
+    test = matrix[half:, :]
+    return [train, test]
 
 
 def load_letter_set(letter_to_load = '0'):

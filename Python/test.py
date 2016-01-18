@@ -28,6 +28,7 @@ def _ellipsoid_tests():
 
     print '*** Ended ellipsoids ***'
 
+
 def _svm_functions(c, gamma, kernel):
     """
     Runs two functions one after another with provided parameters.
@@ -44,6 +45,7 @@ def _svm_functions(c, gamma, kernel):
     m1, m2 = s.svm_classification(c=c, gamma=gamma, kernel=kernel)
     filename = "results_svn/" + str(kernel) + "_classification_c=" + str(c) + '_gamma=' + str(gamma)
     np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
+
 
 def _svm_tests():
     print '*** Starting SVM ***'
