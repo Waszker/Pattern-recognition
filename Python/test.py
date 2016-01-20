@@ -2,6 +2,7 @@
 
 import ellipsoid as e
 import svn as s
+import knn as k
 import numpy as np
 import getopt, sys
 from math import pow
@@ -46,7 +47,6 @@ def _svm_functions(c, gamma, kernel):
     filename = "results_svn/" + str(kernel) + "_classification_c=" + str(c) + '_gamma=' + str(gamma)
     np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
 
-
 def _svm_tests():
     print '*** Starting SVM ***'
     pool = mp.Pool()
@@ -63,10 +63,40 @@ def _svm_tests():
 
     print '*** Ended SVM ***'
 
+def _knn_functions(n):
+    """
+    Runs two functions one after another with provided parameters.
+    First one is identification problem using KNN method and the second
+    one is classification problem (identification is run there too).
+    Results are saved to files with appropriate names.
+    """
+    print 'Starting identification iteration for n=' + str(n)
+    m1, m2 = k.knn_identification(n=n)
+    filename = "results_knn/" + "knn" + "_identification_n=" + str(n)
+    np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
+
+    print 'Starting classification iteration for n=' + str(n)
+    m1, m2 = k.knn_classification(n=n)
+    filename = "results_knn/" + "knn" + "_classification_n=" + str(n)
+    np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
+
+def _knn_tests():
+    print '*** Starting KNN ***'
+    pool = mp.Pool()
+    n_list = [1, 2, 5, 10]
+
+    for i in range(0, len(n_list)):
+        pool.apply_async(_knn_functions, args = (n_list[i],))
+    pool.close()
+    pool.join()
+
+    print '*** Ended KNN ***'
+
+
 
 if __name__ == "__main__":
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "es")
+        opts, args = getopt.getopt(sys.argv[1:], "esk")
     except getopt.GetoptError as err:
         print str(err)
         sys.exit(1)
@@ -76,3 +106,5 @@ if __name__ == "__main__":
             _ellipsoid_tests()
         elif o == "-s":
             _svm_tests()
+        elif o == "-k":
+            _knn_tests()
