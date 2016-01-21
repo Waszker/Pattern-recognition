@@ -3,6 +3,7 @@
 import ellipsoid as e
 import svn as s
 import knn as k
+import rf as rf
 import numpy as np
 import getopt, sys
 from math import pow
@@ -92,11 +93,40 @@ def _knn_tests():
 
     print '*** Ended KNN ***'
 
+def _randomforest_functions(trees):
+    """
+    Runs two functions one after another with provided parameters.
+    First one is identification problem using Random Forest method and the second
+    one is classification problem (identification is run there too).
+    Results are saved to files with appropriate names.
+    """
+    print 'Starting identification iteration for n=' + str(trees)
+    m1, m2 = rf.randomforest_identification(trees=trees)
+    filename = "results_rf/" + "rf" + "_identification_n=" + str(trees)
+    np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
+
+    print 'Starting classification iteration for n=' + str(trees)
+    m1, m2 = rf.randomforest_classification(trees=trees)
+    filename = "results_rf/" + "rf" + "_classification_n=" + str(trees)
+    np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
+
+def _randomforest_tests():
+    print '*** Starting Random Forest ***'
+    pool = mp.Pool()
+    tree_list = [1, 2, 3] #, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+
+    for i in range(0, len(tree_list)):
+        pool.apply_async(_randomforest_functions, args = (tree_list[i],))
+    pool.close()
+    pool.join()
+
+    print '*** Ended Random Forest ***'
+
 
 
 if __name__ == "__main__":
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "esk")
+        opts, args = getopt.getopt(sys.argv[1:], "eskr")
     except getopt.GetoptError as err:
         print str(err)
         sys.exit(1)
@@ -108,3 +138,5 @@ if __name__ == "__main__":
             _svm_tests()
         elif o == "-k":
             _knn_tests()
+        elif o == "-r":
+            _randomforest_tests()
