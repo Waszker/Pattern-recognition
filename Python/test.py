@@ -113,7 +113,7 @@ def _randomforest_functions(trees):
 def _randomforest_tests():
     print '*** Starting Random Forest ***'
     pool = mp.Pool()
-    tree_list = [1, 2, 3] #, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    tree_list = [1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
     for i in range(0, len(tree_list)):
         pool.apply_async(_randomforest_functions, args = (tree_list[i],))
