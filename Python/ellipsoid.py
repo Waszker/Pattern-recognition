@@ -67,9 +67,10 @@ def ellipsoids(tolerance):
     A_list = []
     c_list = []
     tests = []
+    norm = loading.get_normalize_vector()
 
     for i in range(0, 10):
-        [points, test] = loading.load_number_set(i, 0.7)
+        [points, test] = loading.load_normalized_number_set(norm, i, 0.7)
         tests.append(np.concatenate((points, test), axis = 0))
         A, c = _mvee(points, 0.01)
         A_list.append(A)
@@ -95,10 +96,11 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01):
     c_list = []
     train_points = []
     test_points = []
+    norm = loading.get_normalize_vector()
 
     # Creating ellipsoids
     for i in range(0, 10):
-        [train, test] = loading.load_number_set(i, 0.7)
+        [train, test] = loading.load_normalized_number_set(norm, i, 0.7)
         train_points.append(train)
         test_points.append(test)
         A, c = _mvee(train, accuracy)
@@ -106,8 +108,8 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01):
         c_list.append(c)
 
     # Append letters
-    train_points.append(loading.load_letter_set())
-    test_points.append(loading.load_letter_set())
+    train_points.append(loading.load_normalized_letter_set(norm))
+    test_points.append(loading.load_normalized_letter_set(norm))
 
     # Get error ratio for train set
     for i in range(0, 11):

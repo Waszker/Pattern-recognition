@@ -11,9 +11,10 @@ def _load_training_and_test_sets():
     """
     class_labels = []
     test_labels = []
+    norm = loading.get_normalize_vector()
 
     for i in range(0, 10):
-        [training, test] = loading.load_number_set(i)
+        [training, test] = loading.load_normalized_number_set(norm, i)
         labels = [str(i)] * training.shape[0]
         tlabels = [str(i)] * test.shape[0]
         if i == 0:
@@ -63,10 +64,11 @@ def svm_classification(kernel = 'rbf', c = 16, gamma=0.0025):
     conf_matrix = np.zeros((11, 11))
     conf_matrix2 = np.zeros((11, 11))
     svm_vectors = []
+    norm = loading.get_normalize_vector()
 
     # Read training and test sets
     for i in range(0, 10):
-        [set1, t] = loading.load_number_set(i, 0.5)
+        [set1, t] = loading.load_normalized_number_set(norm, i, 0.5)
         labels = [str(0)] * set1.shape[0]
 
         for j in range(0, 10):
@@ -106,7 +108,7 @@ def svm_classification(kernel = 'rbf', c = 16, gamma=0.0025):
                     conf_matrix2[i][10] += 1
 
     # Last check - letters
-    letters = loading.load_letter_set()
+    letters = loading.load_normalized_letter_set(norm)
     for letter in letters:
         for j in range(0, 10):
             result = svm_vectors[j].predict(letter.reshape(1, -1))

@@ -21,14 +21,15 @@ def get_normalize_vector():
         else:
             all_numbers = numpy.concatenate((all_numbers, train, test), axis = 0)
     normalized_vector =  numpy.amax(all_numbers, axis = 0)
-    normalized_vector[normalized_vector == 0] = 0.1 # Changes all occurences of zero to small value
+    normalized_vector[normalized_vector == 0] = 0.001 # Changes all occurences of zero to small value
     return normalized_vector
 
 
 def load_number_set(number_to_load, division_ratio = 0.5):
-    """Loads and returns two sets from number set"""
-    """Those sets are divided using division_ratio argument"""
-
+    """
+    Loads and returns two sets from number set
+    Those sets are divided using division_ratio argument
+    """
     data = list()
     reader = csv.reader(open('dane.csv', 'r'), delimiter=',')
     for row in reader:
@@ -45,9 +46,14 @@ def load_number_set(number_to_load, division_ratio = 0.5):
 
 
 def load_normalized_number_set(max_elems, number_to_load, division_ratio = 0.5):
-    numbers = load_number_set(number_to_load, division_ratio)
-    normalized_matrix = numbers / max_elems[None, :]
-    return normalized_matrix
+    """
+    Returns two sets with normalized data. For parameters explanation
+    look at load_number_set function.
+    """
+    [train, test] = load_number_set(number_to_load, division_ratio)
+    train = train / max_elems[None, :]
+    test = test / max_elems[None, :]
+    return [train, test]
 
 
 def load_letter_set(set_to_load = 0, letter_to_load = '0'):
