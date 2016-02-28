@@ -11,9 +11,10 @@ def _load_training_and_test_sets():
     """
     class_labels = []
     test_labels = []
+    norm = loading.get_normalize_vector()
 
     for i in range(0, 10):
-        [training, test] = loading.load_number_set(i)
+        [training, test] = loading.load_normalized_number_set(norm, i, 0.7)
         labels = [str(i)] * training.shape[0]
         tlabels = [str(i)] * test.shape[0]
         if i == 0:
