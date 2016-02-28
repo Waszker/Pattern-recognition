@@ -73,7 +73,7 @@ def svm_classification(kernel = 'rbf', c = 16, gamma=0.0025):
 
         for j in range(0, 10):
             if j == i: continue
-            [set2_part, t] = loading.load_number_set(j)
+            [set2_part, t] = loading.load_normalized_number_set(norm, j)
             if j == 0 or (j == 1 and i == 0):
                 set2 = set2_part
             else:
@@ -85,7 +85,7 @@ def svm_classification(kernel = 'rbf', c = 16, gamma=0.0025):
         svm_vectors[i].fit(np.concatenate((set1, set2), axis = 0), labels)
 
     for i in range(0, 10):
-        [train, test] = loading.load_number_set(i)
+        [train, test] = loading.load_normalized_number_set(norm, i)
 
         # Check training set
         for point in train:

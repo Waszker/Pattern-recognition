@@ -51,7 +51,7 @@ def _svm_functions(c, gamma, kernel):
 def _svm_tests():
     print '*** Starting SVM ***'
     pool = mp.Pool()
-    kernels = ['rbf', 'poly']
+    kernels = ['poly']
     c_list = [1, 2, 4, 8, 16]
     gammas = [pow(2, -1), pow(2, -2), pow(2, -3), 0.00025]
 
