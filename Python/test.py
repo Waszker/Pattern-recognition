@@ -9,14 +9,14 @@ import getopt, sys
 from math import pow
 import multiprocessing as mp
 
-def _ellipsoid_functions(tol, acc):
+def _ellipsoid_functions(tol, acc, normalize):
     print 'Starting iteration for tol=' + str(tol) + ' acc=' + str(acc)
-    m1, m2 = e.ellipsoids_letters_vs_numbers(tol, acc)
+    m1, m2 = e.ellipsoids_letters_vs_numbers(tol, acc, normalize=normalize)
     filename = "results/ellipsoid_results_tol=" +  str(tol) + "_acc=" + str(acc) + ".txt"
     np.savetxt(filename, np.concatenate((m1, m2), axis = 0), delimiter=',')
 
 
-def _ellipsoid_tests():
+def _ellipsoid_tests(normalize = False):
     print '*** Starting ellipsoids ***'
     pool = mp.Pool()
     accuracies = [0.1, 0.01, 0.001, 0.0005]
@@ -24,14 +24,14 @@ def _ellipsoid_tests():
 
     for i in range(0, len(accuracies)):
         for j in range(0, len(tolerances)):
-            pool.apply_async(_ellipsoid_functions, args = (tolerances[j], accuracies[i]))
+            pool.apply_async(_ellipsoid_functions, args = (tolerances[j], accuracies[i], normalize))
     pool.close()
     pool.join()
 
     print '*** Ended ellipsoids ***'
 
 
-def _svm_functions(c, gamma, kernel):
+def _svm_functions(c, gamma, kernel, normalize):
     """
     Runs two functions one after another with provided parameters.
     First one is identification problem using SVM method and the second
@@ -39,26 +39,26 @@ def _svm_functions(c, gamma, kernel):
     Results are saved to files with appropriate names.
     """
     print 'Starting identification iteration for c=' + str(c) + ' gamma=' + str(gamma)
-    m1, m2 = s.svm_identification(c=c, gamma=gamma, kernel=kernel)
+    m1, m2 = s.svm_identification(c=c, gamma=gamma, kernel=kernel, normalize=normalize)
     filename = "results_svn/" + str(kernel) + "_identification_c=" + str(c) + '_gamma=' + str(gamma)
     np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
 
     print 'Starting classification iteration for c=' + str(c) + ' gamma=' + str(gamma)
-    m1, m2 = s.svm_classification(c=c, gamma=gamma, kernel=kernel)
+    m1, m2 = s.svm_classification(c=c, gamma=gamma, kernel=kernel, normalize=normalize)
     filename = "results_svn/" + str(kernel) + "_classification_c=" + str(c) + '_gamma=' + str(gamma)
     np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
 
-def _svm_tests():
+def _svm_tests(normalize = False):
     print '*** Starting SVM ***'
     pool = mp.Pool()
-    kernels = ['poly']
+    kernels = ['rbf', 'poly']
     c_list = [1, 2, 4, 8, 16]
     gammas = [pow(2, -1), pow(2, -2), pow(2, -3), 0.00025]
 
     for kernel in kernels:
         for i in range(0, len(c_list)):
             for j in range(0, len(gammas)):
-                pool.apply_async(_svm_functions, args = (c_list[i], gammas[j], kernel))
+                pool.apply_async(_svm_functions, args = (c_list[i], gammas[j], kernel, normalize))
     pool.close()
     pool.join()
 
@@ -125,17 +125,22 @@ def _randomforest_tests():
 
 
 if __name__ == "__main__":
+    normalize = False
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "eskr")
+        opts, args = getopt.getopt(sys.argv[1:], "eskr", ["normalize"])
     except getopt.GetoptError as err:
         print str(err)
         sys.exit(1)
 
     for o, a in opts:
+        if o == "--normalize":
+            normalize = True
+
+    for o, a in opts:
         if o == "-e":
-            _ellipsoid_tests()
+            _ellipsoid_tests(normalize)
         elif o == "-s":
-            _svm_tests()
+            _svm_tests(normalize)
         elif o == "-k":
             _knn_tests()
         elif o == "-r":

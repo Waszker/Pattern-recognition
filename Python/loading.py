@@ -2,12 +2,7 @@
 
 import csv
 import numpy
-# from sklearn.preprocessing import normalize
 
-def _normalize_matrix(matrix):
-    row_sums = matrix.sum(axis = 1)
-    return matrix / row_sums[:, numpy.newaxis]
-#    return normalize(matrix, norm='l1', axis = 1)
 
 def get_normalize_vector():
     """
@@ -15,7 +10,7 @@ def get_normalize_vector():
     from all numbers in data set.
     """
     for i in range(0, 10):
-        [train, test] = load_number_set(i)
+        [train, test] = _load_number_set(i)
         if i == 0:
             all_numbers = numpy.concatenate((train, test), axis = 0)
         else:
@@ -25,7 +20,7 @@ def get_normalize_vector():
     return normalized_vector
 
 
-def load_number_set(number_to_load, division_ratio = 0.5):
+def _load_number_set(number_to_load, division_ratio = 0.5):
     """
     Loads and returns two sets from number set
     Those sets are divided using division_ratio argument
@@ -45,18 +40,19 @@ def load_number_set(number_to_load, division_ratio = 0.5):
     return [train, test]
 
 
-def load_normalized_number_set(max_elems, number_to_load, division_ratio = 0.5):
+def load_number_set(number_to_load, division_ratio = 0.5, norm_vector = None):
     """
     Returns two sets with normalized data. For parameters explanation
     look at load_number_set function.
     """
-    [train, test] = load_number_set(number_to_load, division_ratio)
-    train = train / max_elems[None, :]
-    test = test / max_elems[None, :]
+    [train, test] = _load_number_set(number_to_load, division_ratio)
+    if norm_vector is not None:
+        train = train / norm_vector[None, :]
+        test = test / norm_vector[None, :]
     return [train, test]
 
 
-def load_letter_set(set_to_load = 0, letter_to_load = '0'):
+def _load_letter_set(set_to_load = 0, letter_to_load = '0'):
     """
     Loads certain letters from letters set and returns them.
     If letter_to_load is '0' then all letters will be loaded.
@@ -73,14 +69,15 @@ def load_letter_set(set_to_load = 0, letter_to_load = '0'):
 
     return numpy.array(data).astype('double')
 
-def load_normalized_letter_set(max_elems, set_to_load = 0, letter_to_load = '0'):
+def load_letter_set(set_to_load = 0, letter_to_load = '0', norm_vector = None):
     """
     Loads selected letter from certain letters set. See load_letter_set
     method for some parameters explanation. This matrix is also normalized
     using provided vector of maximal column values.
-    max_elems should be numpy vertical vector holding maximum values for
+    norm_vector should be numpy vertical vector holding maximum values for
     each column.
     """
-    letters = load_letter_set(set_to_load, letter_to_load)
-    normalized_matrix = letters / max_elems[None, :]
+    normalized_matrix = _load_letter_set(set_to_load, letter_to_load)
+    if norm_vector is not None:
+        normalized_matrix = normalized_matrix / norm_vector[None, :]
     return normalized_matrix

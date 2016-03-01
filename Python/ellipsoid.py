@@ -54,7 +54,7 @@ def _get_best_ellipsoid_number_and_error(A_list, c_list, row):
     return best_ellipse, float(min_dist)
 
 
-def ellipsoids(tolerance):
+def ellipsoids(tolerance, normalize=False):
     """
         Runs minimum volume enclosing ellipsoid algorithm
         for each number set.
@@ -67,10 +67,12 @@ def ellipsoids(tolerance):
     A_list = []
     c_list = []
     tests = []
-    norm = loading.get_normalize_vector()
+    norm = None
+    if normalize == True:
+        norm = loading.get_normalize_vector()
 
     for i in range(0, 10):
-        [points, test] = loading.load_normalized_number_set(norm, i, 0.7)
+        [points, test] = loading.load_number_set(i, 0.7, norm_vector=norm)
         tests.append(np.concatenate((points, test), axis = 0))
         A, c = _mvee(points, 0.01)
         A_list.append(A)
@@ -85,7 +87,7 @@ def ellipsoids(tolerance):
     return ratios
 
 
-def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01):
+def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01, normalize=False):
     """
         Tries to classify and identify provided symbols
         and returns error ratio confusion matrix.
@@ -96,11 +98,13 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01):
     c_list = []
     train_points = []
     test_points = []
-    norm = loading.get_normalize_vector()
+    norm = None
+    if normalize == True:
+        norm = loading.get_normalize_vector()
 
     # Creating ellipsoids
     for i in range(0, 10):
-        [train, test] = loading.load_normalized_number_set(norm, i, 0.7)
+        [train, test] = loading.load_number_set(i, 0.7, norm_vector=norm)
         train_points.append(train)
         test_points.append(test)
         A, c = _mvee(train, accuracy)
@@ -108,8 +112,8 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01):
         c_list.append(c)
 
     # Append letters
-    train_points.append(loading.load_normalized_letter_set(norm))
-    test_points.append(loading.load_normalized_letter_set(norm))
+    train_points.append(loading.load_letter_set(norm_vector=norm))
+    test_points.append(loading.load_letter_set(norm_vector=norm))
 
     # Get error ratio for train set
     for i in range(0, 11):
