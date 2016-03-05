@@ -69,7 +69,7 @@ def _svm_tests(normalize = False):
 
     print '*** Ended SVM ***'
 
-def _knn_functions(n):
+def _knn_functions(n, normalize):
     """
     Runs two functions one after another with provided parameters.
     First one is identification problem using KNN method and the second
@@ -77,28 +77,29 @@ def _knn_functions(n):
     Results are saved to files with appropriate names.
     """
     print 'Starting identification iteration for n=' + str(n)
-    m1, m2 = k.knn_identification(n=n)
+    m1, m2 = k.knn_identification(n=n, normalize=normalize)
     filename = "results_knn/" + "knn" + "_identification_n=" + str(n)
     np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
 
     print 'Starting classification iteration for n=' + str(n)
-    m1, m2 = k.knn_classification(n=n)
+    m1, m2 = k.knn_classification(n=n, normalize=normalize)
     filename = "results_knn/" + "knn" + "_classification_n=" + str(n)
     np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
 
-def _knn_tests():
+def _knn_tests(normalize = False):
     print '*** Starting KNN ***'
     pool = mp.Pool()
     n_list = [1, 2, 5, 10]
 
     for i in range(0, len(n_list)):
-        pool.apply_async(_knn_functions, args = (n_list[i],))
+        pool.apply_async(_knn_functions, args = (n_list[i], normalize))
     pool.close()
     pool.join()
 
+
     print '*** Ended KNN ***'
 
-def _randomforest_functions(trees):
+def _randomforest_functions(trees, normalize):
     """
     Runs two functions one after another with provided parameters.
     First one is identification problem using Random Forest method and the second
@@ -106,22 +107,22 @@ def _randomforest_functions(trees):
     Results are saved to files with appropriate names.
     """
     print 'Starting identification iteration for n=' + str(trees)
-    m1, m2 = rf.randomforest_identification(trees=trees)
+    m1, m2 = rf.randomforest_identification(trees=trees, normalize=normalize)
     filename = "results_rf/" + "rf" + "_identification_n=" + str(trees)
     np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
 
     print 'Starting classification iteration for n=' + str(trees)
-    m1, m2 = rf.randomforest_classification(trees=trees)
+    m1, m2 = rf.randomforest_classification(trees=trees, normalize=normalize)
     filename = "results_rf/" + "rf" + "_classification_n=" + str(trees)
     np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
 
-def _randomforest_tests():
+def _randomforest_tests(normalize = False):
     print '*** Starting Random Forest ***'
     pool = mp.Pool()
     tree_list = [1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
     for i in range(0, len(tree_list)):
-        pool.apply_async(_randomforest_functions, args = (tree_list[i],))
+        pool.apply_async(_randomforest_functions, args = (tree_list[i], normalize))
     pool.close()
     pool.join()
 
@@ -147,6 +148,6 @@ if __name__ == "__main__":
         elif o == "-s":
             _svm_tests(normalize)
         elif o == "-k":
-            _knn_tests()
+            _knn_tests(normalize)
         elif o == "-r":
-            _randomforest_tests()
+            _randomforest_tests(normalize)
