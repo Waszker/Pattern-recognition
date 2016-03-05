@@ -15,6 +15,7 @@ def get_normalize_vector():
             all_numbers = numpy.concatenate((train, test), axis = 0)
         else:
             all_numbers = numpy.concatenate((all_numbers, train, test), axis = 0)
+    all_numbers = numpy.absolute(all_numbers)
     normalized_vector =  numpy.amax(all_numbers, axis = 0)
     normalized_vector[normalized_vector == 0] = 0.001 # Changes all occurences of zero to small value
     return normalized_vector
