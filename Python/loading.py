@@ -51,7 +51,7 @@ def load_number_set(number_to_load, division_ratio = 0.5, norm_vector = None):
         # Normalize points
         difference = norm_vector[0] - norm_vector[1]
         for point in train, test:
-            for i in enumerate(0, len(norm_vector[0])):
+            for i in range(0, len(norm_vector[0])):
                 point[i] = (point[i] - norm_vector[1][i]) / difference[i]
     return [train, test]
 
@@ -87,6 +87,6 @@ def load_letter_set(set_to_load = 0, letter_to_load = '0', norm_vector = None):
         # Normalize points
         difference = norm_vector[0] - norm_vector[1]
         for point in normalized_matrix:
-            for i in enumerate(0, len(norm_vector[0])):
+            for i in range(0, len(norm_vector[0])):
                 point[i] = (point[i] - norm_vector[1][i]) / difference[i]
     return normalized_matrix
