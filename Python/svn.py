@@ -63,8 +63,8 @@ def svm_identification(is_debug = False, kernel='rbf', c=16, gamma=0.00025, norm
 
 
 def svm_identification2(kernel='rbf', c=16, gamma=0.0025, normalize=False):
-    conf_matrix = np.zeros((10, 10))
-    conf_matrix2 = np.zeros((10, 10))
+    conf_matrix = np.zeros((11, 11))
+    conf_matrix2 = np.zeros((11, 11))
     norm = None
     if normalize == True:
         norm = loading.get_normalize_vector()
@@ -76,16 +76,19 @@ def svm_identification2(kernel='rbf', c=16, gamma=0.0025, normalize=False):
         [set1, _] = loading.load_number_set(i, norm_vector=norm)
         for j in range(i+1, 10):
             [set2, _] = loading.load_number_set(j, norm_vector=norm)
-            labels = [str(0),] * set1.shape[0]
-            labels2 = [str(1),] * set2.shape[0]
+            labels = [str(0)] * set1.shape[0]
+            labels2 = [str(1)] * set2.shape[0]
             labels.extend(labels2)
             svm_vectors.append(svm.SVC(C=c, kernel=kernel, gamma=gamma))
             svm_vectors[index].fit(np.concatenate((set1, set2), axis = 0), labels)
             index = index + 1
 
     # Check results
-    for i in range(0, 10):
-        [train, test] = loading.load_number_set(i, norm_vector=norm)
+    for i in range(0, 11):
+        if i == 10:
+            train = loading.load_letter_set(norm_vector=norm)
+        else:
+            [train, test] = loading.load_number_set(i, norm_vector=norm)
         for point in train:
             index = 0
             results = [0] * 10
@@ -103,7 +106,15 @@ def svm_identification2(kernel='rbf', c=16, gamma=0.0025, normalize=False):
             # Get best approximation
             sorted_results = sorted(results)
             if sorted_results[8] - sorted_results[7] < 2:
-                conf_matrix[i][9] = conf_matrix[i][9] + 1
+                conf_matrix[i][10] += 1
+            else:
+                max_ind = 0
+                maximum = sorted_results[9]
+                for x in results:
+                    if maximum == x:
+                        break
+                    max_ind += 1
+                conf_matrix[i][max_ind] += 1
 
     return conf_matrix, conf_matrix2
 
