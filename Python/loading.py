@@ -12,13 +12,13 @@ def get_normalize_vector():
     for i in range(0, 10):
         [train, test] = _load_number_set(i)
         if i == 0:
-            all_numbers = numpy.concatenate((train, test), axis = 0)
+            all_numbers = train
         else:
-            all_numbers = numpy.concatenate((all_numbers, train, test), axis = 0)
-    all_numbers = numpy.absolute(all_numbers)
-    normalized_vector =  numpy.amax(all_numbers, axis = 0)
-    normalized_vector[normalized_vector == 0] = 0.001 # Changes all occurences of zero to small value
-    return normalized_vector
+            all_numbers = numpy.concatenate((all_numbers, train), axis = 0)
+    amax_vector =  numpy.amax(all_numbers, axis = 0)
+    amin_vector =  numpy.amin(all_numbers, axis = 0)
+    # WARNING: If amin[i] == amax[i] then this could fail!
+    return (amax_vector, amin_vector)
 
 
 def _load_number_set(number_to_load, division_ratio = 0.5):
@@ -48,8 +48,11 @@ def load_number_set(number_to_load, division_ratio = 0.5, norm_vector = None):
     """
     [train, test] = _load_number_set(number_to_load, division_ratio)
     if norm_vector is not None:
-        train = train / norm_vector[None, :]
-        test = test / norm_vector[None, :]
+        # Normalize points
+        difference = norm_vector[0] - norm_vector[1]
+        for point in train, test:
+            for i in enumerate(0, len(norm_vector[0])):
+                point[i] = (point[i] - norm_vector[1][i]) / difference[i]
     return [train, test]
 
 
@@ -70,6 +73,7 @@ def _load_letter_set(set_to_load = 0, letter_to_load = '0'):
 
     return numpy.array(data).astype('double')
 
+
 def load_letter_set(set_to_load = 0, letter_to_load = '0', norm_vector = None):
     """
     Loads selected letter from certain letters set. See load_letter_set
@@ -80,5 +84,9 @@ def load_letter_set(set_to_load = 0, letter_to_load = '0', norm_vector = None):
     """
     normalized_matrix = _load_letter_set(set_to_load, letter_to_load)
     if norm_vector is not None:
-        normalized_matrix = normalized_matrix / norm_vector[None, :]
+        # Normalize points
+        difference = norm_vector[0] - norm_vector[1]
+        for point in normalized_matrix:
+            for i in enumerate(0, len(norm_vector[0])):
+                point[i] = (point[i] - norm_vector[1][i]) / difference[i]
     return normalized_matrix
