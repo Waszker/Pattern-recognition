@@ -50,9 +50,10 @@ def load_number_set(number_to_load, division_ratio = 0.5, norm_vector = None):
     if norm_vector is not None:
         # Normalize points
         difference = norm_vector[0] - norm_vector[1]
-        for point in train, test:
-            for i in range(0, len(norm_vector[0])):
-                point[i] = (point[i] - norm_vector[1][i]) / difference[i]
+        for row in train, test:
+            for point in row:
+                for i in range(0, len(norm_vector[0])):
+                    point[i] = (point[i] - norm_vector[1][i]) / difference[i]
     return [train, test]
 
 
