@@ -45,6 +45,7 @@ def load_number_set(number_to_load, division_ratio = 0.5, norm_vector = None):
     """
     Returns two sets with normalized data. For parameters explanation
     look at load_number_set function.
+    TODO: End this description
     """
     [train, test] = _load_number_set(number_to_load, division_ratio)
     if norm_vector is not None:
