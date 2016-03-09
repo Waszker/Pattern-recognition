@@ -138,8 +138,9 @@ if __name__ == "__main__":
         print str(err)
         sys.exit(1)
 
-    sett = e.getIdentifiedPoints(True)
-    print str(len(sett))
+    sett, labels = e.getIdentifiedPoints(True)
+    results = s.classifyPoints(sett, labels, gamma=0.125, normalize=True)
+    np.savetxt('results.txt', results, delimiter=',')
 
     for o, a in opts:
         if o == "--normalize":
