@@ -42,7 +42,6 @@ def _svm_functions(c, gamma, kernel, normalize):
     m1, m2 = s.svm_identification2(c=c, gamma=gamma, kernel=kernel, normalize=normalize)
     filename = "results_svn/" + str(kernel) + "_identification2_c=" + str(c) + '_gamma=' + str(gamma)
     np.savetxt(filename, np.concatenate((m1, m2), axis=0), delimiter=',')
-    return
 
     print 'Starting identification iteration for c=' + str(c) + ' gamma=' + str(gamma)
     m1, m2 = s.svm_identification(c=c, gamma=gamma, kernel=kernel, normalize=normalize)
