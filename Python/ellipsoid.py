@@ -134,10 +134,11 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01, normalize=False):
 
 
 def getIdentifiedPoints(normalize=False):
-    accuracy = 0.005
+    accuracy = 0.05
     tolerance = 0.001
     A_list = []
     c_list = []
+    point_labels = []
     all_points = []
     norm = None
     if normalize == True:
@@ -158,6 +159,7 @@ def getIdentifiedPoints(normalize=False):
         for row in train:
             _, dist = _get_best_ellipsoid_number_and_error(A_list, c_list, row)
             if dist < 1. + float(tolerance):
-                all_points.append([i, row])
+                all_points.append(row)
+                point_labels.append(i)
 
-    return all_points
+    return all_points, point_labels

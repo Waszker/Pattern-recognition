@@ -180,3 +180,19 @@ def svm_classification(kernel='rbf', c=16, gamma=0.0025, normalize=False):
                 conf_matrix2[10][10] += 1
 
     return conf_matrix, conf_matrix2
+
+
+def classifyPoints(points, labels, kernel='rbf', c=16, gamma=0.0025, normalize=False):
+    result_matrix = np.zeros((11, 11))
+    train_points, _, class_labels, _ = _load_training_and_test_sets(normalize)
+
+    # SVM routine
+    vectors = svm.SVC(C=c, kernel=kernel, gamma=gamma)
+    vectors.fit(train_points, class_labels)
+    results = vectors.predict(points)
+
+    for i in range(0, len(results)):
+        j = int(labels[i])
+        result_matrix[j][int(results[i])] += 1
+
+    return result_matrix
