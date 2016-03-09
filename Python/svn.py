@@ -16,7 +16,7 @@ def _load_training_and_test_sets(normalize):
         norm = loading.get_normalize_vector()
 
     for i in range(0, 10):
-        [training, test] = loading.load_number_set(i, norm_vector=norm)
+        [training, test] = loading.load_number_set(i, 0.7, norm_vector=norm)
         labels = [str(i)] * training.shape[0]
         tlabels = [str(i)] * test.shape[0]
         if i == 0:
@@ -73,9 +73,9 @@ def svm_identification2(kernel='rbf', c=16, gamma=0.0025, normalize=False):
     index = 0
     svm_vectors = []
     for i in range(0, 10):
-        [set1, _] = loading.load_number_set(i, norm_vector=norm)
+        [set1, _] = loading.load_number_set(i, 0.7, norm_vector=norm)
         for j in range(i+1, 10):
-            [set2, _] = loading.load_number_set(j, norm_vector=norm)
+            [set2, _] = loading.load_number_set(j, 0.7, norm_vector=norm)
             labels = [str(0)] * set1.shape[0]
             labels2 = [str(1)] * set2.shape[0]
             labels.extend(labels2)
@@ -88,7 +88,7 @@ def svm_identification2(kernel='rbf', c=16, gamma=0.0025, normalize=False):
         if i == 10:
             train = loading.load_letter_set(norm_vector=norm)
         else:
-            [train, test] = loading.load_number_set(i, norm_vector=norm)
+            [train, test] = loading.load_number_set(i, 0.7, norm_vector=norm)
         for point in train:
             index = 0
             results = [0] * 10
@@ -129,12 +129,12 @@ def svm_classification(kernel='rbf', c=16, gamma=0.0025, normalize=False):
 
     # Read training and test sets
     for i in range(0, 10):
-        [set1, t] = loading.load_number_set(i, 0.5, norm_vector=norm)
+        [set1, t] = loading.load_number_set(i, 0.7, norm_vector=norm)
         labels = [str(0)] * set1.shape[0]
 
         for j in range(0, 10):
             if j == i: continue
-            [set2_part, t] = loading.load_number_set(j, norm_vector=norm)
+            [set2_part, t] = loading.load_number_set(j, 0.7, norm_vector=norm)
             if j == 0 or (j == 1 and i == 0):
                 set2 = set2_part
             else:
@@ -146,7 +146,7 @@ def svm_classification(kernel='rbf', c=16, gamma=0.0025, normalize=False):
         svm_vectors[i].fit(np.concatenate((set1, set2), axis = 0), labels)
 
     for i in range(0, 10):
-        [train, test] = loading.load_number_set(i, norm_vector=norm)
+        [train, test] = loading.load_number_set(i, 0.7, norm_vector=norm)
 
         # Check training set
         for point in train:

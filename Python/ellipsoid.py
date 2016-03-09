@@ -131,3 +131,33 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01, normalize=False):
             test_ratios[i, best_ellipse] += 1
 
     return train_ratios, test_ratios
+
+
+def getIdentifiedPoints(normalize=False):
+    accuracy = 0.005
+    tolerance = 0.001
+    A_list = []
+    c_list = []
+    all_points = []
+    norm = None
+    if normalize == True:
+        norm = loading.get_normalize_vector()
+
+    # Creating ellipsoids
+    for i in range(0, 10):
+        [train, test] = loading.load_number_set(i, 0.7, norm_vector=norm)
+        A, c = _mvee(train, accuracy)
+        A_list.append(A)
+        c_list.append(c)
+
+    for i in range(0, 11):
+        if i != 10:
+            [train, _] = loading.load_number_set(i, 1, norm_vector=norm)
+        else:
+            train = loading.load_letter_set(norm_vector=norm)
+        for row in train:
+            _, dist = _get_best_ellipsoid_number_and_error(A_list, c_list, row)
+            if dist < 1. + float(tolerance):
+                all_points.append([i, row])
+
+    return all_points

@@ -138,6 +138,9 @@ if __name__ == "__main__":
         print str(err)
         sys.exit(1)
 
+    sett = e.getIdentifiedPoints(True)
+    print str(len(sett))
+
     for o, a in opts:
         if o == "--normalize":
             normalize = True

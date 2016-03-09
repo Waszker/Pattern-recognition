@@ -10,7 +10,7 @@ def get_normalize_vector():
     from all numbers in data set.
     """
     for i in range(0, 10):
-        [train, test] = _load_number_set(i)
+        [train, test] = _load_number_set(i, 0.7)
         if i == 0:
             all_numbers = train
         else:
