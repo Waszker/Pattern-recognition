@@ -89,7 +89,7 @@ def _knn_functions(n, normalize):
 def _knn_tests(normalize = False):
     print '*** Starting KNN ***'
     pool = mp.Pool()
-    n_list = [1, 2, 5, 10]
+    n_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     for i in range(0, len(n_list)):
         pool.apply_async(_knn_functions, args = (n_list[i], normalize))
@@ -119,7 +119,8 @@ def _randomforest_functions(trees, normalize):
 def _randomforest_tests(normalize = False):
     print '*** Starting Random Forest ***'
     pool = mp.Pool()
-    tree_list = [1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    #tree_list = [50, 60, 70, 80, 90, 100]
+    tree_list = [110, 120, 130, 140, 150]
 
     for i in range(0, len(tree_list)):
         pool.apply_async(_randomforest_functions, args = (tree_list[i], normalize))
