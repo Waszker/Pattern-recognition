@@ -142,9 +142,9 @@ if __name__ == "__main__":
 #    sett, labels = e.getIdentifiedPoints(True)
 #    results = s.classifyPoints(sett, labels, gamma=0.125, normalize=True)
 #    np.savetxt('results_svm.txt', results, delimiter=',')
-#    results = k.classifyPoints(sett, labels, n=5, normalize=True)
+#    results = k.classifyPoints(sett, labels, n=4, normalize=True)
 #    np.savetxt('results_knn.txt', results, delimiter=',')
-#    results = rf.classifyPoints(sett, labels, trees=20, normalize=True)
+#    results = rf.classifyPoints(sett, labels, trees=100, normalize=True)
 #    np.savetxt('results_rf.txt', results, delimiter=',')
 
     for o, a in opts:
