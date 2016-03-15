@@ -1,0 +1,279 @@
+% This is LLNCS.DOC the documentation file of
+% the LaTeX2e class from Springer-Verlag
+% for Lecture Notes in Computer Science, version 2.4
+\documentclass{llncs}
+\usepackage{llncsdoc}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+
+\usepackage{url}
+\urldef{\mailwhajwp}\path|{xxx,yyy,zzz}@mini.pw.edu.pl|
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+%
+\begin{document}
+
+
+\title{Title}
+\author{xxx$^{1}$
+\and yyy$^1$
+\and zzz$^{1}$
+}
+
+\authorrunning{xxx}
+\institute{$^1$Faculty of Mathematics and Information Science, Warsaw University of Technology\\ul. Koszykowa 75, 00-662 Warsaw, Poland\\
+%$^2$Department of Electrical \& Computer Engineering, University of Alberta, \\Edmonton T6R 2G7 AB Canada\\
+\mailwhajwp
+}
+
+\titlerunning{xxxxx yyyyyy zzzzzz}
+\maketitle
+
+\pagestyle{empty}  % no page numbers, no running headers
+
+\begin{abstract}
+In the article we present
+\end{abstract}
+
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+
+\section{Introduction}
+  \label{sec:Introduction}
+
+%difference between native and foreign
+
+%why this problem is important
+
+%objectives; what is the contribution of this paper
+
+%novelty elements
+
+%The paper is structured as follows. Section \ref{sec:Literature Review} presents the background knowledge on foreign elements detection present in the literature. Section \ref{sec:preliminaries}
+
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Literature Review}
+  \label{sec:Literature Review}
+
+%here on 1- outlier detection, 2 - novelty classification, 3 - foreign elements rejection
+
+
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Preliminaries}
+  \label{sec:preliminaries}
+
+%the task of classification is ...
+
+%...
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\subsection{Ellipsoids for Foreign Elements Rejection}
+
+%description of the idea of geometrical rejection 
+%issues: location, size, parameters of those figures
+
+%in our experiments we select ellipsoids
+
+%-------------------------------------------------------------------
+\subsubsection{MVEE}
+%description of MVEE algorithm
+
+
+
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\subsection{Native Elements Classification}
+
+
+%now description of those particular classifiers that we use: SVMs, KNNs, ...
+%-------------------------------------------------------------------
+\subsubsection{Support Vector Machines}
+%-------------------------------------------------------------------
+\subsubsection{Random Forests}
+%-------------------------------------------------------------------
+\subsubsection{K-Nearest Neighbors}
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\subsection{Quality Evaluation}
+
+%measures for quality evaluation: precision, recall, ...
+\begin{itemize}
+\item CC  (Correctly Classified) - the number of correctly classified patterns, i.e. native patterns classified as native ones with the correct class, % and foreign patterns classified as foreign ones,
+\item TP  (True Positives) - the number of native patterns classified as native (no matter, into which native class),
+\item FN  (False Negatives) - the number of native patterns incorrectly classified as foreign,
+\item FP  (False Positives) - the number of foreign patterns incorrectly classified as native,
+\item TN  (True Negatives) - the number of foreign patterns correctly classified as foreign.
+\end{itemize}
+
+
+
+\begin{eqnarray}
+            \textnormal{Accuracy} &\!\!=\!\!& \frac{\textnormal{TP+TN}}{\textnormal{TP+FN+FP+TN}}\nonumber\\\nonumber\\
+     \textnormal{Strict Accuracy} &\!\!=\!\!& \frac{\textnormal{CC+TN}}{\textnormal{TP+FN+FP+TN}}\nonumber\\\nonumber\\
+    \textnormal{Native Precision} &\!\!=\!\!& \frac{\textnormal{TP}}{\textnormal{TP+FP}}\nonumber\\\nonumber\\
+  \textnormal{Native Sensitivity} &\!\!=\!\!& \frac{\textnormal{TP}}{\textnormal{TP+FN}}\nonumber\\\nonumber\\
+  \textnormal{Strict Native Sensitivity} &\!\!=\!\!& \frac{\textnormal{CC}}{\textnormal{TP+FN}}\nonumber\\\nonumber\\
+          \textnormal{Fine Accuracy} &\!\!=\!\!& \frac{\textnormal{CC}}{\textnormal{TP}}\nonumber\\\nonumber\\
+   \textnormal{Foreign Precision} &\!\!=\!\!& \frac{\textnormal{TN}}{\textnormal{TN+FN}}\nonumber\\\nonumber\\
+ \textnormal{Foreign Sensitivity} &\!\!=\!\!& \frac{\textnormal{TN}}{\textnormal{TN+FP}}\nonumber\\\nonumber\\
+          \textnormal{F--measure} &\!\!=\!\!& 2\cdot\frac{\textnormal{Precision}\cdot\textnormal{Sensitivity}} {\textnormal{Precision}+\textnormal{Sensitivity}}\nonumber\\\nonumber
+\end{eqnarray}
+
+
+\begin{itemize}
+  \item \emph{Strict Accuracy} is the absolute measure of the classifier's performance. It is the ratio of the number of all \emph{correctly} classified patterns, i.e. native patterns classified to their respective classes and rejected foreign ones to the number of all patterns being processed.
+  \item \emph{Accuracy} is a characteristic derived from strict accuracy by ignoring the need to classify native patterns to their respective classes; in other words, it is sufficient to correctly identify whether a~pattern is native or foreign one. This measure describes the ability to distinguish between native and foreign patterns.
+  \item \emph{Native Precision} is the ratio of the number of not rejected native patterns to the number of all not rejected patterns (i.e. all not rejected native and foreign ones). Native Precision evaluates the ability of the classifier to distinguish native patterns from foreign ones. The higher the value of this measure, the better ability to distinguish foreign elements from native ones. Native Precision does not evaluate how effective identification of native elements is.
+  \item \emph{Native Sensitivity} is the ratio of the number of not rejected native patterns to all native ones. This measure evaluates the ability of the classifier to identify native elements. The higher the value of Native Sensitivity, the more effective identification of native elements. Unlike the Native Precision, this measure does not evaluate the effectiveness of separation between native and foreign elements.
+  \item \emph{Strict Native Sensitivity} takes only correctly classified native patterns and does not consider native patterns, which are not rejected and assigned to incorrect classes, unlike \emph{Native Sensitivity}, where all not rejected native patterns are taken into account.
+  \item \emph{Fine Accuracy} is the ratio of the number of native patterns classified to correct classes, i.e. assigned to their respective classes, to the number of all native patterns not rejected. This measure conveys how precise is correct classification of not rejected patterns.
+  \item \emph{Foreign Precision} corresponds to Native Precision.
+  \item \emph{Foreign Sensitivity} corresponds to Native Sensitivity.
+  \item  Precision and Sensitivity are complementary and there exists yet another characteristic that combines them: the \textit{F--measure}. It is there to express the balance between precision and sensitivity since these two measures affect each other. Increasing sensitivity can cause a~drop in precision since, along with correctly classified elements, there might be more incorrectly classified,
+\end{itemize}
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Experiments}
+  \label{sec:Experiments}
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\subsection{Presentation of Datasets}
+
+Figure \ref{fig:nativeforeignpatterns} presents native and foreign patterns ...
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=0.49\textwidth]{_Figures/native}
+  \caption{...}
+\label{fig:nativeforeignpatterns}
+\end{figure}
+
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\subsection{Impact on Classification}
+
+%ideally rejection improves classification by rejecting those element that would have been incorrectly classified
+
+\begin{table*}[t]
+\centering
+\caption{Results for classification with rejection on train and test sets of native patterns in comparison with classification results without rejection mechanism. RF - results for random forest, SVM - results for Support Vector Machines, ....}
+\vspace{3pt}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1}
+\begin{tabular}{|r||cccc|cccc|}
+\hline
+& \multicolumn{4}{c|}{no rejection} & \multicolumn{4}{c|}{with rejection}  \\
+\hline
+  Basic Classifier & RF & SVM & KNN &  & RF & SVM & KNN &  \\
+\hline
+  Data Set & \multicolumn{8}{c|}{Native Patterns, Train Set} \\
+\hline
+Fine Accuracy                & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ \\
+Strict Native Sensitivity    & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ \\
+Native Sensitivity           & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ \\
+\hline
+  Data Set & \multicolumn{8}{c|}{Native Patterns, Test Set} \\
+\hline
+Fine Accuracy                & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ \\
+Strict Native Sensitivity & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ \\
+Native Sensitivity        & $$ & $$ & $-$ & $-$ & $$ & $$ & $-$ & $-$ \\
+\hline
+\end{tabular}
+\vspace{12pt}
+\label{tab:NativeNoForeign}
+\end{table*}
+
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\subsection{Rejection Quality}
+
+\begin{table*}[!htb]
+\centering
+\caption{Results of classification with rejection on the set of native patterns supplemented with different sets of semi-synthetic  foreign patterns....}
+\vspace{3pt}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1}
+\begin{tabular}{||r||ccccc||ccccc||}
+\hline
+  Basic Classifier & RF & SVM & KNN &  &  &  RF & SVM & KNN &  &  \\
+\hline
+  Data Set & \multicolumn{5}{c||}{ xxx } & \multicolumn{5}{c|}{ x x } \\
+\hline
+\hline
+Strict Accuracy     &&&&&&&&&& \\
+Accuracy            &&&&&&&&&& \\
+Native Precision    &&&&&&&&&&  \\
+Native Sensitivity  &&&&&&&&&&  \\
+Foreign Precision   &&&&&&&&&&  \\
+Foreign Sensitivity &&&&&&&&&&  \\
+Native F-measure    &&&&&&&&&& \\
+Foreign F-measure   &&&&&&&&&&  \\
+\hline
+\hline
+  Data Set & \multicolumn{5}{c||}{ yyy } & \multicolumn{5}{c|}{ zzz } \\
+\hline
+\hline
+Strict Accuracy     &&&&&&&&&&  \\
+Accuracy            &&&&&&&&&& \\
+Native Precision    &&&&&&&&&&  \\
+Native Sensitivity  &&&&&&&&&&  \\
+Foreign Precision   &&&&&&&&&&  \\
+Foreign Sensitivity &&&&&&&&&& \\
+Native F-measure    &&&&&&&&&&  \\
+Foreign F-measure   &&&&&&&&&&  \\
+   \hline
+\end{tabular}
+\vspace{12pt}
+\label{tab:rejection_results}
+\end{table*}
+
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Conclusion}
+  \label{Conclusion}
+
+Proposed ...
+
+In future ...
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+
+\section*{Acknowledgment}
+
+\noindent The research is partially supported by the .....
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{thebibliography}{1}
+
+\bibitem{HempstalkFrankWitten2008}
+Hempstalk, K., Frank, E., Witten, I., \emph{One-class classification by combining density and class probability estimation}, Machine Learning and Knowl. Disc. in Databases, pp. 505-519, 2008.
+
+
+\end{thebibliography}
+
+
+
+\end{document}
