@@ -130,6 +130,15 @@ def _randomforest_tests(normalize = False):
     print '*** Ended Random Forest ***'
 
 
+def _test_all(normalize):
+    sett, labels = e.getIdentifiedPoints(normalize)
+    results = s.classifyPoints(sett, labels, gamma=0.125, normalize=normalize)
+    np.savetxt('final_results/results_svm.txt', results, delimiter=',')
+    results = k.classifyPoints(sett, labels, n=4, normalize=normalize)
+    np.savetxt('final_results/results_knn.txt', results, delimiter=',')
+    results = rf.classifyPoints(sett, labels, trees=100, normalize=normalize)
+    np.savetxt('final_results/results_rf.txt', results, delimiter=',')
+
 
 if __name__ == "__main__":
     normalize = False
@@ -138,14 +147,6 @@ if __name__ == "__main__":
     except getopt.GetoptError as err:
         print str(err)
         sys.exit(1)
-
-#    sett, labels = e.getIdentifiedPoints(True)
-#    results = s.classifyPoints(sett, labels, gamma=0.125, normalize=True)
-#    np.savetxt('results_svm.txt', results, delimiter=',')
-#    results = k.classifyPoints(sett, labels, n=4, normalize=True)
-#    np.savetxt('results_knn.txt', results, delimiter=',')
-#    results = rf.classifyPoints(sett, labels, trees=100, normalize=True)
-#    np.savetxt('results_rf.txt', results, delimiter=',')
 
     for o, a in opts:
         if o == "--normalize":
@@ -160,3 +161,5 @@ if __name__ == "__main__":
             _knn_tests(normalize)
         elif o == "-r":
             _randomforest_tests(normalize)
+        elif o == "zusammen":
+            _test_all(normalize)

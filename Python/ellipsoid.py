@@ -54,39 +54,6 @@ def _get_best_ellipsoid_number_and_error(A_list, c_list, row):
     return best_ellipse, float(min_dist)
 
 
-def ellipsoids(tolerance, normalize=False):
-    """
-        Runs minimum volume enclosing ellipsoid algorithm
-        for each number set.
-        Returns matrix 12 x 10 where first two rows represent
-        error ratio for training and test sets (each column represets
-        one letter set) and the rest represents error ratio for merged
-        training and test sets insisde other ellipsoid.
-    """
-    ratios = np.zeros((12, 10))
-    A_list = []
-    c_list = []
-    tests = []
-    norm = None
-    if normalize == True:
-        norm = loading.get_normalize_vector()
-
-    for i in range(0, 10):
-        [points, test] = loading.load_number_set(i, 0.7, norm_vector=norm)
-        tests.append(np.concatenate((points, test), axis = 0))
-        A, c = _mvee(points, 0.01)
-        A_list.append(A)
-        c_list.append(c)
-        ratios[0, i] = _get_ellipsoid_error(A, c, points, tolerance)
-        ratios[1, i] = _get_ellipsoid_error(A, c, test, tolerance)
-
-    for i in range(0, 10):
-        for j in range(0, 10):
-            ratios[i+2, j] = _get_ellipsoid_error(A_list[j], c_list[j], tests[i], tolerance)
-
-    return ratios
-
-
 def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01, normalize=False):
     """
         Tries to classify and identify provided symbols
@@ -146,7 +113,7 @@ def getIdentifiedPoints(normalize=False):
 
     # Creating ellipsoids
     for i in range(0, 10):
-        [train, test] = loading.load_number_set(i, 0.7, norm_vector=norm)
+        [train, _] = loading.load_number_set(i, 0.7, norm_vector=norm)
         A, c = _mvee(train, accuracy)
         A_list.append(A)
         c_list.append(c)
@@ -163,3 +130,34 @@ def getIdentifiedPoints(normalize=False):
                 point_labels.append(i)
 
     return all_points, point_labels
+
+
+def final_ellipsoids(data, primal_labels, new_labels, normalize=False):
+    matrix = np.zeros((11, 11))
+    A_list = []
+    c_list = []
+    accuracy = 0.05
+    tolerance = 0.001
+    norm = None
+    if normalize == True:
+        norm = loading.get_normalize_vector()
+
+    # Prepare ellipsoids
+    for i in range(0, 10):
+        [train, _] = loading.load_number_set(i, 0.7, norm_vector=norm)
+        A, c = _mvee(train, accuracy)
+        A_list.append(A)
+        c_list.append(c)
+
+    # Check point alliance
+    for i in enumerate(0, len(new_labels)):
+        label = int(new_labels[i])
+        A = A_list[label]
+        c = c_list[label]
+        point = np.asmatrix(data[i, :]) - c
+        distance = point * A * np.transpose(point)
+        if distance > 1. + float(tolerance):
+            label = 10
+        matrix[int(primal_labels)][int(label)] += 1
+
+    return matrix
