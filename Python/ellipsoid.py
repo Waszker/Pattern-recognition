@@ -101,7 +101,7 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01, normalize=False):
 
 
 def getIdentifiedPoints(normalize=False):
-    accuracy = 0.05
+    accuracy = 0.01
     tolerance = 0.001
     A_list = []
     c_list = []
@@ -120,7 +120,7 @@ def getIdentifiedPoints(normalize=False):
 
     for i in range(0, 11):
         if i != 10:
-            [train, _] = loading.load_number_set(i, 1, norm_vector=norm)
+            [_, train] = loading.load_number_set(i, 0.7, norm_vector=norm)
         else:
             train = loading.load_letter_set(norm_vector=norm)
         for row in train:
@@ -136,7 +136,7 @@ def final_ellipsoids(data, primal_labels, new_labels, normalize=False):
     matrix = np.zeros((11, 11))
     A_list = []
     c_list = []
-    accuracy = 0.05
+    accuracy = 0.01
     tolerance = 0.001
     norm = None
     if normalize == True:
@@ -150,14 +150,14 @@ def final_ellipsoids(data, primal_labels, new_labels, normalize=False):
         c_list.append(c)
 
     # Check point alliance
-    for i in enumerate(0, len(new_labels)):
+    for i in range(0, len(new_labels)):
         label = int(new_labels[i])
         A = A_list[label]
         c = c_list[label]
         point = np.asmatrix(data[i, :]) - c
         distance = point * A * np.transpose(point)
-        if distance > 1. + float(tolerance):
+        if float(distance) >= 1. + float(tolerance):
             label = 10
-        matrix[int(primal_labels)][int(label)] += 1
+        matrix[int(primal_labels[i])][label] += 1
 
     return matrix

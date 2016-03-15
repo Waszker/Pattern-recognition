@@ -182,7 +182,7 @@ def svm_classification(kernel='rbf', c=16, gamma=0.0025, normalize=False):
     return conf_matrix, conf_matrix2
 
 
-def classifyPoints(points, labels, kernel='rbf', c=16, gamma=0.0025, normalize=False):
+def svm_identify_points(points, labels, kernel='rbf', c=16, gamma=0.0025, normalize=False):
     result_matrix = np.zeros((11, 11))
     train_points, _, class_labels, _ = _load_training_and_test_sets(normalize)
 
@@ -196,3 +196,22 @@ def classifyPoints(points, labels, kernel='rbf', c=16, gamma=0.0025, normalize=F
         result_matrix[j][int(results[i])] += 1
 
     return result_matrix
+
+
+def svm_classify_points(kernel='rbf', c=16, gamma=0.00025, normalize=False):
+    norm = None
+    if normalize == True:
+        norm = loading.get_normalize_vector()
+    train_points, test_points, class_labels, test_labels = _load_training_and_test_sets(normalize)
+    letters = loading.load_letter_set(norm_vector=norm)
+    letter_labels = [str(10)] * letters.shape[0]
+    test_points = np.concatenate((test_points, letters), axis = 0)
+    test_labels = np.concatenate((test_labels, letter_labels), axis = 0)
+
+    # SVM routine
+    vectors = svm.SVC(C=c, kernel=kernel, gamma=gamma)
+    vectors.fit(train_points, class_labels)
+    results = vectors.predict(test_points)
+
+
+    return test_points, test_labels, results
