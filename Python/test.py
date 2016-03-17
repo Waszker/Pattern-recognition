@@ -131,16 +131,28 @@ def _randomforest_tests(normalize = False):
 
 
 def _test_all(normalize):
+
+    #identification by ellipsoid first
     sett, labels = e.getIdentifiedPoints(normalize)
     results = s.svm_identify_points(sett, labels, gamma=0.125, normalize=normalize)
     np.savetxt('final_results/results_svm.txt', results, delimiter=',')
-    results = k.classifyPoints(sett, labels, n=4, normalize=normalize)
+    results = k.knn_identify_points(sett, labels, n=4, normalize=normalize)
     np.savetxt('final_results/results_knn.txt', results, delimiter=',')
-    results = rf.classifyPoints(sett, labels, trees=100, normalize=normalize)
+    results = rf.rf_identify_points(sett, labels, trees=100, normalize=normalize)
     np.savetxt('final_results/results_rf.txt', results, delimiter=',')
+
+    #classification by svm/knn/rf first
     points, old_labels, new_labels = s.svm_classify_points(gamma=0.125, normalize=normalize)
     results = e.final_ellipsoids(points, old_labels, new_labels, normalize=normalize)
     np.savetxt('final_results/results_svm2.txt', results, delimiter=',')
+
+    points, old_labels, new_labels = k.knn_classify_points(n=4, normalize=normalize)
+    results = e.final_ellipsoids(points, old_labels, new_labels, normalize=normalize)
+    np.savetxt('final_results/results_knn2.txt', results, delimiter=',')
+
+    points, old_labels, new_labels = rf.rf_classify_points(trees=100, normalize=normalize)
+    results = e.final_ellipsoids(points, old_labels, new_labels, normalize=normalize)
+    np.savetxt('final_results/results_rf2.txt', results, delimiter=',')
 
 
 if __name__ == "__main__":
