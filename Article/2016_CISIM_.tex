@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage[table]{xcolor}
+\usepackage{listings}
 
 \usepackage{url}
 \urldef{\mailwhajwp}\path|{xxx,yyy,zzz}@mini.pw.edu.pl|
@@ -82,23 +83,44 @@ In the article we present
 %description of the idea of geometrical rejection 
 %issues: location, size, parameters of those figures
 
-In computational geometry, the smallest enclosing box problem is that of finding the oriented minimum bounding box enclosing a set of points. In many cases there's a need for computing convex hull of set of points and testing inclusions of other points in the same space. This can become very complex problem especially in higher dimensions, so more often an approximation of the hull is used. This helps to reduce time needed for computations, since most of the methods have lower construction and inclusion-testing complexities. Some of such approaches include using figures like hypercubes, diamonds, balls or ellipsoids to successfully enclose given set of points. \\
-
-When comparing highlights and drawbacks of each method, from computational complexity, ease of testing point inclusion and algorithm implementation point of view, ellipsoids seem very reasonable to choose.
-
+% Links used in this description
 % Link: http://geomalgorithms.com/a08-_containers.html
 % http://people.orie.cornell.edu/miketodd/TYKhach.pdf
+In computational geometry, the smallest enclosing box problem is that of finding the oriented minimum bounding box enclosing a set of points. In many cases there's a need for computing convex hull of set of points and testing inclusions of other points in the same space. This can become very complex problem especially in higher dimensions, so more often an approximation of the hull is used. This helps to reduce time needed for computations, since most of the methods have lower construction and inclusion-testing complexities. Some of such approaches include using figures like hypercubes, diamonds, balls or ellipsoids to successfully enclose given set of points.
+
+When comparing highlights and drawbacks of each method, from computational complexity, ease of testing point inclusion and algorithm implementation point of view, ellipsoids seem very reasonable to choose. Constructed ellipsoid is superior to the minimal cuboid in many ways. It is unique, better approximation of the object it contains and if $E(S)$ is the bounding ellipsoid for a point set $S$ with convex hull $C(S)$ in dimension \textit{d}, then:
+\[ \frac{1}{d}E(S) \subseteq C(S) \subseteq E(S) \]
+where scaling is with respect to the center of $E(S)$.
 
 %in our experiments we select ellipsoids
 
 %-------------------------------------------------------------------
 \subsubsection{MVEE}
 %description of MVEE algorithm
+% Links used:
+% http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=3A12C2006473A250D78C45B99B0BB3FA?doi=10.1.1.116.7691&rep=rep1&type=pdf
+% http://www.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid/content/MinVolEllipse.m
+% http://stackoverflow.com/questions/1768197/bounding-ellipse/1768440#1768440
+% http://stackoverflow.com/questions/14016898/port-matlab-bounding-ellipsoid-code-to-python
 
-Let $A = \{a^{1}, a^{2}, ..., a^{m}\} \subset \mathbb{R} ^{n}$ be a finite set of vectors. There is
-Not only does it satisfy 
-$1/dMVEE(A) \subset conv(A) \subset MVEE(A) $
+problem is solved by several known algorithms that can be categorized as first-order, second-order interior-point or combination of the two. For small dimensions \textit{d}, the MVEE problem can be solved in \textit{O($d^{O(d)}$m)} operations using randomized or determistic algorithms\cite{MVEEMichaelTodd2005}. In this paper the algorithm based on Khachiyan solution is used.
 
+\noindent An ellipsoid in center form is given by \[ E = \{x \in \mathbb{R}^{n} | (x - c)^{T}A(x-c) \le 1\} \] where $c \in \mathbb{R}^{n}$ is the center of the ellipse E and $ A \in \mathbb{S}^{n}_{++}$ Points lying inside the ellipse satisfy \[ (x_{i} - c)^{T}A(x_{i} - c) \le 1 \]
+
+\noindent The pseudocode for the MVEE algorithm used in this paper is as follows:
+\begin{lstlisting}
+while err > tolerance
+	X = Q * diag(u) * Q'
+	M = diag(Q' * inv(X) * Q)
+	[maximum j] = max(M)
+	step_size = (maximum - d -1)/((d+1)*(maximum-1))
+	new_u = (1 - step_size)*u
+	new_u(j) = new_u(j) + step_size
+	count = count + 1
+	err = norm(new_u - u)
+	u = new_u
+end
+\end{lstlisting}
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -109,6 +131,10 @@ $1/dMVEE(A) \subset conv(A) \subset MVEE(A) $
 %-------------------------------------------------------------------
 \subsubsection{Support Vector Machines}
 %-------------------------------------------------------------------
+% Used links:
+% http://scikit-learn.org/stable/modules/svm.html#svm-kernels
+are a set of supervised learning methods used for classification, regression and outliers detection. They are effective in high dimensional spaces, memory efficient and quite versatile with many kernel functions that can be specified for the decision function. Although in some cases, where number of features is much greater than the number of samples, this method can give poor results, and is not cost-efficient when calculating probability estimates, it is well suited for problem presented in this paper. Given a set of training examples, each marked for belonging to one of two categories, an SVM training algorithm builds a model that assigns new examples into one category or the other. For multi-class classification "one-against-one" approach is used. For \textit{n} classes \textit{n} * (\textit{n} - 1) / 2 classifiers are constructed, each trains data from two different classes. The order for classes 0 to \textit{n} is "0 vs 1", "0 vs 2", \dots "0 vs \textit{n}", "1 vs 2", \dots "\textit{n} - 1 vs \textit{n}".
+
 \subsubsection{Random Forests}
 %-------------------------------------------------------------------
 method is based on classification trees, which are used to predict membership of objects in the classes.
@@ -284,6 +310,9 @@ In future ...
 
 \bibitem{HempstalkFrankWitten2008}
 Hempstalk, K., Frank, E., Witten, I., \emph{One-class classification by combining density and class probability estimation}, Machine Learning and Knowl. Disc. in Databases, pp. 505-519, 2008.
+
+\bibitem{MVEEMichaelTodd2005}
+Michael J. Todd, E.Alper Yildirim, \emph{On Khachiyan's Algorithm for the Computation of Minimum Volume Enclosing Ellipsoids}, September 30, 2005, article link: http://people.orie.cornell.edu/miketodd/TYKhach.pdf
 
 
 \end{thebibliography}
