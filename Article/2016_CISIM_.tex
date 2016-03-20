@@ -6,7 +6,32 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage[table]{xcolor}
+
+% Added for code listing
 \usepackage{listings}
+\usepackage{caption}
+
+\newcounter{nalg}[chapter] % defines algorithm counter for chapter-level
+\renewcommand{\thenalg}{\thechapter .\arabic{nalg}} %defines appearance of the algorithm counter
+\DeclareCaptionLabelFormat{algocaption}{Algorithm \thenalg} % defines a new caption label as Algorithm x.y
+
+\lstnewenvironment{algorithm}[1][] %defines the algorithm listing environment
+{   
+	\refstepcounter{nalg} %increments algorithm number
+	\captionsetup{labelformat=algocaption,labelsep=colon} %defines the caption setup for: it ises label format as the declared caption label above and makes label and caption text to be separated by a ':'
+	\lstset{ %this is the stype
+		frame=tB,
+		numbers=left, 
+		numberstyle=\tiny,
+		basicstyle=\scriptsize, 
+		keywordstyle=\color{black}\bfseries\em,
+		keywords={,input, output, return, datatype, function, in, if, else, foreach, while, begin, end, done, } %add the keywords you want, or load a language as Rubens explains in his comment above.
+		numbers=left,
+		xleftmargin=.04\textwidth,
+		#1 % this is to add specific settings to an usage of this environment (for instnce, the caption and referable label)
+	}
+}
+{}
 
 \usepackage{url}
 \urldef{\mailwhajwp}\path|{xxx,yyy,zzz}@mini.pw.edu.pl|
@@ -108,19 +133,66 @@ problem is solved by several known algorithms that can be categorized as first-o
 \noindent An ellipsoid in center form is given by \[ E = \{x \in \mathbb{R}^{n} | (x - c)^{T}A(x-c) \le 1\} \] where $c \in \mathbb{R}^{n}$ is the center of the ellipse E and $ A \in \mathbb{S}^{n}_{++}$ Points lying inside the ellipse satisfy \[ (x_{i} - c)^{T}A(x_{i} - c) \le 1 \]
 
 \noindent The pseudocode for the MVEE algorithm used in this paper is as follows:
-\begin{lstlisting}
-while err > tolerance
-	X = Q * diag(u) * Q'
-	M = diag(Q' * inv(X) * Q)
-	[maximum j] = max(M)
-	step_size = (maximum - d -1)/((d+1)*(maximum-1))
-	new_u = (1 - step_size)*u
-	new_u(j) = new_u(j) + step_size
-	count = count + 1
-	err = norm(new_u - u)
-	u = new_u
+% Code taken from:
+% http://www.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid/content/MinVolEllipse.m
+% http://stackoverflow.com/questions/14016898/port-matlab-bounding-ellipsoid-code-to-python
+\begin{algorithm}[mathescape=true, caption={MVEE}, label={alg1}]
+input:
+	$\textbf{P}$ - row-ordered matrix of m n-dimensional points
+	$\textbf{tolerance}$ - solution error value with respect to optimal value
+	
+output:
+	$\textbf{c}$ - %TODO Add description
+	$\textbf{A}$ - %TODO Add description
+	
+begin
+	N $\leftarrow$ number of points in P	
+	d $\leftarrow$ number of dimensions for points in P
+	
+	Q $\leftarrow
+	\pmatrix{%
+		P_{1,1} & P_{1,2} & \dots & P_{1, n} & 1 \cr
+		P_{2,1} & P_{2,2} & \dots & P_{2, n} & 1 \cr
+		\vdots & \vdots & \ddots & \vdots & \vdots \cr
+		P_{m,1} & P_{m,2} & \dots & P_{m, n} & 1 \cr
+	}$
+	
+	error $\leftarrow$ 1
+	
+	u $\leftarrow [\frac{1}{N}, \frac{1}{N}, \dots, \frac{1}{N}]$, |u| = N
+			
+	while error > tolerance
+		X $\leftarrow Q * \pmatrix{%
+			u_{1} & 0 & \dots & 0 \cr
+			0 & u_{2} & \dots & 0 \cr
+			\vdots & \vdots & \ddots & \vdots \cr
+			0 & 0 & \dots & u_{n} \cr
+		} * Q^{T}$
+		
+		M $\leftarrow$ diag($Q^{T} * X^{-1} * Q$)
+		
+		jdx $\leftarrow$ $M_{j} : \forall_{0 \le i \le |M|} M_{j} \ge M_{i}$
+		
+		step_size $\leftarrow$ $\frac{M[jdx] - d - 1.0}{(d+1) * (M[jdx] - 1.0)}$
+		
+		new_u $\leftarrow$ (1 - step_size) * u
+		
+		new_u[jdx] $\leftarrow$ new_u[jdx] + step_size
+		
+		error $\leftarrow ||new_u - u|| $
+		
+		u $\leftarrow$ new_u
+	done
+	
+	c $\leftarrow$ u * P
+	A $\leftarrow \frac{(P^{T} * \pmatrix{%
+			u_{1} & 0 & \dots & 0 \cr
+			0 & u_{2} & \dots & 0 \cr
+			\vdots & \vdots & \ddots & \vdots \cr
+			0 & 0 & \dots & u_{n} \cr
+		} * P - c^{T} * c)^{-1}}{d}$
 end
-\end{lstlisting}
+\end{algorithm}
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
