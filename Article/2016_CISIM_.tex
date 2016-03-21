@@ -113,7 +113,7 @@ In the article we present
 % http://people.orie.cornell.edu/miketodd/TYKhach.pdf
 In computational geometry, the smallest enclosing box problem is that of finding the oriented minimum bounding box enclosing a set of points. In many cases there's a need for computing convex hull of set of points and testing inclusions of other points in the same space. This can become very complex problem especially in higher dimensions, so more often an approximation of the hull is used. This helps to reduce time needed for computations, since most of the methods have lower construction and inclusion-testing complexities. Some of such approaches include using figures like hypercubes, diamonds, balls or ellipsoids to successfully enclose given set of points.
 
-When comparing highlights and drawbacks of each method, from computational complexity, ease of testing point inclusion and algorithm implementation point of view, ellipsoids seem very reasonable to choose. Constructed ellipsoid is superior to the minimal cuboid in many ways. It is unique, better approximation of the object it contains and if $E(S)$ is the bounding ellipsoid for a point set $S$ with convex hull $C(S)$ in dimension \textit{d}, then:
+When comparing highlights and drawbacks of each method, from computational complexity, ease of testing point inclusion and algorithm implementation point of view, ellipsoids seem to be a reasonable choice. Constructed ellipsoid is superior to the minimal cuboid in many ways. It is unique, better approximation of the object it contains and if $E(S)$ is the bounding ellipsoid for a point set $S$ with convex hull $C(S)$ in dimension \textit{d}, then:
 \[ \frac{1}{d}E(S) \subseteq C(S) \subseteq E(S) \]
 where scaling is with respect to the center of $E(S)$.
 
@@ -130,7 +130,7 @@ where scaling is with respect to the center of $E(S)$.
 
 problem is solved by several known algorithms that can be categorized as first-order, second-order interior-point or combination of the two. For small dimensions \textit{d}, the MVEE problem can be solved in \textit{O($d^{O(d)}$m)} operations using randomized or determistic algorithms\cite{MVEEMichaelTodd2005}. In this paper the algorithm based on Khachiyan solution is used.
 
-\noindent An ellipsoid in center form is given by \[ E = \{x \in \mathbb{R}^{n} | (x - c)^{T}A(x-c) \le 1\} \] where $c \in \mathbb{R}^{n}$ is the center of the ellipse E and $ A \in \mathbb{S}^{n}_{++}$ Points lying inside the ellipse satisfy \[ (x_{i} - c)^{T}A(x_{i} - c) \le 1 \]
+\noindent An ellipsoid in center form is given by \[ E = \{x \in \mathbb{R}^{n} | (x - c)^{T}A(x-c) \le 1\} \] where $c \in \mathbb{R}^{n}$ is the center of the ellipse E and $ A \in \mathbb{S}^{n}_{++}$ Points lying inside the ellipse satisfy \[ (x_{i} - c)^{T}A(x_{i} - c) \le 1 \] However this is not a convex optimization problem and the equations have to be changed. It turns out that even then, the solution is not easily obtainable so the dual problem has to be found. For more precise and in depth solution description see \cite{MVEEMichaelTodd2005}.
 
 \noindent The pseudocode for the MVEE algorithm used in this paper is as follows:
 % Code taken from:
