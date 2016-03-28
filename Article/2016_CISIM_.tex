@@ -207,16 +207,14 @@ end
 % http://scikit-learn.org/stable/modules/svm.html#svm-kernels
 are a set of supervised learning methods used for classification, regression and outliers detection. They are effective in high dimensional spaces, memory efficient and quite versatile with many kernel functions that can be specified for the decision function. Although in some cases, where number of features is much greater than the number of samples, this method can give poor results, and is not cost-efficient when calculating probability estimates, it is well suited for problem presented in this paper. Given a set of training examples, each marked for belonging to one of two categories, an SVM training algorithm builds a model that assigns new examples into one category or the other. For multi-class classification "one-against-one" approach is used. For \textit{n} classes \textit{n} * (\textit{n} - 1) / 2 classifiers are constructed, each trains data from two different classes. The order for classes 0 to \textit{n} is "0 vs 1", "0 vs 2", \dots "0 vs \textit{n}", "1 vs 2", \dots "\textit{n} - 1 vs \textit{n}".
 
+%-------------------------------------------------------------------
 \subsubsection{Random Forests}
+method is based on classiﬁcation trees, which are used to predict the membership of objects in the classes. For vector of independent variables representing one object they calculate the value of the class the object belongs to by dividing value space into two or more subspaces. More precisely, an input data is entered at the top of the tree and as it traverses down the tree the data gets bucketed into smaller and smaller sets. The main principle behind the Random Forest method is that a group of "weak learners" can come together to form a "strong learner".  In this method a large number of classiﬁcation trees is generated. To grow each tree a random selection with replacement is made from the examples in the training set $D$. Those subsets $D_k$ are called "bootstrap training sets". At each node $m$ variables are selected at random out of the set of input variables and the best split on these $m$ is used to split the node. Generated trees vote for most popular class and the forest chooses the classification having the most votes (over all the trees in the forest).
 %-------------------------------------------------------------------
-method is based on classification trees, which are used to predict membership of objects in the classes.
-For vector of independent variables representing one object they calculate the value of the class the object belongs to by dividing value space into two or more subspaces. More precisely, an input data is entered at the top of the tree and as it traverses down the tree the data gets bucketed into smaller and smaller sets.
-The main principle behind the Random Forest method is that a group of "weak learners" can come together to form a "strong learner". 
-After a large number of trees is generated, they vote for the most popular class.
-We call these procedures random forests.
 \subsubsection{K-Nearest Neighbors}
+is an algorithm, based on a similarity measure, assumes that data points are in a metric space, e.g., euclidean distance, Manhattan distance. It can determine object membership of the class based on ambient objects. The $K$ number decides how many neighbors influence the classification. If $K=1$ , then the algorithm is simply called the nearest neighbor algorithm. For every new object $x$ K-Nearest Neighbors classifier finds the set of $K$ most similar objects in the training data set (in terms of selected metric function) and then returns the class linked to most of $x$’s neighbors.
 
-%-------------------------------------------------------------------
+
 %-------------------------------------------------------------------
 \subsection{Quality Evaluation}
 
