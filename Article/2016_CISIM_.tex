@@ -152,15 +152,15 @@ The proposed approach builds upon several existing algorithms. In order to provi
 % Links used in this description
 % Link: http://geomalgorithms.com/a08-_containers.html
 % http://people.orie.cornell.edu/miketodd/TYKhach.pdf
-In computational geometry, the smallest enclosing box problem is that of finding the oriented minimum bounding box enclosing a set of points. In many cases there's a need for computing convex hull of set of points and testing inclusions of other points in the same space. This can become very complex problem especially in higher dimensions, so more often an approximation of the hull is used. This helps to reduce time needed for computations, since most of the methods have lower construction and inclusion-testing complexities. Some of such approaches include using figures like hypercubes, diamonds, spheres or ellipsoids to successfully enclose given set of points.
+Both native and foreign elements consist of certain number of features extracted from scanned symbols. Such data can easily be represented in multidimensional space where dimension degree equals number of those features. What's more, if it turned out that the sets of those points representing symbols, each forms a tight cluster in space, it might be possible to find their respective minimal enclosing boxes.
+
+In computational geometry, the smallest enclosing box problem is that of finding the oriented minimum bounding box enclosing a set of points. As opposed to convex hull, which is the most accurate point set container with smallest volume, bounding boxes are far less complex. In many cases, when there's a need for computing convex hull and testing inclusions of other points, an approximation of such hull can be used, which helps to reduce time needed for computations, since most of alternative methods have lower construction and inclusion-testing complexities. Some of such approaches include using figures like hypercubes, diamonds, spheres or ellipsoids to successfully enclose given set of points.
 
 When comparing highlights and drawbacks of each method, from computational complexity, ease of testing point inclusion and algorithm implementation point of view, ellipsoids seem to be a reasonable choice. Constructed ellipsoid is superior to the minimal cuboid in many ways. It is unique, better approximation of the object it contains and if $E(S)$ is the bounding ellipsoid for a point set $S$ with convex hull $C(S)$ in dimension \textit{d}, then:
 \[ \frac{1}{d}E(S) \subseteq C(S) \subseteq E(S) \]
 where scaling is with respect to the center of $E(S)$.
 
-{\color{red}Opis o bardzo nierownym poziomie szczegolowosci: przeskok z 'bounding box' do 'hull", brakuje okreslenia parametru d.}
-
-{\color{blue} Adaptation of the smallest enclosing box problem to foreign elements rejection/native elements identification seems to ba a very natural approach. The justification is fairly simple: if we enclose elements belonging to native classes, using for instance ellipsoids, formed geometrical model will discriminate a region of features space reserved for native patterns between a region where we may encounter foreign patterns. With this premise in mind, let us present a detailed description of the MVEE algorithm.}
+Adaptation of the smallest enclosing box problem to foreign elements rejection, or native elements identification, seems to be a very natural approach. The justification is fairly simple: if we enclose elements belonging to native classes, using for instance ellipsoids, formed geometrical model will discriminate a region of features space reserved for native patterns between a region where we may encounter foreign patterns. With this premise in mind, let us present a detailed description of the MVEE algorithm.
 
 %-------------------------------------------------------------------
 \subsubsection{MVEE}
@@ -254,7 +254,7 @@ The task of native elements classification relies on forming a model based on a 
 
 % Used links:
 % http://scikit-learn.org/stable/modules/svm.html#svm-kernels
-are a set of supervised learning methods used for classification, regression and outliers detection. {\color{blue} The SVM algorithm relies on a construction of hyperplane with a maximal margin that is separating instances of two classes, \cite{CortesVapnik1995}.} SVMs are effective in high dimensional spaces, memory efficient and quite versatile with many kernel functions that can be specified for the decision function. Although in some cases, where number of features is much greater than the number of samples, this method can give poor results, and is not cost-efficient when calculating probability estimates, it is well suited for problem presented in this paper. Given a set of training examples, each marked for belonging to one of two categories, an SVM training algorithm builds a model that assigns new examples into one category or the other. For multi-class classification "one-against-one" approach is used. For \textit{n} classes \textit{n} * (\textit{n} - 1) / 2 classifiers are constructed, each trains data from two different classes. The order for classes 0 to \textit{n} is "0 vs 1", "0 vs 2", \dots "0 vs \textit{n}", "1 vs 2", \dots "\textit{n} - 1 vs \textit{n}".
+are a set of supervised learning methods used for classification, regression and outliers detection. The SVM algorithm relies on a construction of hyperplane with a maximal margin that is separating instances of two classes, \cite{CortesVapnik1995}. SVMs are effective in high dimensional spaces, memory efficient and quite versatile with many kernel functions that can be specified for the decision function. Although in some cases, where number of features is much greater than the number of samples, this method can give poor results, and is not cost-efficient when calculating probability estimates, it is well suited for problem presented in this paper. Given a set of training examples, each marked for belonging to one of two categories, an SVM training algorithm builds a model that assigns new examples into one category or the other. For multi-class classification "one-against-one" approach is used. For \textit{n} classes \textit{n} * (\textit{n} - 1) / 2 classifiers are constructed, each trains data from two different classes. The order for classes 0 to \textit{n} is "0 vs 1", "0 vs 2", \dots "0 vs \textit{n}", "1 vs 2", \dots "\textit{n} - 1 vs \textit{n}".
 
 %-------------------------------------------------------------------
 \subsubsection{Random Forests}
@@ -295,10 +295,18 @@ is a popular ensemble method. {\color{blue} The main principle behind ensemble m
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=\textwidth]{_Figures/Image1}
+  \includegraphics[width=0.7\textwidth]{_Figures/Classification1.jpg}
 %  \includegraphics[width=0.7\textwidth]{_Figures/}
   \caption{\color{red}Tutaj obrazki z klasami symboli - kolka, kwadraty, trojkaty - i opis koncepcji klasyfikacji oraz odrzucania na dwoch poziomach}
 \label{fig:nativeforeignpatternsClassification}
+\end{figure}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{_Figures/Classification2.jpg}
+	%  \includegraphics[width=0.7\textwidth]{_Figures/}
+	\caption{\color{red}Tutaj obrazki z klasami symboli - kolka, kwadraty, trojkaty - i opis koncepcji klasyfikacji oraz odrzucania na dwoch poziomach}
+	\label{fig:nativeforeignpatternsClassification}
 \end{figure}
 
 
