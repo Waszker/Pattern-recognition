@@ -288,7 +288,6 @@ First attempt at creating rejecting binary classifiers based on assumption that 
 Second approach required creating $\frac{n * (n-1)}{2}$ classifiers (where n is the number of all native classes), one for each unique pair of classes. In this situation each element classification would end up with result vector containing number of times when tested point was recognized as native for each class. Rejection would be based on too small differences between two best classes. Unfortunately during tests it turned out that differences were often too small even for native elements and this kind of classifier didn't work as expected.
 
 
-
 {\color{yellow}Internal Rejecting w znaczeniu adaptacji klasyfikatora podstawowego (to znaczy, konstruowanego na klasach native) do odrzucania. Np. (a) jeœli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorów klasa kontra klasa, to próbujemy odrzucaæ, gdy roznica miedzy maksymalna liczba zgloszen i druga liczba zgloszen nie jest odpowiednio duza (z testow wynika, ze to nie jest dobry pomysl, ale warto o tym napisac),}
 {\color{red}  (a) jesli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorow, to probujemy odrzucac, gdy liczba zgloszen wygrywajacej klasy nie jest odpowiednio duza (pomysl Piotra, nie wiem, jak to wygladalo na testach, ale te¿ warto o tym napisac),}
 {\color{yellow} (c) jesli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorów klasa kontra pozostale, to odrzucamy, gdy zaden sie nie zglosi, tutaj trzeba jeszcze zastanowic sie nad kolejnoscia zastosowanie klasyfikatorow jesli chcemy liczyc CC. Warto to wszystko przedstawic, nawet jesli nie wyniki nie sa zachecajace}
@@ -299,6 +298,10 @@ Second approach required creating $\frac{n * (n-1)}{2}$ classifiers (where n is 
 %-------------------------------------------------------------------
 \subsection{External Global and Local Rejecting}
   \label{subsec:GlobalLocalRejecting}
+
+Whereas ellipsoids are good identifiers, they can lack in element classification. This is caused by ellipsoids sometimes overlapping each other, which results in points belonging to both classes at the same time. Although this can be solved by calculating distance of those elements to each ellipsoid centre, or taking value of ellipsoid-inclusion equation as a classification measure, tests have proven that those techniques are more prone to errors than other classifiers mentioned in this paper. Taking into considerations both strengths and weaknesses of each approach the combined solution has been prepared, which makes use of both ellipsoids and other classifier.
+
+
 
 {\color{red}External Rejecting za pomoca elipsoid, konstruujemy elisoidy zawierajace poszczegolne klasy natives, dwie metody (a) Global (jesli element nie nale¿y do zadnej, to jest odrzucany, wpp jest poddawany klasyfikacji za pomoca podstawowego klasyfikatora) (b) Local (element jest poddawany klasyfikacji za pomoca podstawowego klasyfikatora, a nastepnie jest sprawdzana jego przynaleznosc do elipsoidy odpowiadajacej klasie wskazanej dla tego elementu)}
 
