@@ -290,10 +290,7 @@ First attempt at creating rejecting binary classifiers based on assumption that 
 
 Second approach required creating $\frac{n * (n-1)}su{2}$ classifiers (where n is the number of all native classes), one for each unique pair of classes. In this situation each element classification would end up with result vector containing number of times when tested point was recognized as native for each class. Rejection would be based on too small differences between two best classes. Unfortunately during tests it turned out that differences were often too small even for native elements and this kind of classifier didn't work as expected.
 
-
-{\color{yellow}Internal Rejecting w znaczeniu adaptacji klasyfikatora podstawowego (to znaczy, konstruowanego na klasach native) do odrzucania. Np. (a) jeœli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorów klasa kontra klasa, to próbujemy odrzucaæ, gdy roznica miedzy maksymalna liczba zgloszen i druga liczba zgloszen nie jest odpowiednio duza (z testow wynika, ze to nie jest dobry pomysl, ale warto o tym napisac),}
-{\color{red}  (a) jesli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorow, to probujemy odrzucac, gdy liczba zgloszen wygrywajacej klasy nie jest odpowiednio duza (pomysl Piotra, nie wiem, jak to wygladalo na testach, ale te¿ warto o tym napisac),}
-{\color{yellow} (c) jesli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorów klasa kontra pozostale, to odrzucamy, gdy zaden sie nie zglosi, tutaj trzeba jeszcze zastanowic sie nad kolejnoscia zastosowanie klasyfikatorow jesli chcemy liczyc CC. Warto to wszystko przedstawic, nawet jesli nie wyniki nie sa zachecajace}
+The third way of dealing with classifiers rejection would be to accept only those elements which manage to score enough points in corresponding result vector. The threshold should be arbitrary chosen to minimize native element rejection. This method could be used along with second one and possibly enhance it effectiveness.
 
 {\color{blue} Pewnie tez nalezy dodac schemat - pseudokod? opisujacy internal rejecting.}
 
@@ -302,11 +299,9 @@ Second approach required creating $\frac{n * (n-1)}su{2}$ classifiers (where n i
 \subsection{External Global and Local Rejecting}
   \label{subsec:GlobalLocalRejecting}
 
-Whereas ellipsoids are good identifiers, they can lack in element classification. This is caused by ellipsoids sometimes overlapping each other, which results in points belonging to both classes at the same time. Although this can be solved by calculating distance between those elements and each ellipsoid centre, or taking value of ellipsoid-inclusion equation as a classification measure, tests have proven that those techniques are more prone to errors than other classifiers mentioned in this paper. Taking into considerations both strengths and weaknesses of each approach the combined solution has been prepared, which makes use of both ellipsoids and other classifier.
+Whereas ellipsoids are good identifiers, they can lack in element classification. This is caused by ellipsoids sometimes overlapping each other, which results in points belonging to both classes at the same time. Although this can be solved by calculating distance between those elements and each ellipsoid centre, or taking value of ellipsoid-inclusion equation as a classification measure, tests have proven that such approaches are more prone to errors than other classifiers mentioned in this paper. Taking into considerations both strengths and weaknesses of classifiers and identifiers, the combined solution has been prepared that combines both tools, making use of their advantages.
 
-According to our studies, certain classifiers (such as SVM method) have above 0.9 success rate which makes them great tools for recognizing classes of native elements, assuming that there are no foreigners to classify. To maintain this assumption we introduced ellipsoids as identifiers that will reject non-native points. Two different ellipsoids placements were prepared and tested. The first one used ellipsoids as identifiers rejecting foreign elements and feeding classifiers with accepted points. Such approach relies heavily on effectiveness of both method elements. 
-
-{\color{red}External Rejecting za pomoca elipsoid, konstruujemy elisoidy zawierajace poszczegolne klasy natives, dwie metody (a) Global (jesli element nie nale¿y do zadnej, to jest odrzucany, wpp jest poddawany klasyfikacji za pomoca podstawowego klasyfikatora) (b) Local (element jest poddawany klasyfikacji za pomoca podstawowego klasyfikatora, a nastepnie jest sprawdzana jego przynaleznosc do elipsoidy odpowiadajacej klasie wskazanej dla tego elementu)}
+Classifiers have high success rate but cannot distinguish between foreign elements and native ones. Contrary to that, ellipsoids tend to be better at rejecting outliers which makes them good at identifying points that should not be classified. The natural way of dealing with that problem would be to use ellipsoids as first-entry identifier that purifies input set by removing foreigners. The result of such rejection would be sent to chosen classifier that would classify remaining native elements. Schema of this method is presented on Figure ~\ref{fig:nativeforeignpatternsClassification1}
 
 
 \begin{figure}[!h]
@@ -314,15 +309,17 @@ According to our studies, certain classifiers (such as SVM method) have above 0.
   \includegraphics[width=0.7\textwidth]{_Figures/Classification1.jpg}
 %  \includegraphics[width=0.7\textwidth]{_Figures/}
   \caption{Ellipsoids as identifiers reject foreign elements and send the rest to classifier for classification}
-\label{fig:nativeforeignpatternsClassification}
+\label{fig:nativeforeignpatternsClassification1}
 \end{figure}
+
+Another way of using ellipsoids as identifiers is to treat them as correctors. That means there's no need to remove foreign elements from the set before classification, as rejection is done later. After all elements have been classified, identification for each class is done by using class-corresponding ellipsoid. There's a possibility that some foreign elements will be assigned to a class with a corresponding ellipsoid that will reject them. This is somewhat different from previous approach because elements can be rejected even if there is an ellipsoid that would pass inclusion test. The schema can be seen on Figure ~\ref{fig:nativeforeignpatternsClassification2}
 
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.7\textwidth]{_Figures/Classification2.jpg}
 	%  \includegraphics[width=0.7\textwidth]{_Figures/}
 	\caption{\color{red}Tutaj obrazki z klasami symboli - kolka, kwadraty, trojkaty - i opis koncepcji klasyfikacji oraz odrzucania na dwoch poziomach}
-	\label{fig:nativeforeignpatternsClassification}
+	\label{fig:nativeforeignpatternsClassification2}
 \end{figure}
 
 
