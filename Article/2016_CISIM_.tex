@@ -275,6 +275,9 @@ is a popular ensemble method. {\color{blue} The main principle behind ensemble m
 
 {\color{blue}In this section let us present our methods for foreign elements rejection.}
 %TODO mozna dodac kilka zdan komentarza
+% Opis krótki tych dwóch podej??
+% Odrzucanie poprzez standardowe klasyfikatory
+% Elipsoidy
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -407,11 +410,15 @@ All patterns were normalized and feature vectors comprising of 106 numerical fea
 
 Best first search is one of popular wrapper feature selection methods. Wrapper methods select multiple subsets of features, for all those subsets they train a classifier (in general: a model) and they select this subset for which numerical quality was the best. In our particular case as quality evaluator we used a 10-class SVM. A commonly known advantage of wrapper feature selection methods is that the subsets they select usually provide satisfying performance. The disadvantage is their computational complexity. The best first search for the optimal feature subset has been performed using FSelector R package, \cite{Romanski}. The final feature vector contained 24 features. {\color{red} We normalized those features ...?}
 
+% Opisa? normalizacj? i pomys? na standaryzacj?
+
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \subsection{Experimental Settings}
 
 {\color{blue}Tutaj nalezy przedstawic (a) wybor srodowiska programistycznego, spis uzytych bibliotecznych metod z referencjami, (b) co napisalismy sami, (c) parametry . Nalezy dac opis testow przeprowadzonych w celu wyboru 'dobrych' parametrow klasyfikatora. Do tekstu objasniajacego dodalabym pewnie jakies wykresy. Potem mozna powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale szczegoly parametrow z MVEE mozna opisac w osobnej sekcji.}
+
+% By?y przeprowadzone testy ACC/TOL i w sposób empiryczny wybrane warto?ci
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -514,6 +521,8 @@ Native Sensitivity        & $$ & $$ & $$ & $$ & $-$ & $-$ \\
 %\vspace{12pt}
 \label{tab:NativeNoForeign}
 \end{table}
+
+% Internal rejection pewnie ju? nie wejdzie...
 
 
 {\color{blue}
