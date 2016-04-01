@@ -408,9 +408,12 @@ We have constructed the foreign dataset by ourselves and it contained 26,000 han
 
 All patterns were normalized and feature vectors comprising of 106 numerical features were created. Feature vectors described not only but also: projections, histograms of projections, transitions, offsets, minimum/maximum values, raw moments, central moments, etc. Subsequently, we have applied best first search method to select relevant features out of the entire feature set. 
 
-Best first search is one of popular wrapper feature selection methods. Wrapper methods select multiple subsets of features, for all those subsets they train a classifier (in general: a model) and they select this subset for which numerical quality was the best. In our particular case as quality evaluator we used a 10-class SVM. A commonly known advantage of wrapper feature selection methods is that the subsets they select usually provide satisfying performance. The disadvantage is their computational complexity. The best first search for the optimal feature subset has been performed using FSelector R package, \cite{Romanski}. The final feature vector contained 24 features. {\color{red} We normalized those features ...?}
+Best first search is one of popular wrapper feature selection methods. Wrapper methods select multiple subsets of features, for all those subsets they train a classifier (in general: a model) and they select this subset for which numerical quality was the best. In our particular case as quality evaluator we used a 10-class SVM. A commonly known advantage of wrapper feature selection methods is that the subsets they select usually provide satisfying performance. The disadvantage is their computational complexity. The best first search for the optimal feature subset has been performed using FSelector R package, \cite{Romanski}. The final feature vector contained 24 features. We considered features standardization but the training data is suffitiently consistent (there is no outliers), so we normalized those features to bring all values into the range [0,1]:
+\begin{equation}\label{eqn:normalization}
+    X'_{i,j} = \frac{X_{i,j} - Min_{j}}{Max_{j}-Min_{j}}
+\end{equation}
+where $X_{i,j}$ is the value of $j^{th}$ feature in $i^{th}$ observation, $Min_{j}$ and $Max_{j}$ are respectively the minimum and maxium value of $j^{th}$ feature.
 
-% Opisa? normalizacj? i pomys? na standaryzacj?
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
