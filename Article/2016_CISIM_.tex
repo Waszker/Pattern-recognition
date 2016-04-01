@@ -275,12 +275,8 @@ is an example of a "lazy classifier", where the entire training dataset is a mod
 %-------------------------------------------------------------------
 \section{Methodology}
   \label{sec:Methodology}
-
-{\color{blue}In this section let us present our methods for foreign elements rejection.}
-%TODO mozna dodac kilka zdan komentarza
-% Opis kr�tki tych dw�ch podej??
-% Odrzucanie poprzez standardowe klasyfikatory
-% Elipsoidy
+  
+There are two approaches used to determine whether an object is rejected (classified as foreign). First one assumes the use of classification methods, which originally were not designed for elements rejection. The second approach involves using classifiers as the only classification tool, whereas rejecting is realized by ellipsoids. In this section let us present our methods for foreign elements rejection.
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -419,7 +415,9 @@ where $X_{i,j}$ is the value of $j^{th}$ feature in $i^{th}$ observation, $Min_{
 %-------------------------------------------------------------------
 \subsection{Experimental Settings}
 
-{\color{blue}Tutaj nalezy przedstawic (a) wybor srodowiska programistycznego, spis uzytych bibliotecznych metod z referencjami, (b) co napisalismy sami, (c) parametry . Nalezy dac opis testow przeprowadzonych w celu wyboru 'dobrych' parametrow klasyfikatora. Do tekstu objasniajacego dodalabym pewnie jakies wykresy. Potem mozna powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale szczegoly parametrow z MVEE mozna opisac w osobnej sekcji.}
+{\color{blue}Tutaj nalezy przedstawic (a) wybor srodowiska programistycznego, spis uzytych bibliotecznych metod z referencjami, (b) co napisalismy sami, (c) parametry . Nalezy dac opis testow przeprowadzonych w celu wyboru 'dobrych' parametrow klasyfikatora. Do tekstu objasniajacego dodalabym pewnie jakies wykresy. Potem mozna powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale szczegoly parametrow z MVEE mozna opisac w osobnej sekcji.}\\
+{\color{red}Tutaj nalezy przedstawic (a) wybor srodowiska programistycznego, spis uzytych bibliotecznych metod z referencjami, (b) co napisalismy sami, (c) parametry metod. Nalezy dac opis testow przeprowadzonych w celu wyboru 'dobrych' parametrow klasyfikatorow: svm, rf, knn. Do tekstu objasniajacego dodalbym pewnie jakies wykresy. Potem mozna powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale szczegoly parametrow z MVEE mozna opisac w osobnej sekcji.}
+{\color{blue} Potem powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale bez szczegolow. Nalezy podac parametry MVEE uzyte w eksperymentach pokazanych w tym artykul i powiedziec ze zostaly dobrane metoda recznej walidacji.}
 
 % By?y przeprowadzone testy ACC/TOL i w spos�b empiryczny wybrane warto?ci
 
@@ -470,13 +468,6 @@ $f$ &         &         &         &         &         &         &         &     
 
 {\color{blue}Ja bym tutaj powiedziala ze tabelka confusion table stanowi podstawe do obliczania miar przedstawionych w subsekcji "Quality Evaluation" i na podstawie takich danych bedziemy prowadzic dyskusje w dalszej czesci pracy.  Nalezy objesnic zawartosc tabelki. Nalezy napisac, ze interesuje nas a) klasyfikacja i jej jakosc, b) odrzucanie i jego jakosc c) wplyw odrzucania na klasyfikacje. }
 
-
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-\subsection{Experimental Settings}
-
-{\color{red}Tutaj nalezy przedstawic (a) wybor srodowiska programistycznego, spis uzytych bibliotecznych metod z referencjami, (b) co napisalismy sami, (c) parametry metod. Nalezy dac opis testow przeprowadzonych w celu wyboru 'dobrych' parametrow klasyfikatorow: svm, rf, knn. Do tekstu objasniajacego dodalbym pewnie jakies wykresy. Potem mozna powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale szczegoly parametrow z MVEE mozna opisac w osobnej sekcji.}
-{\color{blue} Potem powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale bez szczegolow. Nalezy podac parametry MVEE uzyte w eksperymentach pokazanych w tym artykul i powiedziec ze zostaly dobrane metoda recznej walidacji.}
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
