@@ -302,7 +302,7 @@ The third way of dealing with classifiers rejection would be to accept only thos
 \subsection{External Global and Local Rejecting}
   \label{subsec:GlobalLocalRejecting}
 
-Whereas ellipsoids are good identifiers, they can lack in element classification. This is caused by ellipsoids sometimes overlapping each other, which results in points belonging to both classes at the same time. Although this can be solved by calculating distance between those elements and each ellipsoid centre, or taking value of ellipsoid-inclusion equation as a classification measure, tests have proven that such approaches are more prone to errors than other classifiers mentioned in this paper. Taking into considerations both strengths and weaknesses of classifiers and identifiers, the combined solution has been prepared that combines both tools, making use of their advantages.
+Whereas ellipsoids are good identifiers, they lack in element classification quality. This is caused by ellipsoids sometimes overlapping each other, which results in points belonging to both classes at the same time. Although this can be solved by calculating distance between those elements and each ellipsoid centre, or taking value of ellipsoid-inclusion equation as a classification measure, tests have proven that such approaches are more prone to errors than other classifiers mentioned in this paper. Taking into considerations both strengths and weaknesses of classifiers and identifiers, the combined solution has been prepared that combines both tools, making use of their advantages.
 
 Classifiers have high success rate but cannot distinguish between foreign elements and native ones. Contrary to that, ellipsoids tend to be better at rejecting outliers which makes them good at identifying points that should not be classified. The natural way of dealing with that problem would be to use ellipsoids as first-entry identifier that purifies input set by removing foreigners. The result of such rejection would be sent to chosen classifier that would classify remaining native elements. Schema of this method is presented on Figure ~\ref{fig:nativeforeignpatternsClassification1}
 
@@ -321,7 +321,7 @@ Another way of using ellipsoids as identifiers is to treat them as correctors. T
 	\centering
 	\includegraphics[width=0.7\textwidth]{_Figures/Classification2.jpg}
 	%  \includegraphics[width=0.7\textwidth]{_Figures/}
-	\caption{\color{red}Tutaj obrazki z klasami symboli - kolka, kwadraty, trojkaty - i opis koncepcji klasyfikacji oraz odrzucania na dwoch poziomach}
+	\caption{Ellipsoids as correctors. Classifiers try to classify foreign elements that will be rejected later}
 	\label{fig:nativeforeignpatternsClassification2}
 \end{figure}
 
