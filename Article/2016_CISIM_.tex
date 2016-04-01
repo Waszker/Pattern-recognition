@@ -259,12 +259,15 @@ are a set of supervised learning methods used for classification, regression and
 %-------------------------------------------------------------------
 \subsubsection{Random Forests}
 
-is a popular ensemble method. {\color{blue} The main principle behind ensemble methods, in general, is that a group of "weak learners" can come together to form a "strong learner". In the Random Forest algorithm the weak learners are decision trees. After a relatively large number of trees is generated, they vote for the most popular class. Random Forests join few important benefits: (a) they are relatively prone to the influence of outliers, (b) they have an embedded ability of feature selection, (c) they are prone to missing values, and (d) they are prone to overfitting, \cite{Breiman2001}. }
+is a popular ensemble method. The main principle behind ensemble methods, in general, is that a group of "weak learners" can come together to form a "strong learner". In the Random Forest algorithm the weak learners are decision trees, which are used to predict the membership of objects in the classes. For vector of independent variables representing one object they calculate the value of the class the object belongs to by dividing value space into two or more subspaces. More precisely, an input data is entered at the top of the tree and as it traverses down the tree the data gets bucketed into smaller and smaller sets. In this method a large number of classiÔ¨Åcation trees is generated. To grow each tree a random selection with replacement is made from the examples in the training set $D$. Those subsets $D_{k}$ are called bootstrap training sets. At each node $m$ variables are selected at random out of the set of input variables and the best split on these $m$ is used to split the node. After a relatively large number of trees is generated, they vote for the most popular class. Random Forests join few important benefits: (a) they are relatively prone to the influence of outliers, (b) they have an embedded ability of feature selection, (c) they are prone to missing values, and (d) they are prone to overfitting, \cite{Breiman2001}. 
+
+
+
 
 %-------------------------------------------------------------------
 \subsubsection{K-Nearest Neighbors}
 
-{\color{blue} is an example of a "lazy classifier", where the entire training dataset is a model. There is no typical model building phase, hence the name. Class membership is determined based on class labels encountered in K closest observations in the training dataset, \cite{Altman1992}. In a typical application, the only choices the model designer has to make are selection of K and distance metrics. Both are often extracted with a help of a supervised learning procedures.}
+is an example of a "lazy classifier", where the entire training dataset is a model. There is no typical model building phase, hence the name. Class membership is determined based on class labels encountered in K closest observations in the training dataset, \cite{Altman1992}. In a typical application, the only choices the model designer has to make are selection of K and distance metrics. Both are often extracted with a help of a supervised learning procedures.
 %TODO te opisy mozna rozszerzyc - czy dodac to potem zdecydujemy
 
 %-------------------------------------------------------------------
@@ -275,7 +278,7 @@ is a popular ensemble method. {\color{blue} The main principle behind ensemble m
 
 {\color{blue}In this section let us present our methods for foreign elements rejection.}
 %TODO mozna dodac kilka zdan komentarza
-% Opis krÛtki tych dwÛch podej??
+% Opis krÔøΩtki tych dwÔøΩch podej??
 % Odrzucanie poprzez standardowe klasyfikatory
 % Elipsoidy
 
@@ -291,9 +294,9 @@ First attempt at creating rejecting binary classifiers based on assumption that 
 Second approach required creating $\frac{n * (n-1)}su{2}$ classifiers (where n is the number of all native classes), one for each unique pair of classes. In this situation each element classification would end up with result vector containing number of times when tested point was recognized as native for each class. Rejection would be based on too small differences between two best classes. Unfortunately during tests it turned out that differences were often too small even for native elements and this kind of classifier didn't work as expected.
 
 
-{\color{yellow}Internal Rejecting w znaczeniu adaptacji klasyfikatora podstawowego (to znaczy, konstruowanego na klasach native) do odrzucania. Np. (a) jeúli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorÛw klasa kontra klasa, to prÛbujemy odrzucaÊ, gdy roznica miedzy maksymalna liczba zgloszen i druga liczba zgloszen nie jest odpowiednio duza (z testow wynika, ze to nie jest dobry pomysl, ale warto o tym napisac),}
-{\color{red}  (a) jesli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorow, to probujemy odrzucac, gdy liczba zgloszen wygrywajacej klasy nie jest odpowiednio duza (pomysl Piotra, nie wiem, jak to wygladalo na testach, ale teø warto o tym napisac),}
-{\color{yellow} (c) jesli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorÛw klasa kontra pozostale, to odrzucamy, gdy zaden sie nie zglosi, tutaj trzeba jeszcze zastanowic sie nad kolejnoscia zastosowanie klasyfikatorow jesli chcemy liczyc CC. Warto to wszystko przedstawic, nawet jesli nie wyniki nie sa zachecajace}
+{\color{yellow}Internal Rejecting w znaczeniu adaptacji klasyfikatora podstawowego (to znaczy, konstruowanego na klasach native) do odrzucania. Np. (a) jeÔøΩli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorÔøΩw klasa kontra klasa, to prÔøΩbujemy odrzucaÔøΩ, gdy roznica miedzy maksymalna liczba zgloszen i druga liczba zgloszen nie jest odpowiednio duza (z testow wynika, ze to nie jest dobry pomysl, ale warto o tym napisac),}
+{\color{red}  (a) jesli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorow, to probujemy odrzucac, gdy liczba zgloszen wygrywajacej klasy nie jest odpowiednio duza (pomysl Piotra, nie wiem, jak to wygladalo na testach, ale teÔøΩ warto o tym napisac),}
+{\color{yellow} (c) jesli klasyfikator podstawowy jest zbudowany z binarnych klasyfikatorÔøΩw klasa kontra pozostale, to odrzucamy, gdy zaden sie nie zglosi, tutaj trzeba jeszcze zastanowic sie nad kolejnoscia zastosowanie klasyfikatorow jesli chcemy liczyc CC. Warto to wszystko przedstawic, nawet jesli nie wyniki nie sa zachecajace}
 
 {\color{blue} Pewnie tez nalezy dodac schemat - pseudokod? opisujacy internal rejecting.}
 
@@ -306,7 +309,7 @@ Whereas ellipsoids are good identifiers, they can lack in element classification
 
 According to our studies, certain classifiers (such as SVM method) have above 0.9 success rate which makes them great tools for recognizing classes of native elements, assuming that there are no foreigners to classify. To maintain this assumption we introduced ellipsoids as identifiers that will reject non-native points. Two different ellipsoids placements were prepared and tested. The first one used ellipsoids as identifiers rejecting foreign elements and feeding classifiers with accepted points. Such approach relies heavily on effectiveness of both method elements. 
 
-{\color{red}External Rejecting za pomoca elipsoid, konstruujemy elisoidy zawierajace poszczegolne klasy natives, dwie metody (a) Global (jesli element nie naleøy do zadnej, to jest odrzucany, wpp jest poddawany klasyfikacji za pomoca podstawowego klasyfikatora) (b) Local (element jest poddawany klasyfikacji za pomoca podstawowego klasyfikatora, a nastepnie jest sprawdzana jego przynaleznosc do elipsoidy odpowiadajacej klasie wskazanej dla tego elementu)}
+{\color{red}External Rejecting za pomoca elipsoid, konstruujemy elisoidy zawierajace poszczegolne klasy natives, dwie metody (a) Global (jesli element nie naleÔøΩy do zadnej, to jest odrzucany, wpp jest poddawany klasyfikacji za pomoca podstawowego klasyfikatora) (b) Local (element jest poddawany klasyfikacji za pomoca podstawowego klasyfikatora, a nastepnie jest sprawdzana jego przynaleznosc do elipsoidy odpowiadajacej klasie wskazanej dla tego elementu)}
 
 
 \begin{figure}[!h]
@@ -410,7 +413,7 @@ All patterns were normalized and feature vectors comprising of 106 numerical fea
 
 Best first search is one of popular wrapper feature selection methods. Wrapper methods select multiple subsets of features, for all those subsets they train a classifier (in general: a model) and they select this subset for which numerical quality was the best. In our particular case as quality evaluator we used a 10-class SVM. A commonly known advantage of wrapper feature selection methods is that the subsets they select usually provide satisfying performance. The disadvantage is their computational complexity. The best first search for the optimal feature subset has been performed using FSelector R package, \cite{Romanski}. The final feature vector contained 24 features. {\color{red} We normalized those features ...?}
 
-% Opisa? normalizacj?†i pomys? na standaryzacj?
+% Opisa? normalizacj? i pomys? na standaryzacj?
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -418,7 +421,7 @@ Best first search is one of popular wrapper feature selection methods. Wrapper m
 
 {\color{blue}Tutaj nalezy przedstawic (a) wybor srodowiska programistycznego, spis uzytych bibliotecznych metod z referencjami, (b) co napisalismy sami, (c) parametry . Nalezy dac opis testow przeprowadzonych w celu wyboru 'dobrych' parametrow klasyfikatora. Do tekstu objasniajacego dodalabym pewnie jakies wykresy. Potem mozna powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale szczegoly parametrow z MVEE mozna opisac w osobnej sekcji.}
 
-% By?y przeprowadzone testy ACC/TOL i w sposÛb empiryczny wybrane warto?ci
+% By?y przeprowadzone testy ACC/TOL i w sposÔøΩb empiryczny wybrane warto?ci
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -483,7 +486,7 @@ $f$ &         &         &         &         &         &         &         &     
 
 \begin{table}[h]
 \centering
-\caption{Results for classification with rejection on train and test sets of native patterns in comparison with classification results without rejection mechanism. RF - results for random forest, SVM - results for Support Vector Machines, .... \color{red}W ponizszej tabelce beda dane dotyczace odrzucania tylko na natives za pomocπ elipsoid i na dwoch poziomach (global i local). Czy jest sens dla train set? Czy nie bedzie 100\%? Na poziomie local chyba nie bedzie 100\%, dlatego jest sens. {\color{blue}Jako ostatnie dodane jest internal rejecting - czy dajemy te wyniki?} }
+\caption{Results for classification with rejection on train and test sets of native patterns in comparison with classification results without rejection mechanism. RF - results for random forest, SVM - results for Support Vector Machines, .... \color{red}W ponizszej tabelce beda dane dotyczace odrzucania tylko na natives za pomocÔøΩ elipsoid i na dwoch poziomach (global i local). Czy jest sens dla train set? Czy nie bedzie 100\%? Na poziomie local chyba nie bedzie 100\%, dlatego jest sens. {\color{blue}Jako ostatnie dodane jest internal rejecting - czy dajemy te wyniki?} }
 %\vspace{3pt}
 \setlength{\tabcolsep}{6pt}
 \renewcommand{\arraystretch}{1}
@@ -522,7 +525,7 @@ Native Sensitivity        & $$ & $$ & $$ & $$ & $-$ & $-$ \\
 \label{tab:NativeNoForeign}
 \end{table}
 
-% Internal rejection pewnie ju?†nie wejdzie...
+% Internal rejection pewnie ju? nie wejdzie...
 
 
 {\color{blue}
@@ -558,7 +561,7 @@ Adding a~rejection mechanism, ideally, may be seen as a~method for improvement o
 
 \begin{table}[!ht]
 \centering
-\caption{Results of classification with rejection on the set of native patterns supplemented with different sets of semi-synthetic foreign patterns.... \color{red}Moze na razie wstrzymajmy siÍ z semi-synthetic, poniewaz wymgaloby to rozszerzenia zakresu obliczen. Sprobujmy uporzadkowac i ewentualnie uzupelnic otrzymane dane bazujac na dotyczasowych danych: cyfrach i literach, tak uzupelnic, by uzyskac mozliwie najwiecej wnioskow.}
+\caption{Results of classification with rejection on the set of native patterns supplemented with different sets of semi-synthetic foreign patterns.... \color{red}Moze na razie wstrzymajmy siÔøΩ z semi-synthetic, poniewaz wymgaloby to rozszerzenia zakresu obliczen. Sprobujmy uporzadkowac i ewentualnie uzupelnic otrzymane dane bazujac na dotyczasowych danych: cyfrach i literach, tak uzupelnic, by uzyskac mozliwie najwiecej wnioskow.}
 %\vspace{3pt}
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1}
@@ -635,13 +638,13 @@ Let us conclude this paper by saying that various adaptations of the idea of for
 \begin{thebibliography}{1}
 
 \bibitem{Altman1992}
-Altman N. S., \emph{An introduction to kernel and nearest-neighbor nonparametric regression}. The American Statistician 46 (3), 1992, pp. 175ñ185.
+Altman N. S., \emph{An introduction to kernel and nearest-neighbor nonparametric regression}. The American Statistician 46 (3), 1992, pp. 175ÔøΩ185.
 
 \bibitem{BertolamiZimmermannBunke2006}
 Bertolami R., Zimmermann M., Bunke H., \emph{Rejection strategies for offline handwritten text line recognition}, Pattern Recognition Letters 27(16), 2006, pp. 2005-2012.
 
 \bibitem{Breiman2001}
-Breiman L., \emph{Random Forests}. Machine Learning 45 (1), 2001, pp. 5ñ32. 
+Breiman L., \emph{Random Forests}. Machine Learning 45 (1), 2001, pp. 5ÔøΩ32. 
 
 \bibitem{BurgerKessentiniPaquet2011}
 Burger T., Kessentini Y., Paquet T., \emph{Dempster-Shafer based rejection strategy for handwritten word recognition}, Proc. of the 2011 International Conference on Document Analysis and Recognition, 2011, pp. 528-532.
