@@ -418,16 +418,12 @@ where $X_{i,j}$ is the value of $j^{th}$ feature in $i^{th}$ observation, $Min_{
 
 {\color{red}Tutaj nalezy przedstawic (a) wybor srodowiska programistycznego, spis uzytych bibliotecznych metod z referencjami, (b) co napisalismy sami, (c) parametry metod. Nalezy dac opis testow przeprowadzonych w celu wyboru 'dobrych' parametrow klasyfikatorow: svm, rf, knn. Do tekstu objasniajacego dodalbym pewnie jakies wykresy. Potem mozna powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale szczegoly parametrow z MVEE mozna opisac w osobnej sekcji.}
 {\color{blue} Potem powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale bez szczegolow. Nalezy podac parametry MVEE uzyte w eksperymentach pokazanych w tym artykul i powiedziec ze zostaly dobrane metoda recznej walidacji.}\\
-{\color{green}Elipsoidy: ??? 
-	SVM: gamma=0.125, c=16, jadro: rbf
-	KNN: K=4
-	RF: liczba drzew=100 }
 
 Solution presented in this paper has been prepared in form of computer programs, written in Python programming language, using well known scientific libraries - NumPy\footnote{NumPy website: http://www.numpy.org/}, Scikit\footnote{Scikit website: http://scikit-learn.org/stable/}. Implementations of classifiers described in this article have been imported from Scikit library. The links for those methods are as follows:
 \begin{itemize}
 	\item SVM: http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
-	\item Random Forests
-	\item KNN
+	\item Random Forests: http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+	\item KNN: http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html
 \end{itemize} 
 The MVEE algorithm, available as MATLAB code\footnote{http://www.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid/content/MinVolEllipse.m} has been rewritten in Python language, using NumPy library for matrix representation and operations. Several test has been performed in order to find best suited method parameters for both classifiers and identifiers. 
 
@@ -450,7 +446,10 @@ SVM method available in Scikit package offers some built-in kernels that were us
 The best found combination of those parameters used rbf kernel along with C=16 and $\gamma = 2^{-3}$ values.
 
 \subsubsection{Random Forests method parameters}
+RandomForestClassifier method from Scikit library bulids forest of decision trees. The parameter given to the method is the number of trees in the forest. Computations were made using the following values: 1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150. The best number of trees to build the forest is 100.
+
 \subsubsection{KNN method parameters}
+The method in Scikit package used to create K-Nearest Neighbors classifier is KNeighborsClassifier. We tested values of K (number of neighbors) such as: 1, 2, 3, 4, 5, 10, 20, 30, 40, 50. The best found value of K is 4. There is also one parameter - metric, but we use default value, which is standard Euclidean metric.
 
 % By?y przeprowadzone testy ACC/TOL i w spos�b empiryczny wybrane warto?ci
 
