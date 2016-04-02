@@ -418,9 +418,10 @@ where $X_{i,j}$ is the value of $j^{th}$ feature in $i^{th}$ observation, $Min_{
 
 {\color{red}Tutaj nalezy przedstawic (a) wybor srodowiska programistycznego, spis uzytych bibliotecznych metod z referencjami, (b) co napisalismy sami, (c) parametry metod. Nalezy dac opis testow przeprowadzonych w celu wyboru 'dobrych' parametrow klasyfikatorow: svm, rf, knn. Do tekstu objasniajacego dodalbym pewnie jakies wykresy. Potem mozna powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale szczegoly parametrow z MVEE mozna opisac w osobnej sekcji.}
 {\color{blue} Potem powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale bez szczegolow. Nalezy podac parametry MVEE uzyte w eksperymentach pokazanych w tym artykul i powiedziec ze zostaly dobrane metoda recznej walidacji.}\\
-{\color{green}Elipsoidy: ??? \\SVM: gamma=0.125, c=16, jadro: rbf\\
-KNN: K=4\\
-RF: liczba drzew=100}
+{\color{green}Elipsoidy: ??? 
+	SVM: gamma=0.125, c=16, jadro: rbf
+	KNN: K=4
+	RF: liczba drzew=100 }
 
 % By?y przeprowadzone testy ACC/TOL i w spos�b empiryczny wybrane warto?ci
 
@@ -432,11 +433,12 @@ RF: liczba drzew=100}
 
 \begin{table*}[h]
 \centering
-\caption{\color{red}Tutaj Confusion Table, np. test set z pliku "Ellipsoids results new format ratio 7/3.xls" przeslanego 11 marca dla TOL=0.2 ACC=0.001. Zalaczam przykladowa tabelke, gdzie wyniki sa w procentach, ale u nas niech beda liczby bezwzgledne. Pominiete sa zera dla wiekszej czytelnosci, niewypelnione foreign. \\
-\color{green}Tutaj wrzuciłam dla TOL=0.2 ACC=0.1 z pliku Ellipsoids_results new format ratio 7-3\\}
+\caption{\color{red}{Tutaj Confusion Table, np. test set z pliku "Ellipsoids results new format ratio 7/3.xls" przeslanego 11 marca dla TOL=0.2 ACC=0.001. Zalaczam przykladowa tabelke, gdzie wyniki sa w procentach, ale u nas niech beda liczby bezwzgledne. Pominiete sa zera dla wiekszej czytelnosci, niewypelnione foreign.} \protect\linebreak
+\color{green}{Tutaj wrzuciłam dla TOL=0.2 ACC=0.1 z pliku Ellipsoids\_results new format ratio 7-3} }
 %\vspace{3pt}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1}
+
 {\small
 \begin{tabular}{|c||r|r|r|r|r|r|r|r|r|r|r|}
 \hline
@@ -466,6 +468,7 @@ $f$ & 66 & 20 & 48 &   & 110  & 16 & 54 & 1 & 126 & 15 & 25927\\
 \hline
 \end{tabular}
 }
+
 %\vspace{12pt}
 \label{tab:CofusionTable}
 \end{table*}
