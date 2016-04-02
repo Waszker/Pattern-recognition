@@ -441,12 +441,13 @@ Parameters tests involved computing effectiveness of MVEE algorithm for certain 
 The results revealed that for given training and test sets the best parameter combination was tolerance=0.2 and accuracy=0.001 and those values were used in final, combined method described later in this document.
 
 \subsubsection{SVM method parameters}
-SVM method available in Scikit package offers some built-in kernel that were used in computations: rbf and polynomial. Additionally, there are two more parameters that were tested: C (described as penalty parameter C of the error term), and $\gamma$ (known as kernel coefficient). Values that were tested:
+SVM method available in Scikit package offers some built-in kernels that were used during computations: rbf and polynomial. Additionally, there are two more parameters that were tested: C (described as penalty parameter C of the error term), and $\gamma$ (known as kernel coefficient). Values that were tested:
 \begin{itemize}
 	\item kernel = ['rbf', 'poly']
 	\item C = [1, 2, 4, 5, 16]
 	\item $\gamma = [2^{-1}, 2^{-2}, 2^{-3}, 0,00025]$
 \end{itemize}
+The best found combination of those parameters used rbf kernel along with C=16 and $\gamma = 2^{-3}$ values.
 
 \subsubsection{Random Forests method parameters}
 \subsubsection{KNN method parameters}
@@ -559,8 +560,6 @@ Adding a~rejection mechanism, ideally, may be seen as a~method for improvement o
 
 {\color{red}W tej tabelce jest tylko External Rejecting? Warto zastanowic sie nad dodaniem Internal rejecting lub uzasadnieniem rezygnacji z tych wynikow.}
 
-{\color{blue}
-Adding a~rejection mechanism, ideally, may be seen as a~method for improvement of classification rates. It would be perceived as a~positive side of the rejection mechanism, if it would be able to reject those native patterns, which would be incorrectly classified when there is no rejection mechanism at all. Trained models only partially fulfill this wish. Conducted tests showed that: TUTAJ SLOWNY OPIS WPLYWU ODRZUCANIA NA KLASYFIKACJE, NALEZY POWIEDZIEC KTORA METODA JEST Z TEJ PERSPEKTYWY NAJLEPSZA}
 %\begin{itemize}
 %  \item[a)] global architecture was able to:
 %    \begin{itemize}
