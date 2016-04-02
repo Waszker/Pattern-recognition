@@ -287,7 +287,7 @@ Contrary to ellipsoids, where rejecting points and identifying them as foreign e
 
 First attempt at creating rejecting binary classifiers based on assumption that foreign elements are not very similar to native ones. Such situation would be easy to recognize by creating one-versus-rest classification schema, where point would be either assigned to a particular class, or considered to be outside of it. By creating one such classifier for every existing class, point would be rejected after falling to "outside group" every time. There are several problems with this conception, though. First of all, what happens when more than one classifier accepts point as native, e.g. should such element be considered foreign? In this paper such point was classified as an element from the class that was lower in the rank, in other words computations were stopped as soon as first classifier recognized element as native.
 
-Second approach required creating $\frac{n * (n-1)}su{2}$ classifiers (where n is the number of all native classes), one for each unique pair of classes. In this situation each element classification would end up with result vector containing number of times when tested point was recognized as native for each class. Rejection would be based on too small differences between two best classes. Unfortunately during tests it turned out that differences were often too small even for native elements and this kind of classifier didn't work as expected.
+Second approach required creating $\frac{n * (n-1)}{2}$ classifiers (where n is the number of all native classes), one for each unique pair of classes. In this situation each element classification would end up with result vector containing number of times when tested point was recognized as native for each class. Rejection would be based on too small differences between two best classes. Unfortunately during tests it turned out that differences were often too small even for native elements and this kind of classifier didn't work as expected.
 
 The third way of dealing with classifiers rejection would be to accept only those elements which manage to score enough points in corresponding result vector. The threshold should be arbitrary chosen to minimize native element rejection. This method could be used along with second one and possibly enhance it effectiveness.
 
@@ -300,7 +300,7 @@ The third way of dealing with classifiers rejection would be to accept only thos
 
 Whereas ellipsoids are good identifiers, they lack in element classification quality. This is caused by ellipsoids sometimes overlapping each other, which results in points belonging to both classes at the same time. Although this can be solved by calculating distance between those elements and each ellipsoid centre, or taking value of ellipsoid-inclusion equation as a classification measure, tests have proven that such approaches are more prone to errors than other classifiers mentioned in this paper. Taking into considerations both strengths and weaknesses of classifiers and identifiers, the combined solution has been prepared that combines both tools, making use of their advantages.
 
-Classifiers have high success rate but cannot distinguish between foreign elements and native ones. Contrary to that, ellipsoids tend to be better at rejecting outliers which makes them good at identifying points that should not be classified. The natural way of dealing with that problem would be to use ellipsoids as first-entry identifier that purifies input set by removing foreigners. The result of such rejection would be sent to chosen classifier that would classify remaining native elements. Schema of this method is presented on Figure ~\ref{fig:nativeforeignpatternsClassification1}
+Classifiers have high success rate but cannot distinguish between foreign elements and native ones. Contrary to that, ellipsoids tend to be better at rejecting outliers which makes them good at identifying points that should not be classified. The natural way of dealing with that problem would be to use ellipsoids as first-entry identifier that purifies input set by removing foreigners. The result of such rejection would be sent to the chosen classifier that would classify remaining native elements. Schema of this method is presented on Figure ~\ref{fig:nativeforeignpatternsClassification1}
 
 
 \begin{figure}[!h]
@@ -422,6 +422,34 @@ where $X_{i,j}$ is the value of $j^{th}$ feature in $i^{th}$ observation, $Min_{
 	SVM: gamma=0.125, c=16, jadro: rbf
 	KNN: K=4
 	RF: liczba drzew=100 }
+
+Solution presented in this paper has been prepared in form of computer programs, written in Python programming language, using well known scientific libraries - NumPy\footnote{NumPy website: http://www.numpy.org/}, Scikit\footnote{Scikit website: http://scikit-learn.org/stable/}. Implementations of classifiers described in this article have been imported from Scikit library. The links for those methods are as follows:
+\begin{itemize}
+	\item SVM: http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
+	\item Random Forests
+	\item KNN
+\end{itemize} 
+The MVEE algorithm, available as MATLAB code\footnote{http://www.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid/content/MinVolEllipse.m} has been rewritten in Python language, using NumPy library for matrix representation and operations. Several test has been performed in order to find best suited method parameters for both classifiers and identifiers. 
+
+\subsubsection{MVEE method parameters}
+Each ellipsoid has been created and used with two parameters: tolerance and acceptance. The tolerance argument was used during creation phase, as "accuracy measurement". Lower values mean that created enclosing figure is more fitted to the construction set. Acceptance parameter defines how far can point lie outside the ellipsoid to still be identified as belonging to it. In other words, it treats enclosing ellipsoid as a bigger one than it really is.
+Parameters tests involved computing effectiveness of MVEE algorithm for certain tolerance and acceptance values. We tested values from such ranges:
+\begin{itemize}
+	\item tolerance = [0.5, 0.2, 0.1, 0.01]
+	\item accuracy = [0.1, 0.01, 0.001, 0.0005]
+\end{itemize} 
+The results revealed that for given training and test sets the best parameter combination was tolerance=0.2 and accuracy=0.001 and those values were used in final, combined method described later in this document.
+
+\subsubsection{SVM method parameters}
+SVM method available in Scikit package offers some built-in kernel that were used in computations: rbf and polynomial. Additionally, there are two more parameters that were tested: C (described as penalty parameter C of the error term), and $\gamma$ (known as kernel coefficient). Values that were tested:
+\begin{itemize}
+	\item kernel = ['rbf', 'poly']
+	\item C = [1, 2, 4, 5, 16]
+	\item $\gamma = [2^{-1}, 2^{-2}, 2^{-3}, 0,00025]$
+\end{itemize}
+
+\subsubsection{Random Forests method parameters}
+\subsubsection{KNN method parameters}
 
 % By?y przeprowadzone testy ACC/TOL i w spos�b empiryczny wybrane warto?ci
 
