@@ -101,8 +101,8 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01, normalize=False):
 
 
 def getIdentifiedPoints(normalize=False):
-    accuracy = 0.01
-    tolerance = 0.001
+    accuracy = 0.1
+    tolerance = 0.5
     A_list = []
     c_list = []
     point_labels = []
@@ -136,8 +136,8 @@ def final_ellipsoids(data, primal_labels, new_labels, normalize=False):
     matrix = np.zeros((11, 11))
     A_list = []
     c_list = []
-    accuracy = 0.01
-    tolerance = 0.001
+    accuracy = 0.1
+    tolerance = 0.5
     norm = None
     if normalize == True:
         norm = loading.get_normalize_vector()
