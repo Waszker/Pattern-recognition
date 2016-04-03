@@ -428,7 +428,7 @@ Solution presented in this paper has been prepared in form of computer programs,
 The MVEE algorithm, available as MATLAB code\footnote{http://www.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid/content/MinVolEllipse.m} has been rewritten in Python language, using NumPy library for matrix representation and operations. Several test has been performed in order to find best suited method parameters for both classifiers and identifiers. 
 
 \subsubsection{MVEE method parameters}
-Each ellipsoid has been created and used with two parameters: tolerance and acceptance. The tolerance argument was used during creation phase, as "accuracy measurement". Lower values mean that created enclosing figure is more fitted to the construction set. Acceptance parameter defines how far can point lie outside the ellipsoid to still be identified as belonging to it. In other words, it treats enclosing ellipsoid as a bigger one than it really is.
+Each ellipsoid was created and used with two parameters: tolerance and acceptance. The tolerance argument was used during creation phase, as "accuracy measurement". Lower value means that created enclosing figure is more fitted to the construction set. Acceptance parameter defines how far can point lie outside the ellipsoid to still be identified as belonging to it. In other words, it treats enclosing ellipsoid as being bigger than it really is.
 Parameters tests involved computing effectiveness of MVEE algorithm for certain tolerance and acceptance values. We tested values from such ranges:
 \begin{itemize}
 	\item tolerance = [0.5, 0.2, 0.1, 0.01]
@@ -458,11 +458,12 @@ The method in Scikit package used to create K-Nearest Neighbors classifier is KN
 \subsection{Concept of Classification with Rejection}
   \label{subsec:ClassificationAndRejection}
 
+To determine effectiveness of parameter values for each method, confusion matrix has been calculated. Each row of this matrix represents information about points distribution for elementes from certain class. Numbers in each column hold information about quantity of points that were classified as belonging to corresponding class.
+
 
 \begin{table*}[h]
 \centering
-\caption{\color{red}{Tutaj Confusion Table, np. test set z pliku "Ellipsoids results new format ratio 7/3.xls" przeslanego 11 marca dla TOL=0.2 ACC=0.001. Zalaczam przykladowa tabelke, gdzie wyniki sa w procentach, ale u nas niech beda liczby bezwzgledne. Pominiete sa zera dla wiekszej czytelnosci, niewypelnione foreign.} \protect\linebreak
-\color{green}{Tutaj wrzuciłam dla TOL=0.2 ACC=0.1 z pliku Ellipsoids\_results new format ratio 7-3} }
+\caption{Confusion table for MVEE algoritm with tolerance=0.2 acceptance=0.1 on training set}
 %\vspace{3pt}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1}
@@ -501,6 +502,8 @@ $f$ & 66 & 20 & 48 &   & 110  & 16 & 54 & 1 & 126 & 15 & 25927\\
 \label{tab:CofusionTable}
 \end{table*}
 
+Calculations and measurements included in "Quality Evaluation" section were based on confusion matrixes. Information gathered from them will be used in the following sections of this document. The most interesting aspects of it consist of classification quality, rejection quality and rejection impact on classification quality. Those issues are the main and most important part of problem described in this paper.
+ 
 {\color{blue}Ja bym tutaj powiedziala ze tabelka confusion table stanowi podstawe do obliczania miar przedstawionych w subsekcji "Quality Evaluation" i na podstawie takich danych bedziemy prowadzic dyskusje w dalszej czesci pracy.  Nalezy objesnic zawartosc tabelki. Nalezy napisac, ze interesuje nas a) klasyfikacja i jej jakosc, b) odrzucanie i jego jakosc c) wplyw odrzucania na klasyfikacje. }
 
 
