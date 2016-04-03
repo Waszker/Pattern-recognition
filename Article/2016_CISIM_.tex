@@ -415,16 +415,8 @@ where $X_{i,j}$ is the value of $j^{th}$ feature in $i^{th}$ observation, $Min_{
 %-------------------------------------------------------------------
 \subsection{Experimental Settings}
 
+Solution presented in this paper has been prepared in form of computer programs, written in Python programming language, using well known scientific libraries - NumPy\footnote{NumPy website: http://www.numpy.org/}, Scikit\footnote{Scikit website: http://scikit-learn.org/stable/}. Implementations of classifiers described in this article have been imported from Scikit library \cite{ScikitSVM,ScikitRF,ScikitKNN}.\\
 
-{\color{red}Tutaj nalezy przedstawic (a) wybor srodowiska programistycznego, spis uzytych bibliotecznych metod z referencjami, (b) co napisalismy sami, (c) parametry metod. Nalezy dac opis testow przeprowadzonych w celu wyboru 'dobrych' parametrow klasyfikatorow: svm, rf, knn. Do tekstu objasniajacego dodalbym pewnie jakies wykresy. Potem mozna powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale szczegoly parametrow z MVEE mozna opisac w osobnej sekcji.}
-{\color{blue} Potem powiedziec, ze parametry tol/acc w MVEE maja wplyw na wynik i dlaczego (nawiazac do objasnienia tych parametrow), ale bez szczegolow. Nalezy podac parametry MVEE uzyte w eksperymentach pokazanych w tym artykul i powiedziec ze zostaly dobrane metoda recznej walidacji.}\\
-
-Solution presented in this paper has been prepared in form of computer programs, written in Python programming language, using well known scientific libraries - NumPy\footnote{NumPy website: http://www.numpy.org/}, Scikit\footnote{Scikit website: http://scikit-learn.org/stable/}. Implementations of classifiers described in this article have been imported from Scikit library. The links for those methods are as follows:
-\begin{itemize}
-	\item SVM: http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
-	\item Random Forests: http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
-	\item KNN: http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html
-\end{itemize} 
 The MVEE algorithm, available as MATLAB code\footnote{http://www.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid/content/MinVolEllipse.m} has been rewritten in Python language, using NumPy library for matrix representation and operations. Several tests have been performed in order to find best suited method parameters for both classifiers and identifiers. For finding those values the Grid Search\footnote{Link to Python implementation: http://scikit-learn.org/stable/modules/grid\_search.html} has been used for SVM and Random Forests. Ellipsoids and KNN methods had their values assigned manually. 
 
 \subsubsection{MVEE method parameters}
@@ -711,6 +703,15 @@ Todd M. J., Yildirim E. A., \emph{On Khachiyan's Algorithm for the Computation o
 \bibitem{WangCasasent2009}
 Wang Y., Casasent D., \emph{A Support Vector Hierarchical Method for multi-class classification and rejection}, Proc. of International Joint Conference on Neural Networks, 2009, pp. 3281-3288.
 
+\bibitem{ScikitSVM}
+http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html [2016, 3 April]
+	
+\bibitem{ScikitRF}
+http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html [2016, 3 April]
+
+\bibitem{ScikitKNN}
+http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html [2016, 3 April]
+ 
 \end{thebibliography}
 
 \end{document}
