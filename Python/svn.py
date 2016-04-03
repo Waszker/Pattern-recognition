@@ -2,7 +2,7 @@
 
 import loading
 import numpy as np
-from sklearn import svm
+from sklearn import svm, grid_search
 
 def _load_training_and_test_sets(normalize):
     """
@@ -213,5 +213,14 @@ def svm_classify_points(kernel='rbf', c=16, gamma=0.00025, normalize=False):
     vectors.fit(train_points, class_labels)
     results = vectors.predict(test_points)
 
-
     return test_points, test_labels, results
+
+
+def svm_get_best_parameters(normalize=False):
+    train_points, _, class_labels, _ = _load_training_and_test_sets(normalize)
+    parameters = { 'kernel':('linear', 'rbf'), 'C':[1, 2, 4, 8, 16, 32], 'gamma':[1, 0.8, 0.75, 0.7, 0.5, 0.25, 0.125] }
+    svr = svm.SVC()
+    clf = grid_search.GridSearchCV(svr, parameters, n_jobs=-1)
+    clf.fit(train_points, class_labels)
+    print str(clf.best_params_)
+

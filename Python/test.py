@@ -134,7 +134,7 @@ def _test_all(normalize):
 
     #identification by ellipsoid first
     sett, labels = e.getIdentifiedPoints(normalize)
-    results = s.svm_identify_points(sett, labels, gamma=0.125, normalize=normalize)
+    results = s.svm_identify_points(sett, labels, c=8, gamma=0.5, normalize=normalize)
     np.savetxt('final_results/results_svm.txt', results, delimiter=',')
     results = k.knn_identify_points(sett, labels, n=4, normalize=normalize)
     np.savetxt('final_results/results_knn.txt', results, delimiter=',')
@@ -142,7 +142,7 @@ def _test_all(normalize):
     np.savetxt('final_results/results_rf.txt', results, delimiter=',')
 
     #classification by svm/knn/rf first
-    points, old_labels, new_labels = s.svm_classify_points(gamma=0.125, normalize=normalize)
+    points, old_labels, new_labels = s.svm_classify_points(c=8, gamma=0.5, normalize=normalize)
     results = e.final_ellipsoids(points, old_labels, new_labels, normalize=normalize)
     np.savetxt('final_results/results_svm2.txt', results, delimiter=',')
 

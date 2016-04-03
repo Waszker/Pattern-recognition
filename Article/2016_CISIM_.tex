@@ -434,7 +434,7 @@ Parameters tests involved computing effectiveness of MVEE algorithm for certain 
 	\item tolerance = [0.5, 0.2, 0.1, 0.01]
 	\item accuracy = [0.1, 0.01, 0.001, 0.0005]
 \end{itemize} 
-The results revealed that for given training and test sets the best parameter combination was tolerance=0.2 and accuracy=0.001 and those values were used in final, combined method described later in this document.
+The results revealed that for given training and test sets the best parameter combination was tolerance=0.001 and accuracy=0.01 and those values were used in final, combined method described later in this document.
 
 \subsubsection{SVM method parameters}
 SVM method available in Scikit package offers some built-in kernels that were used during computations: rbf and polynomial. Additionally, there are two more parameters that were tested: C (described as penalty parameter C of the error term), and $\gamma$ (known as kernel coefficient). Values that were tested:
@@ -443,7 +443,7 @@ SVM method available in Scikit package offers some built-in kernels that were us
 	\item C = [1, 2, 4, 5, 16]
 	\item $\gamma = [2^{-1}, 2^{-2}, 2^{-3}, 0,00025]$
 \end{itemize}
-The best found combination of those parameters used rbf kernel along with C=16 and $\gamma = 2^{-3}$ values.
+The best found combination of those parameters used rbf kernel along with C=8 and $\gamma = 2^{-1}$ values.
 
 \subsubsection{Random Forests method parameters}
 RandomForestClassifier method from Scikit library bulids forest of decision trees. The parameter given to the method is the number of trees in the forest. Computations were made using the following values: 1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150. The best number of trees to build the forest is 100.
@@ -503,9 +503,6 @@ $f$ & 66 & 20 & 48 &   & 110  & 16 & 54 & 1 & 126 & 15 & 25927\\
 \end{table*}
 
 Calculations and measurements included in "Quality Evaluation" section were based on confusion matrixes. Information gathered from them will be used in the following sections of this document. The most interesting aspects of it consist of classification quality, rejection quality and rejection impact on classification quality. Those issues are the main and most important part of problem described in this paper.
- 
-{\color{blue}Ja bym tutaj powiedziala ze tabelka confusion table stanowi podstawe do obliczania miar przedstawionych w subsekcji "Quality Evaluation" i na podstawie takich danych bedziemy prowadzic dyskusje w dalszej czesci pracy.  Nalezy objesnic zawartosc tabelki. Nalezy napisac, ze interesuje nas a) klasyfikacja i jej jakosc, b) odrzucanie i jego jakosc c) wplyw odrzucania na klasyfikacje. }
-
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -529,7 +526,7 @@ Calculations and measurements included in "Quality Evaluation" section were base
   \hline
   Data Set & \multicolumn{6}{c||}{Native Patterns, Train/Test?? Set} \\
 \hline
-Fine Accuracy                & $$ & $$ & $$ & $$ & $$ & $$ \\
+Fine Accuracy                & $$ & $$ & $$ & $$ & $0.978$ & $$ \\
 Strict Native Sensitivity    & $$ & $$ & $$ & $$ & $$ & $$ \\
 Native Sensitivity           & $$ & $$ & $$ & $$ & $$ & $$ \\
 \hline
@@ -537,7 +534,7 @@ Native Sensitivity           & $$ & $$ & $$ & $$ & $$ & $$ \\
 \hline
   Data Set & \multicolumn{6}{c||}{Native Patterns, Train/Test?? Set} \\
 \hline
-Fine Accuracy             & $$ & $$ & $$ & $$ & $$ & $$ \\
+Fine Accuracy             & $$ & $$ & $$ & $$ & $0.985$ & $$ \\
 Strict Native Sensitivity & $$ & $$ & $$ & $$ & $$ & $$ \\
 Native Sensitivity        & $$ & $$ & $$ & $$ & $-$ & $-$ \\
 \hline
@@ -545,7 +542,7 @@ Native Sensitivity        & $$ & $$ & $$ & $$ & $-$ & $-$ \\
 \hline
   Data Set & \multicolumn{6}{c||}{Native Patterns, Train/Test?? Set} \\
 \hline
-Fine Accuracy             & $$ & $$ & $$ & $$ & $$ & $$ \\
+Fine Accuracy             & $$ & $0.966$ & $$ & $$ & $0.974$ & $$ \\
 Strict Native Sensitivity & $$ & $$ & $$ & $$ & $$ & $$ \\
 Native Sensitivity        & $$ & $$ & $$ & $$ & $-$ & $-$ \\
 \hline
@@ -556,9 +553,11 @@ Native Sensitivity        & $$ & $$ & $$ & $$ & $-$ & $-$ \\
 
 % Internal rejection pewnie ju? nie wejdzie...
 
+Adding a~rejection mechanism, ideally, may be seen as a~method for improvement of classification rates. It would be perceived as a~positive side of the rejection mechanism, if it would be able to reject those native patterns, which would be incorrectly classified when there is no rejection mechanism at all. Trained models only partially fulfill this wish. Conducted tests show that performing element rejection after their initial classification, brings better results. This could be caused by using only one ellipsoid per class instead of combined set of ellipsoids as it is done in first concept. This approach is especially useful when dealing with foreign elements. There is a chance that classification will treat them as part of a class that lies completely outside of corresponding ellipsoid, whereas they could (possibly) lie inside other ellipsoid and therefore be not rejected when using first approach. When it comes down to strict classification error ratios, the second method (one using ellipsoids after initial classification) is once again better. This may be also connected to more strict element rejection.
 
-{\color{blue}
-Adding a~rejection mechanism, ideally, may be seen as a~method for improvement of classification rates. It would be perceived as a~positive side of the rejection mechanism, if it would be able to reject those native patterns, which would be incorrectly classified when there is no rejection mechanism at all. Trained models only partially fulfill this wish. Conducted tests showed that: TUTAJ OPIS WPLYWU ODRZUCANIA NA KLASYFIKACJE, NALEZY POWIEDZIEC KTORA METODA JEST Z TEJ PERSPEKTYWY NAJLEPSZA, ewentualnie ilustracja (wykres)? }
+{\color{blue}Ewentualnie ilustracja (wykres)?}
+
+{\color{cyan} A moze jeszcze jeden schemat dac? Coś co pokazywaloby opisana koncepcje?}
 
 {\color{red}W tej tabelce jest tylko External Rejecting? Warto zastanowic sie nad dodaniem Internal rejecting lub uzasadnieniem rezygnacji z tych wynikow.}
 
