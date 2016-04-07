@@ -100,7 +100,7 @@ def ellipsoids_letters_vs_numbers(tolerance, accuracy = 0.01, normalize=False):
     return train_ratios, test_ratios
 
 
-def getIdentifiedPoints(normalize=False):
+def getIdentifiedPoints(normalize=False, useTrain=False):
     accuracy = 0.1
     tolerance = 0.5
     A_list = []
@@ -120,7 +120,10 @@ def getIdentifiedPoints(normalize=False):
 
     for i in range(0, 11):
         if i != 10:
-            [_, train] = loading.load_number_set(i, 0.7, norm_vector=norm)
+            if useTrain:
+                [train, _] = loading.load_number_set(i, 0.7, norm_vector=norm)
+            else:
+                [_, train] = loading.load_number_set(i, 0.7, norm_vector=norm)
         else:
             train = loading.load_letter_set(norm_vector=norm)
         for row in train:
