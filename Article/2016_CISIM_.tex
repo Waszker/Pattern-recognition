@@ -94,8 +94,7 @@ The motivation of our study is to provide algorithmic approaches to distinguish 
 
 In particular, the objectives of this paper are focused on designing methods for recognition with rejection and employ them to (a) distinguish native patterns from foreign ones and (b) improve classification quality of native patterns. The proposed attempt to recognition with rejection combines known classifiers with geometric methods used for separating native patterns from foreign ones. The proposed methods are empirically verified on datasets of handwritten digits (native patterns) and handwritten Latin letters (foreign patterns).
 
-We would like to emphasis that the novelty of the contribution presented in this paper is not in the methods that we use, but in how we employ them and on what we achieve with them.
-%TODO koniecznie trzeba dodac wiecej opisu novelty/objective, dodamy na koncu jak bedzie calosc artykulu
+We would like to emphasis that the novelty of the contribution presented in this paper is not in the methods that we use, but in how we employ them and on what we achieve with them. Our main purpose is to examine the cooperation of standard classifiers with geometric methods used for rejection, especially influence of rejection on native patterns classification, eg., improvement of Fine Accuracy. We also test the effectiveness of foreign patterns rejection and differences between used classifiers. %TODO koniecznie trzeba dodac wiecej opisu novelty/objective, dodamy na koncu jak bedzie calosc artykulu 
 
 The remainder of this paper is organized as follows. Section \ref{sec:Literature Review} presents the background knowledge on foreign elements detection present in the literature. Sections~\ref{sec:Ellipsoids} and~\ref{sec:Classifiers} presents the backbone algorithms, known in the literature, that we use to construct our models. Section \ref{sec:Methodology} presents the proposed approach. In Section \ref{sec:Experiments} we discuss a series of experiments. % based on images of handwritten digits. 
 Section \ref{sec:Conclusion} concludes the paper and highlights future research directions.
@@ -403,7 +402,7 @@ To determine effectiveness of parameter values for each method, confusion matrix
 
 \begin{table*}[h]
 \centering
-\caption{Confusion table, data taken from ... }
+\caption{Confusion table for SVM with global rejection on training set }
 \vspace{-3pt}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1}
@@ -412,34 +411,33 @@ To determine effectiveness of parameter values for each method, confusion matrix
 \hline
  \hspace{15pt} & $0\;\;\;$ & $1\;\;\;$ & $2\;\;\;$ & $3\;\;\;$ & $4\;\;\;$ & $5\;\;\;$ & $6\;\;\;$ & $7\;\;\;$ & $8\;\;\;$ & $9\;\;\;$ & $f$ \\
 \hline\hline
-  0 & 213 & 4 &   &   &   &   & 2 &   & 17 &   & 58\\
+  0 & 595 &  &   &   &   &   & 1 &   & 10 &   & 80\\
 \hline
-  1 &  & 259 & 1 &   &   &   &   &   &   &   & 81\\
+  1 &  & 670 & 1 &   &   &   & 1 &   &   &   & 122\\
 \hline
-  2 &  &   & 227 &   &   &   &   &   &   &   & 83\\
+  2 &  &   & 641 &   &   &   &   & 1  &   & 1  & 79\\
 \hline
-  3 &  &   &   & 206 &   & 4 &   & 2 & 2 &   & 89\\
+  3 &  &   & 3 & 629 &   & 1 &   & 2 &  &   & 72\\
 \hline
-  4 &  &   &   &   & 202 &   &   & 2 & 1 & 2 & 88\\
+  4 &  &   &   &   & 598 &   &   &  &  & 7 & 82\\
 \hline
-  5 &  &   &   & 5 & 1 & 189 &   &   & 2 &   & 71\\
+  5 &  &   &   & 6 &  & 546 &   &   & 4 &   & 68\\
 \hline
-  6 &  & 1 &   &   &   &   & 219 &   & 1 &   & 67\\
+  6 & 1 & &   &   &   &   & 567 &   & 1 &   & 102\\
 \hline
-  7 &  &   & 1 &   & 1 &   &   & 243 &   & 1 & 63\\
+  7 &  & 1  &  & 1 & 1 &   &   & 626 &   & 5 & 85\\
 \hline
-  8 & 1 &   &   &   & 1 &   &   &   & 213 &   & 78\\
+  8 & 8 &   &   &   & 2 &   &   & 1 & 589 & 2 & 79\\
 \hline
-  9 &  &   &   &   & 6 & 1 &   & 6 & 2 & 230 & 58\\
+  9 &  & 1 &  & 4 & 3 & 2 &   & 6 & 4 & 607 & 79\\
 \hline
-$f$ & 66 & 20 & 48 &   & 110  & 16 & 54 & 1 & 126 & 15 & 25927\\
+$f$ & 181 & 44 & 155 & 16 & 164  & 104 & 182 & 9 & 211 & 61 & 25256\\
 \hline
 \end{tabular}
 }
 \vspace{-3pt}
 \label{tab:CofusionTable}
 \end{table*}
-% TODO: Zmienić na "właściwe" wyniki: SVM external global rejection
 
 Calculations and measurements included in "Quality Evaluation" section were based on confusion matrixes. Information gathered from them will be used in the following sections of this paper. The most interesting aspects of it consist of classification quality, rejection quality and rejection impact on classification quality. Those issues are the main and most important part of problem described in this paper.
 
@@ -522,10 +520,9 @@ Results show that all classifiers behave well and provide similar quality of rej
 
 % TODO: Testy przeprowadzone, odpowiedzieć na pytanie czy współpraca jest zadowalająca, wpływ na rozpoznawanie native, zestaw danych zbyt ubogi?
 
-Proposed ...
+Enhancing classifiers' ability to identify objects by coupling them with 
 
-
-In future ....
+In the future we want to broaden research by using better suited data sets. We are aware of 
 
 Let us conclude this paper by saying that various adaptations of the idea of foreign elements rejection have a vital role in modern machine learning. It is needless to mention areas such as text mining, fraud detection, or medical diagnosis systems where we deal with various reincarnations of the foreign elements. In this perspective we believe that the study in this direction is worth further efforts.
 
