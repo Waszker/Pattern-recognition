@@ -457,21 +457,15 @@ Calculations and measurements included in "Quality Evaluation" section were base
 {\footnotesize
 \begin{tabular}{|r||c|c|c||c|c|c||c|c|c|}
 \hline
-& \multicolumn{3}{c||}{No rejection} & \multicolumn{3}{c||}{Global rejection} & \multicolumn{3}{c|}{Local rejection}\\
-\hline
-  Basic Classifier & $\;\;$RF$\;\;$ & $\,$SVM$\,$ & KNN & $\;\;$RF$\;\;$ & $\,$SVM$\,$ & KNN & $\;\;$RF$\;\;$ & $\,$SVM$\,$ & KNN  \\
-  \hline
-  Data Set & \multicolumn{9}{c|}{Native Patterns, Train Set} \\
-\hline
+Strict Accuracy & $1$ & $0.985$ & $0.955$ & $0.941$ & $0.938$ & $0.936$ & $0.942$ & $0.942$ & $0.942$ \\
 Fine Accuracy       & $1$ & $0.985$ & $0.955$ & $1$     & $0.987$ & $0.972$ & $1$ & $0.989$ & $0.984$ \\
 Strict Native Sens. & $1$ & $0.985$ & $0.955$ & $0.879$ & $0.852$ & $0.854$ & $0.864$ & $0.857$ & $0.845$ \\
-Native Sensitivity  & $1$ & $0.985$ & $0.955$ & $0.879$ & $0.879$ & $0.879$ & $0.864$ & $0.867$ & $0.859$ \\
 \hline
-  Data Set & \multicolumn{9}{c|}{Native Patterns, Test Set} \\
+Data Set & \multicolumn{9}{c|}{Native Patterns, Test Set} \\
 \hline
+Strict Accuracy  & $0.952$ & $0.966$ & $0.930$ & $0.946$ & $0.946$ & $0.944$ & $0.951$ & $0.952$ & $0.953$ \\
 Fine Accuracy       & $0.952$ & $0.966$ & $0.930$ & $0.972$ & $0.982$ & $0.959$ & $0.977$ & $0.985$ & $0.976$ \\
 Strict Native Sens. & $0.952$ & $0.966$ & $0.930$ & $0.842$ & $0.852$ & $0.831$ & $0.837$ & $0.845$ & $0.825$ \\
-Native Sensitivity  & $0.952$ & $0.966$ & $0.930$ & $0.867$ & $0.867$ & $0.867$ & $0.857$ & $0.858$ & $0.845$ \\
 \hline
 \end{tabular}
 }
@@ -517,8 +511,6 @@ Results show that all classifiers behave well and provide similar quality of rej
 %-------------------------------------------------------------------
 \section{Conclusion}
   \label{sec:Conclusion}
-
-% TODO: Testy przeprowadzone, odpowiedzieć na pytanie czy współpraca jest zadowalająca, wpływ na rozpoznawanie native, zestaw danych zbyt ubogi?
 
 Enhancing classifiers' ability to classify objects by coupling them with ellipsoids has proven to yield better results, when working on contaminated data, than using internal rejection techniques. Although there were some differences in classification ratios between different classifiers, none of them turned out to be best when used together with global rejection method. We are aware that to truly confirm obtained results, test should be repeated on different data sets. Described in this paper set consisting of letters and digits, although being very large, might not consist of enough distinguishable classes.
 
