@@ -169,7 +169,15 @@ def get_identification2_results(c=8, kernel="rbf", gamma=0.125, should_normalize
             for point in points:
                 # classify single point
                 predictions = _get_prediction_vector(svms, point)
-                # TODO: Add prediction results
-
+                # Find biggest and second biggest results and best index
+                best, big, sbig = 0, 0, 0
+                for l in range(0, len(predictions)):
+                    if big < predictions[l]:
+                        best, big, sbig = l, predictions[l], big
+                    elif sbig < predictions[l]: sbig = predictions[l]
+                if big > sbig + 1:
+                    conf_matrix[i, best] += 1
+                else:
+                    conf_matrix[i, 10] += 1
 
     return matrixes
