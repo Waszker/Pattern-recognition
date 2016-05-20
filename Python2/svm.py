@@ -36,7 +36,6 @@ def _get_one_versus_all_svms(c=8, kernel="rbf", gamma=0.125, should_normalize=Fa
 
     # Now prepare one-vs-others svm
     svms = []
-    s = svm.SVC(C=c, kernel=kernel, gamma=gamma)
     for i in range(0, 10):
         set1 = train_points[i]
         set2 = None
@@ -50,7 +49,9 @@ def _get_one_versus_all_svms(c=8, kernel="rbf", gamma=0.125, should_normalize=Fa
         # Having two sets prepared it's time to train svm
         labels = ["1"] * set1.shape[0]
         labels.extend(["2"] * set2.shape[0])
-        svms.append(s.fit(np.concatenate((set1, set2), axis=0), labels))
+        s = svm.SVC(C=c, kernel=kernel, gamma=gamma)
+        s.fit(np.concatenate((set1, set2), axis=0), labels)
+        svms.append(s)
 
     return svms
 
@@ -95,9 +96,8 @@ def get_identification1_results(c=8, kernel="rbf", gamma=0.125, should_normalize
         for i in range(0, len(point_set)):
             # i value represents original class
             points = point_set[i]
-            for p in range(0, points.shape[0]):
+            for point in points:
                 # Get signle point to classify
-                point = points[p, :]
                 _identify_and_classify_point(svms, point, conf_matrix, i)
 
     return conf_matrix1, conf_matrix2
