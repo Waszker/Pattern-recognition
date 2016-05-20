@@ -29,7 +29,7 @@ def _get_number_sets(should_normalize=False):
 def _get_one_versus_all_svms(c=8, kernel="rbf", gamma=0.125, should_normalize=False):
     """
     Prepares one - versus - others training sets which are used in svm training.
-    After preparations all svms are returned in a vector.
+    After preparations all svms are returned in a list.
     """
     # Preparation variables
     train_points, _, _, _ = _get_number_sets(should_normalize)
@@ -56,6 +56,30 @@ def _get_one_versus_all_svms(c=8, kernel="rbf", gamma=0.125, should_normalize=Fa
     return svms
 
 
+def _get_one_versus_one_svms(c=8, kernel="rbf", gamma=0.125, should_normalize=False):
+    """
+    Prepares one - versus - one training sets and trains svm.
+    All trained svms are returned in a list.
+    """
+    # Preparation variables
+    train_points, _, _, _ = _get_number_sets(should_normalize)
+
+    # Now prepare one-vs-one svm
+    svms = []
+    for i in range(0, 10):
+        set1 = train_points[i]
+        for j in range(i+1, 10):
+            set2 = train_points[j]
+
+            # Having two sets prepared it's time to train svm
+            labels = ["1"] * set1.shape[0]
+            labels.extend(["2"] * set2.shape[0])
+            s = svm.SVC(C=c, kernel=kernel, gamma=gamma)
+            s.fit(np.concatenate((set1, set2), axis=0), labels)
+            svms.append(s)
+
+    return svms
+
 def _identify_and_classify_point(svms, point, conf_matrix, origin):
     prediction = 10
     for j in range(0, 10):
@@ -68,11 +92,7 @@ def _identify_and_classify_point(svms, point, conf_matrix, origin):
     conf_matrix[origin, prediction] += 1
 
 
-def get_identification1_results(c=8, kernel="rbf", gamma=0.125, should_normalize=False):
-    """
-    Runs identification test for svm method trained with one-vs-others schema.
-    If for every prediction "other" part identifies point, it's treated as foreign.
-    """
+def _get_needed_variables(should_normalize=False):
     conf_matrix1 = np.zeros((11, 11), dtype=np.int)
     conf_matrix2 = np.zeros((11, 11), dtype=np.int)
     norm_vector = None
@@ -80,12 +100,22 @@ def get_identification1_results(c=8, kernel="rbf", gamma=0.125, should_normalize
         norm_vector = loading.get_normalize_vector()
 
     letters = loading.load_letter_set(norm_vector=norm_vector)
-    svms = _get_one_versus_all_svms(c, kernel, gamma, should_normalize)
     train_points, test_points, _, _ = _get_number_sets(should_normalize)
     train_points.append(letters)
     test_points.append(letters)
     matrixes = [conf_matrix1, conf_matrix2]
     sets = [train_points, test_points]
+
+    return matrixes, sets
+
+
+def get_identification1_results(c=8, kernel="rbf", gamma=0.125, should_normalize=False):
+    """
+    Runs identification test for svm method trained with one-vs-others schema.
+    If for every prediction "other" part identifies point, it's treated as foreign.
+    """
+    svms = _get_one_versus_all_svms(c, kernel, gamma, should_normalize)
+    matrixes, sets = _get_needed_variables(should_normalize)
 
     # Run tests on number sets
     for v in range(0, 2):
@@ -100,4 +130,46 @@ def get_identification1_results(c=8, kernel="rbf", gamma=0.125, should_normalize
                 # Get signle point to classify
                 _identify_and_classify_point(svms, point, conf_matrix, i)
 
-    return conf_matrix1, conf_matrix2
+    return matrixes
+
+
+def _get_prediction_vector(svms, point):
+    predictions = np.zeros((10))
+    index = 0
+    for i in range(0, 10):
+        for j in range(i + 1, 10):
+            result = svms[index].predict(point.reshape(1, -1))
+            index += 1
+            if result[0] == '1':
+                predictions[i] += 1
+            else:
+                predictions[j] += 1
+
+    return predictions
+
+
+
+def get_identification2_results(c=8, kernel="rbf", gamma=0.125, should_normalize=False):
+    """
+    Runs identification test for svm method trained with one-vs-others schema.
+    If for every prediction "other" part identifies point, it's treated as foreign.
+    """
+    svms = _get_one_versus_one_svms(c, kernel, gamma, should_normalize)
+    matrixes, sets = _get_needed_variables(should_normalize)
+
+    # Run tests on number sets
+    for v in range(0, 2):
+        conf_matrix = matrixes[v]
+        point_set = sets[v]
+
+        # Identify and classify points
+        for i in range(0, len(point_set)):
+            # i value represents original class
+            points = point_set[i]
+            for point in points:
+                # classify single point
+                predictions = _get_prediction_vector(svms, point)
+                # TODO: Add prediction results
+
+
+    return matrixes
