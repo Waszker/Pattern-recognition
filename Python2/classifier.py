@@ -6,6 +6,7 @@ import progress_bar as pb
 import numpy as np
 from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
 
 def _get_number_sets(should_normalize=True):
     """
@@ -47,11 +48,20 @@ def _get_rf(parameters):
     return RandomForestClassifier(**parameters)
 
 
+def _get_knn(parameters):
+    if parameters is None:
+        parameters = {
+            'n_neighbours' : 5,
+        }
+    return KNeighborsClassifier(**parameters)
+
+
 def _get_proper_classifier(classifier_name, parameters=None):
     try:
         return {
             'svm' : _get_svm(parameters),
             'rf' : _get_rf(parameters),
+            'knn' : _get_knn(parameters),
         }[classifier_name]
     except KeyError:
         print "You must provide proper classifier name!"

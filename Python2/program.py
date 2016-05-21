@@ -30,3 +30,10 @@ if __name__ == "__main__":
             print "Starting RF identification 2"
             m1, m2 = c.get_identification2_results("rf", should_normalize=True, progress=progress)
             np.savetxt("Results/RF_identification_one_vs_one.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+        elif o == "-k":
+            print "Starting KNN identification 1"
+            m1, m2 = c.get_identification1_results("knn", should_normalize=True, progress=progress)
+            np.savetxt("Results/KNN_identification_one_vs_all.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+            print "Starting KNN identification 2"
+            m1, m2 = c.get_identification2_results("rf", should_normalize=True, progress=progress)
+            np.savetxt("Results/KNN_identification_one_vs_one.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
