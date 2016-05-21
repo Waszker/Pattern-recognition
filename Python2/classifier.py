@@ -51,7 +51,7 @@ def _get_rf(parameters):
 def _get_knn(parameters):
     if parameters is None:
         parameters = {
-            'n_neighbours' : 5,
+            'n_neighbors' : 5,
         }
     return KNeighborsClassifier(**parameters)
 
