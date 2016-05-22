@@ -205,7 +205,7 @@ def _get_prediction_vector(classifiers, point):
     return predictions
 
 
-def get_identification2_results(classifier_name, parameters=None, should_normalize=True, progress=False):
+def get_identification2_results(classifier_name, function, parameters=None, should_normalize=True, progress=False):
     """
     Runs identification test for classifier method trained with one-vs-others schema.
     If for every prediction "other" part identifies point, it's treated as foreign.
@@ -234,7 +234,7 @@ def get_identification2_results(classifier_name, parameters=None, should_normali
                     if big < predictions[l]:
                         best, big, sbig = l, predictions[l], big
                     elif sbig < predictions[l]: sbig = predictions[l]
-                if big > sbig + 1:
+                if function(big, sbig):
                     conf_matrix[i, best] += 1
                 else:
                     conf_matrix[i, 10] += 1
