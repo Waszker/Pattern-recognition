@@ -70,7 +70,7 @@ ul. Koszykowa 75, 00-662 Warsaw, Poland \and Faculty of Economics and Informatic
 
 \begin{abstract}
 \vspace{-12pt}
-The motivation of our study is to provide algorithmic approaches to distinguish proper patterns, from garbage and erroneous patterns in pattern recognition problem. The design assumption is to provide methods based on proper patterns only. In this way the framework that we propose is truly versatile and it can be adapted to any pattern recognition problem in an uncertain environment, where garbage patterns may appear. The proposed attempt to recognition with rejection combines known classifiers with geometric methods used for separating native patterns from foreign ones. The proposed methods are empirically verified on datasets of handwritten digits classification (native patterns) and handwritten letters of Latin alphabet (foreign patterns).
+The motivation of our study is to provide algorithmic approaches to distinguish proper patterns, from garbage and erroneous patterns in a~pattern recognition problem. The design assumption is to provide methods based on proper patterns only. In this way the approach that we propose is truly versatile and it can be adapted to any pattern recognition problem in an uncertain environment, where garbage patterns may appear. The proposed attempt to recognition with rejection combines known classifiers with geometric methods used for separating native patterns from foreign ones. Empirical verification has been conducted on datasets of handwritten digits classification (native patterns) and handwritten letters of Latin alphabet (foreign patterns).
 \vspace{-6pt}
 \keywords pattern recognition, classification, rejecting option, geometrical methods
 \vspace{-6pt}
@@ -86,17 +86,17 @@ The motivation of our study is to provide algorithmic approaches to distinguish 
   \label{sec:Introduction}
 \vspace{-3pt}
 
-The task of pattern recognition is a classical machine learning problem. On the input we pass a training dataset, consisting of labelled patterns belonging to $c$ classes. In the process we expect to form a model that would be able to assign correct labels to new patterns (new observations).
+The task of pattern recognition is a classical machine learning problem. As an input we pass a training dataset, consisting of labelled patterns belonging to $c$~classes. In the process we expect to form a model that assigns correct labels to new patterns (new observations).
 
-It is important to have in mind that patterns in their original form are some sort of signals, for instance images or voice recordings. Due to the fact that the original patterns are often collected using some signal-acquiring devices, we may encounter patterns that do not belong to any of proper classes. An example of such situation may happen, when the device that we use to acquire data has been automatically reset due to power outage and poor default calibration distorts the segmentation process. Another scenario may happen when we collect data in a noisy (out-of-lab) environment and apart from proper patterns there is a lot of unexpected residual elements. The problem with such patterns, say garbage patterns, is that we cannot predict their characteristic and therefore we cannot include information about them in the model training process.
+It is important to have in mind that patterns in their original form are often some sort of signal, for instance images or voice recordings. Due to the fact that the original patterns are often collected using some signal-acquiring devices, we may encounter patterns that do not belong to any of the proper classes. Such situation may happen, when the device that we have used to acquire data has been automatically reset due to power outage and poor default calibration distorts the segmentation process. Another scenario is when we collect data in a noisy (out of lab) environment and apart from proper patterns there are a lot of unexpected residual ones. The problem with such patterns, say -- garbage patterns, is that we cannot predict their characteristics and therefore we cannot include information about them in the model training process.
 
-The motivation of our study is to provide algorithmic approaches to distinguish proper patterns, that we call \textbf{native patterns} from garbage and erroneous patterns, that we call \textbf{foreign patterns}. The task that we describe we call \textbf{foreign patterns rejection}. The design assumption is to provide methods based on native patterns only. In this way the framework that we propose is truly versatile and it can be adapted to any pattern recognition problem in an uncertain environment, where foreign patterns may appear. 
+The motivation for our study is to provide algorithmic approaches used for distinguishing proper patterns, that we call \textit{native patterns} from garbage and erroneous patterns, that we call \textit{foreign patterns}. The task described in this paper we call \textit{foreign patterns rejection}. The design assumption is to provide methods based on native patterns only. In this way the framework that we propose is truly versatile and it can be adapted to any pattern recognition problem in an uncertain environment, where foreign patterns may appear. 
 
-In particular, the objectives of this paper are focused on designing methods for recognition with rejection and employ them to (a) distinguish native patterns from foreign ones and (b) improve classification quality of native patterns. The proposed attempt to recognition with rejection combines known classifiers with geometric methods used for separating native patterns from foreign ones. The proposed methods are empirically verified on datasets of handwritten digits (native patterns) and handwritten Latin letters (foreign patterns).
+The study focuses on designing methods for recognition with rejection and employs them to (a) distinguish native patterns from foreign ones and (b) improve classification quality of native patterns. A specific objective of this study is to examine the cooperation of various standard classifiers (SVMs, random forests and kNNs) with geometric methods used for rejection. We focus on the influence of rejection mechanisms on native patterns classification, i.e., improvement of Fine Accuracy measure. The proposed methods are empirically verified on datasets of handwritten digits (native patterns) and handwritten Latin letters (foreign patterns).
 
-We would like to emphasis that the novelty of the contribution presented in this paper is not in the methods that we use, but in how we employ them and on what we achieve with them. Our main purpose is to examine the cooperation of standard classifiers with geometric methods used for rejection, especially influence of rejection on native patterns classification, eg., improvement of Fine Accuracy. We also test the effectiveness of foreign patterns rejection and differences between used classifiers. %TODO koniecznie trzeba dodac wiecej opisu novelty/objective, dodamy na koncu jak bedzie calosc artykulu 
+We would like to emphasise that the novelty of the contribution presented in this paper is not in the methods that we use, but in how we employ them and on what we achieve with them.  %We also test the effectiveness of foreign patterns rejection and differences between used classifiers. %TODO koniecznie trzeba dodac wiecej opisu novelty/objective, dodamy na koncu jak bedzie calosc artykulu 
 
-The remainder of this paper is organized as follows. Section \ref{sec:Literature Review} presents the background knowledge on foreign elements detection present in the literature. Sections~\ref{sec:Ellipsoids} and~\ref{sec:Classifiers} presents the backbone algorithms, known in the literature, that we use to construct our models. Section \ref{sec:Methodology} presents the proposed approach. In Section \ref{sec:Experiments} we discuss a series of experiments. % based on images of handwritten digits. 
+The remainder of this paper is organized as follows. Section \ref{sec:Literature Review} presents the background knowledge on foreign patterns detection present in the literature. Sections~\ref{sec:Ellipsoids} and~\ref{sec:Classifiers} present the backbone algorithms, known in the literature, that we use to construct our models. Section \ref{sec:Methodology} presents the proposed approach. In Section \ref{sec:Experiments} we discuss a series of experiments. % based on images of handwritten digits. 
 Section \ref{sec:Conclusion} concludes the paper and highlights future research directions.
 %Lastly, Section \ref{sec:Conclusion} concludes the paper and highlights future research directions.
 
@@ -109,9 +109,9 @@ Section \ref{sec:Conclusion} concludes the paper and highlights future research 
   \label{sec:Preliminaries}
 \vspace{-6pt}
 
-Data collection and processing is a vital study problem across multiple domains of science. Along with a substantial automation of data acquiring we meet with difficulties that appear due to poor data quality. The research we present in this paper has been motivated by the issue of contaminated datasets, that apart from proper patterns contain garbage.
+Data collection and processing are vital study problems across multiple domains of science. Along with a substantial automation of data acquisition we face difficulties that appear due to poor data quality. The research we present in this paper has been motivated by the issue of contaminated datasets, that apart from proper patterns contain garbage.
 
-In this section we start discussion with review of relevant literature positions in machine learning that tackle the issue of contaminated datasets. Then, in order to provide a self-contained description of employed methods we present backbone literature algorithms applied. In what follows we present the Minimum Volume Enclosing Ellipsoid (MVEE) algorithm and a suite of 3 classification methods: Random Forests (RF), Support Vector Machines (SVM), and K-Nearest Neighbors algorithm (K-NN). Listed methods are employed in various configurations to native elements classification with foreign elements rejection. Our approach, based on those algorithms, is discussed in Section \ref{sec:Methodology}.
+In this section we start the discussion with a review of relevant literature positions in machine learning that tackle the issue of contaminated datasets. Then, in order to provide a self-contained description of the employed methods we present backbone literature algorithms applied. In what follows we present the Minimum Volume Enclosing Ellipsoid (MVEE) algorithm and a suite of three classification methods: Random Forests (RF), Support Vector Machines (SVM), and K-Nearest Neighbors algorithm (kNN). Listed methods are employed in various configurations to native patterns classification with foreign patterns rejection. Our approach, based on those algorithms, is discussed in Section \ref{sec:Methodology}.
 
 
 \vspace{-6pt}
@@ -121,159 +121,153 @@ In this section we start discussion with review of relevant literature positions
   \label{sec:Literature Review}
 \vspace{-3pt}
 
-The rejecting option in pattern recognition problem has gained rather weak attention despite its importance in practice. Also, there is a~relatively short list of papers raising the problem of rejecting foreign patterns, cf.~\cite{HomendaICAART2015} for a~short survey.% In this paper we study several attempts to classification with rejection of foreign elements. Scenarios for the discussed methods is based on well-known combinations of machine learning algorithms.  
-Here we only hint some issues present in literature neither with claiming to comprehensive coverage the subject, not giving deep background of methods employed in this study.
+The rejecting option in pattern recognition problem has gained a rather weak attention despite its importance in practice. Also, there is a~relatively short list of papers raising the problem of rejecting foreign patterns, cf.~\cite{HomendaICAART2015} for a~short survey. % In this paper we study several attempts to classification with rejection of foreign patterns. Scenarios for the discussed methods is based on well-known combinations of machine learning algorithms.  
+Here we only hint some issues present in literature. Due to space limitations we are neither able to comprehensively cover the subject, nor can we provide a~deep background of the methods employed in this study.
 
-Discussion on approaches related to foreign elements rejection should also mention one-class classification methods. Especially, there are two noteworthy examples: centroid-based methods and One-Class Support Vector Machine.
+Discussion on approaches related to foreign patterns rejection may start with one-class classification methods. Especially, there are two noteworthy examples: centroid-based methods and One-Class Support Vector Machine.
 
-Centroid-based methods rely on distinguishing cluster centres (centroids). Region reserved for proper elements is usually defined by the distance between centre and the furthest proper pattern.
+Centroid-based methods rely on distinguishing cluster centres (centroids). Region reserved for proper patterns is usually defined by the distance between centre and the furthest proper pattern.
 
-One-Class SVM has been introduced in \cite{ScholkopfWilliamsonSmola1992}. While "regular" SVM algorithm forms hyperplane separating two classes, the One-Class SVM separates data points from the entire feature space. Notably, the One-Class SVM provides a soft decision rules, as there is a $\nu$ parameter determining the fraction for outliers.  
+One-Class SVM has been introduced in \cite{ScholkopfWilliamsonSmola1992}. While ``regular'' SVM algorithm forms hyperplane separating two classes, the One-Class SVM separates data points from the entire feature space. Notably, the One-Class SVM provides a soft decision rules, as there is a $\nu$ parameter determining the fraction for outliers.  
 
-%It is worth to emphasize the analogy between outlier detection and foreign elements rejection. However, the motivation for those two problems remains different.
+%It is worth to emphasize the analogy between outlier detection and foreign patterns rejection. However, the motivation for those two problems remains different.
 
-When it comes to the study on foreign elements rejection, there is relatively few papers to review. This issue, in spite of its importance, remains somehow neglected. Among noteworthy studies one may mention rank-based methods, for instance ones described in \cite{BertolamiZimmermannBunke2006,BurgerKessentiniPaquet2011,EladHel-OrKeshet2001,HempstalkFrankWitten2008,SchemeHudginsEnglehart2013,TaxDuin2008,WangCasasent2009}.
+When it comes to the study on actual foreign patterns rejection, there are relatively few papers to review. This issue, in spite of its importance, remains somehow neglected. Among notable studies one may mention rank-based methods, for instance ones described in \cite{BertolamiZimmermannBunke2006,BurgerKessentiniPaquet2011,EladHel-OrKeshet2001,HempstalkFrankWitten2008,SchemeHudginsEnglehart2013,TaxDuin2008,WangCasasent2009}.
 In a nutshell, mentioned papers propose to attach confidence scores along with class labels. Rejection occurs when none of native class labels was assigned with a satisfying confidence.
 
-In our paper we assume an approach that in its background resembles more model-based outlier detection techniques than reported in the literature foreign elements rejection schemes. The objective of our study is to form a model that would be able to distinguish between the region reserved for native patterns and the remainder of the feature space. 
-
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-%\subsection{Backbone Algorithms}
-%  \label{sec:BackboneAlgorithms}
+%In our paper we assume an approach that in its background resembles more model-based outlier detection techniques than reported in the literature foreign patterns rejection schemes. The objective of our study is to form a model that would be able to distinguish between the region reserved for native patterns and the remainder of the feature space. 
 
 \vspace{-6pt}
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
-\subsection{Ellipsoids for Foreign Elements Rejection}
+\subsection{Ellipsoids for Foreign Patterns Rejection}
   \label{sec:Ellipsoids}
 \vspace{-3pt}
 
-%description of the idea of geometrical rejection
-%issues: location, size, parameters of those figures
+Both native and foreign patterns are represented with a vector of features extracted from the pattern of interest. Features are usually real numbers, therefore every pattern is a point in a multidimensional Euclidean space. What is more, we may propose a hypothesis that the set of native patterns belonging to the same class forms a~cluster in the feature space. Assuming that this assumption is correct, we may be able to find  minimal enclosing boxes for each native class.
 
-% Links used in this description
-% Link: http://geomalgorithms.com/a08-_containers.html
-% http://people.orie.cornell.edu/miketodd/TYKhach.pdf
-Both native and foreign patterns are represented by certain vector of features extracted from pattern of interest. Features are usually represented as real numbers, therefore every pattern is a point in multidimensional Euclidean space. What's more, if it turned out that the sets of those points representing symbols, each forms a tight cluster in space, it might be possible to find their respective minimal enclosing boxes.
+In computational geometry, the smallest enclosing box problem is that of finding the oriented minimum bounding box enclosing a~set of points. As opposed to convex hull, which is the most accurate point set container with smallest volume and which is enclosed by linear hyperplanes. Bounding boxes are far less complex. In many cases, when there is a need for computing convex hull and testing inclusions of other points, an approximation of such hull can be used, which helps in reducing time needed for computations, since most of alternative methods have lower construction and inclusion-testing complexities. Some of such approaches include using figures like hypercubes, diamonds, spheres or ellipsoids to successfully enclose given set of points.
 
-In computational geometry, the smallest enclosing box problem is that of finding the oriented minimum bounding box enclosing a~set of points. As opposed to convex hull, which is the most accurate point set container with smallest volume and which is enclosed by linear hyper planes. Bounding boxes are far less complex. In many cases, when there's a need for computing convex hull and testing inclusions of other points, an approximation of such hull can be used, which helps to reduce time needed for computations, since most of alternative methods have lower construction and inclusion-testing complexities. Some of such approaches include using figures like hypercubes, diamonds, spheres or ellipsoids to successfully enclose given set of points.
+When comparing highlights and drawbacks of each method from two perspectives: computational complexity and ease of point inclusion testing, ellipsoids seem to be a reasonable choice. Constructed ellipsoid is superior to the minimal cuboid in many ways. It is unique, gives better approximation of the object it contains and if $E(S)$ is the bounding ellipsoid for a point set $S$ with convex hull $C(S)$ in dimension \textit{d}, then: $\frac{1}{d}E(S) \subseteq C(S) \subseteq E(S)$, where scaling is with respect to the centre of $E(S)$.
 
-When comparing highlights and drawbacks of each method, from computational complexity perspective, ease of testing point inclusion and algorithm implementation point of view, ellipsoids seem to be a reasonable choice. Constructed ellipsoid is superior to the minimal cuboid in many ways. It is unique, gives better approximation of the object it contains and if $E(S)$ is the bounding ellipsoid for a point set $S$ with convex hull $C(S)$ in dimension \textit{d}, then:
-
-\[ 
-  \frac{1}{d}E(S) \subseteq C(S) \subseteq E(S) 
-\]
-where scaling is with respect to the center of $E(S)$.
-
-Adaptation of the smallest enclosing box problem to foreign elements rejection, or native elements identification, seems to be a very natural approach. The justification is fairly simple: if we enclose elements belonging to native classes, using for instance ellipsoids, formed geometrical model will discriminate a region of the features space reserved for native patterns between a region where we may encounter foreign patterns. With this premise in mind, let us present a detailed description of the MVEE algorithm.
+To sum up, adaptation of the smallest enclosing box problem to foreign patterns rejection, or native patterns identification, seems to be a very natural approach. The justification is fairly simple: if we enclose patterns belonging to native classes, using for instance ellipsoids, formed geometrical model will discriminate a region of the features space reserved for native patterns between a~region where we may encounter foreign patterns. With this premise in mind, let us present a detailed description of the MVEE algorithm.
 
 \vspace{-9pt}
 %-------------------------------------------------------------------
 \subsubsection{MVEE}
 
-% Links used:
-% http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=3A12C2006473A250D78C45B99B0BB3FA?doi=10.1.1.116.7691&rep=rep1&type=pdf
-% http://www.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid/content/MinVolEllipse.m
-% http://stackoverflow.com/questions/1768197/bounding-ellipse/1768440#1768440
-% http://stackoverflow.com/questions/14016898/port-matlab-bounding-ellipsoid-code-to-python
-
 problem is solved by several known algorithms that can be categorized as first-order, second-order interior-point or combination of the two. For small dimensions \textit{d}, the MVEE problem can be solved in \textit{O($d^{O(d)}$m)} operations using randomized or deterministic algorithms~\cite{MVEEMichaelTodd2005}. In this paper the algorithm based on Khachiyan solution is used.
 
-\noindent An ellipsoid in center form is given by 
+An ellipsoid in its centre form is given by the formula:
+\vspace{-6pt} 
 \[ 
+  \vspace{-3pt}
   E = \{x \in \mathbb{R}^{n} | (x - c)^{T}A(x-c) \le 1\} 
+  \vspace{-3pt}
 \] 
-where $c \in \mathbb{R}^{n}$ is the center of the ellipse E and $ A \in \mathbb{S}^{n}_{++}$. Points lying inside the ellipse satisfy 
-\[ 
-  (x_{i} - c)^{T}A(x_{i} - c) \le 1 + acceptance 
-\] 
-where acceptance parameter defines the error margin in determining point belonging to ellipsoid, i.e. it alows to enlarge the ellipsoid.% It can be imagined as testing point inclusion on enlarged ellipsoid.
+where $c \in \mathbb{R}^{n}$ is the centre of the ellipse E and $ A \in \mathbb{S}^{n}_{++}$ is a positive definite matrix. Points lying inside the ellipsoid satisfy $(x_{i} - c)^{T}A(x_{i} - c) \le 1 + \varepsilon$, where $\varepsilon$ parameter defines the error margin in determining point belonging to ellipsoid, i.e. it allows to enlarge the ellipsoid.% It can be imagined as testing point inclusion on enlarged ellipsoid.
 
-However, presented equation, is not a convex optimization problem and it has to be changed. It turns out that even then, the solution is not easily obtainable so the dual problem has to be found. For more precise and in depth solution description see \cite{MVEEMichaelTodd2005}. The main problem, when using ellipsoids as identifiers, lies in constructing them. Two main factors that decide about identification effectiveness are tolerance and acceptance parameters. Tolerance can be viewed as a threshold for ellipsoid construction accuracy. The lower the parameter is, the better minimal volume ellipsoid is created. On the other hand, even with good training set, there's a risk of including native elements that lie outside of created ellipsoid. To prevent such unwanted behaviour acceptance has been introduced. It defines threshold for point rejection for points lying outside of created figure.  
+However, constructing minimal volume bounding ellipsoid is not a convex optimization problem. It turns out that the solution is not easily obtainable so the dual problem has to be found. For a more precise and in depth solution description see \cite{MVEEMichaelTodd2005}. The main problem, when using ellipsoids as identifiers, lies in constructing them. Two main factors that decide about identification effectiveness are tolerance and acceptance parameters. Tolerance can be viewed as a threshold for ellipsoid construction accuracy. The lower the parameter is, the better minimal volume ellipsoid is created. On the other hand, even with a good training set, there is a risk of including native patterns that lie outside of the created ellipsoid. Acceptance parameter has been introduced to prevent such unwanted behaviour. It defines a threshold for point rejection for points lying outside of the created figure.  
 
-\vspace{-6pt}
+\vspace{-9pt}
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
-\subsection{Native Elements Classification}
+\subsection{Native Patterns Classification}
   \label{sec:Classifiers}
 \vspace{-3pt}
 
-The task of native elements classification relies on forming a model based on a labelled training dataset that assigns proper class labels to new problem instances. In a conventional scenario the training dataset consists of $m$ instances of $n$-dimensional feature vectors. Feature vectors are numerical descriptors of actual patterns. There is a multitude of classification algorithms, among which we have selected 3 different ones that are applied in our methods. It is necessary to emphasize that if someone would like to adapt our method to their own domain, those algorithms could be substituted with some other classification tools that may be more efficient in that domain. Without further ado let us move towards a brief description of the methods that we apply in our study.
+The task of native patterns classification relies on forming a~model based on a~labelled training dataset that assigns proper class labels to new patterns. There is a multitude of classification algorithms, among which we have selected three different ones that are used in our methods. It is necessary to emphasize that if someone would like to adapt our method to their own domain, those algorithms could be substituted with some other classification tools that may be more efficient in that domain. Without further ado let us move towards a brief description of the methods that we apply in our study.
 
 \vspace{-9pt}
 %-------------------------------------------------------------------
 \subsubsection{Support Vector Machines}
 
-% Used links:
-% http://scikit-learn.org/stable/modules/svm.html#svm-kernels
-are a set of supervised learning methods used for classification, regression and outliers detection. The SVM algorithm relies on a construction of hyperplane with a maximal margin that separates instances of two classes, \cite{CortesVapnik1995}. SVMs are effective in high dimensional spaces, memory efficient and quite versatile with many kernel functions that can be specified for the decision function. Although in some cases, where number of features is much greater than the number of samples, this method can give poor results, and is not cost-efficient when calculating probability estimates, it is well suited for problem presented in this paper. Given a set of training examples, each marked for belonging to one of two categories, an SVM training algorithm builds a model that assigns new examples into one category or the another. For multi-class classification "one-against-one" approach is used. For \textit{n} classes \textit{n} * (\textit{n} - 1) / 2 classifiers are constructed, each one is trained with data from two different classes. In our study we use decimal digits as classes. Therefore, the following 45 class-against-class SVMs are built: "0 vs 1", "0 vs 2", \dots "0 vs \textit{9}", "1 vs 2", \dots "1 vs 9",  \dots "\textit{8} vs \textit{9}". Classification decision is taken by voting method, i.e. a new pattern subjected to classification is counted to the most frequent class among these 45 binary classifiers. The case when two or more classes are most frequent, a second choice decision is made for actual classification. For instance, the closest pattern from most popular classes or minimal sum of distances from the processed pattern to ones from most popular classes may decide.  
+are a set of supervised learning methods used for classification, regression and outliers detection. The SVM algorithm relies on a~construction of hyperplane with a maximal margin that separates patterns of two classes, \cite{CortesVapnik1995}. SVMs are effective in high dimensional spaces, memory efficient, and quite versatile with many kernel functions that can be specified for the decision function. Although in some cases, where the number of features is much greater than the number of samples, this method can give poor results, and is not cost-efficient when calculating probability estimates. However, it is well suited for the problem presented in this paper. For a~multi-class classification ``one-against-one'' approach is used. For $c$ classes $c \cdot (c - 1) / 2$ classifiers are constructed, each one is trained with data from two different classes. In our study we use decimal digits as classes. Therefore, the following 45 class-against-class SVMs are built: ``0 vs 1'', ``0 vs 2'', \dots ``0 vs 9'', ``1 vs 2'', \dots ``1 vs 9'',  \dots ``8 vs 9''. Classification decision is taken by a voting method, i.e. a new pattern subjected to classification is counted to the most frequent class among these 45 binary classifiers. The case when two or more classes are most frequent, a second choice decision is made for actual classification. For instance, the closest pattern from most popular classes or minimal sum of distances from the processed pattern to ones from most popular classes may decide.  
 
 \vspace{-9pt}
 %-------------------------------------------------------------------
 \subsubsection{Random Forests}
 
-is a popular ensemble method. The main principle behind ensemble methods, in general, is that a group of "weak learners" can come together to form a "strong learner". In the Random Forests algorithm the weak learners are decision trees, which are used to predict the membership of objects in the classes. For vector of independent variables representing one object they calculate the value of the class the object belongs to by dividing value space into two or more subspaces. More precisely, an input data is entered at the top of the tree and as it traverses down the tree the data gets bucketed into smaller and smaller sets. In this method a large number of classification trees is generated. To grow each tree a random selection with replacement is made from the examples in the training set $D$. Those subsets $D_{k}$ are called bootstrap training sets. At each node $m$ variables are selected at random out of the set of input variables and the best split on these $m$ is used to split the node. After a relatively large number of trees is generated, they vote for the most popular class. Random Forests join few important benefits: (a) they are relatively prone to the influence of outliers, (b) they have an embedded ability of feature selection, (c) they are prone to missing values, and (d) they are prone to overfitting, \cite{Breiman2001}. 
+is a popular ensemble method. The main principle behind ensemble methods, in general, is that a group of ``weak learners'' can come together to form a ``strong learner''. In the Random Forests algorithm (\cite{Breiman2001}) the weak learners are decision trees, which are used to predict the membership of objects in the classes. For vector of independent variables representing one object they calculate the value of the class the object belongs to by dividing value space into two or more subspaces. More precisely, an input data is entered at the top of the tree and as it traverses down the tree the data gets bucketed into smaller and smaller sets. In this method a large number of classification trees is generated. To grow each tree a random selection with replacement is made from the examples in the training set $D$. Those subsets $D_{k}$ are called bootstrap training sets. At each node $m$ variables are selected at random out of the set of input variables and the best split on these $m$ is used to split the node. After a relatively large number of trees is generated, they vote for the most popular class. Random Forests join few important benefits: (a) they are relatively prone to the influence of outliers, (b) they have an embedded ability of feature selection, (c) they are prone to missing values, and (d) they are prone to overfitting. 
 
 \vspace{-9pt}
 %-------------------------------------------------------------------
-\subsubsection{K-Nearest Neighbors}
+\subsubsection{k-Nearest Neighbors}
 
-is an example of a "lazy classifier", where the entire training dataset is a model. There is no typical model building phase, hence the name. Class membership is determined based on class labels encountered in K closest observations in the training dataset, \cite{Altman1992}. In a typical application, the only choices the model designer has to make are selection of K and distance metrics. Both are often extracted with a help of a supervised learning procedures.
-%TODO te opisy mozna rozszerzyc - czy dodac to potem zdecydujemy
+is an example of a ``lazy classifier'', where the entire training dataset is the model. There is no typical model building phase, hence the name. Class membership is determined based on class labels encountered in $k$ closest observations in the training dataset, \cite{Altman1992}. In a typical application, the only choice that the model designer has to make is selection of $k$ and distance metrics. Both are often extracted with a help of  supervised learning procedures.
 
+\vspace{-6pt}
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \section{Methodology}
   \label{sec:Methodology}
   
-There are two approaches used to determine whether an object is rejected (classified as foreign). First one assumes the use of classification methods, which originally were not designed for elements rejection. The second approach involves using classifiers as the only classification tool, whereas rejecting is realized by ellipsoids. In this section let us present the second approach to foreign elements rejection.
+In general, there are two approaches that could be used to determine whether an object is rejected (classified as foreign). The first one assumes  use of classification methods, which originally were not designed for rejecting. In the second approach classifiers are used only as a classification tool, whereas rejecting is realized by other methods, for instance geometrical figures or unsupervised cluster analysis. In this paper let us focus on the latter.
 
+\vspace{-6pt}
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \subsection{External Global and Local Rejecting}
   \label{subsec:GlobalLocalRejecting}
+\vspace{-3pt}
 
-Whereas ellipsoids are good identifiers, they lack in element classification quality. This is caused by the fact that ellipsoids may overlap each other, which results in points belonging to both classes at the same time. Although this can be solved by calculating distance between those elements and each ellipsoid centre, or taking value of ellipsoid-inclusion equation as a classification measure, tests have proven that such approaches are more prone to errors than other classifiers mentioned in this paper. Taking into considerations both strengths and weaknesses of classifiers and identifiers, the combined solution has been prepared that employs both tools (classifiers and ellipsoids), making use of their advantages.
+While ellipsoids are good for identification of native patterns region, they lack in pattern classification quality. This is caused by the fact that ellipsoids may overlap with each other, which results in conflicts when we want to univocally assign class labels. Although this can be solved by calculating distance between those patterns and each ellipsoid's centre, or by taking the value of ellipsoid-inclusion equation as a classification measure, tests have proven that such approaches are more prone to errors than other ``standard'' classifiers mentioned in this paper. Considering both strengths and weaknesses of classifiers and identifiers (for native region identification), the combined solution has been prepared that employs both tools (classifiers and ellipsoids), making use of their advantages.
 
-Classifiers have high success rate but cannot distinguish between foreign elements and native ones. Contrary to that, ellipsoids tend to be better at rejecting foreign patterns, which makes them good at identifying points that should not be classified. The natural way of dealing with that problem would be to use ellipsoids as first-entry identifier that purifies input set by removing foreig patterns. The result of such rejection would be sent to the chosen classifier that would classify remaining native elements. Schema of this method is presented on the left part of Figure~\ref{fig:nativeforeignpatternsClassification1}
+Classifiers have high success rate, but cannot distinguish between foreign patterns and native ones. Contrary to that, ellipsoids tend to be better in rejecting foreign patterns, what makes them good at identifying patterns that should not be classified. The natural way of dealing with that problem would be to use ellipsoids as first-entry identifier that purifies input set by removing foreign patterns. The result of such rejection would be sent to the chosen classifier that would classify remaining native patterns. Due to the order of actions in this processing scenario we call this \textit{global rejection} scheme. Schema of this method is presented in the left part of Figure~\ref{fig:nativeforeignpatternsClassification1}. Please note that we show there a~case of imperfect rejection/classification task, i.e. rejected and misclassified native patterns, as this is typically the case in real-world problems.
 
 
-\begin{figure}[!h]
+\begin{figure}[!t]
+\vspace{-12pt}
   \centering
   \includegraphics[width=0.47\textwidth]{_Figures/Classification1.jpg}\hspace{12pt}
 	\includegraphics[width=0.47\textwidth]{_Figures/Classification2.jpg}
-  \caption{Recognition with ellipsoids employed for rejecting: ellipsoids as identifiers reject foreign elements (left part) and ellipsoids as correctors (right part)}
+\vspace{-6pt}
+  \caption{Ellipsoids employed for rejecting: global rejection (left part) and local rejecting (right part). Questions marks (?) stand for foreign patterns, circles, squares, triangles and pentagons -- for native patterns.}
 \label{fig:nativeforeignpatternsClassification1}
+\vspace{-6pt}
 \end{figure}
 
-Another way of using ellipsoids as identifiers is to treat them as correctors. That means there's no need to remove foreign elements from the set before classification, as rejection is done later. After all elements have been classified, identification for each class is done by using class-corresponding ellipsoid. There's a possibility that some foreign elements will be assigned to a class with a corresponding ellipsoid that will reject them. This is somewhat different from previous approach because elements can be rejected even if there is an ellipsoid that would pass inclusion test. The schema can be seen on the right part of Figure~\ref{fig:nativeforeignpatternsClassification1}
+Another way of using ellipsoids as identifiers is to treat them as correction tools for an already classified dataset. This means that foreign patterns are not removed before classification. Instead, class-corresponding ellipsoid are employed to reject foreign patterns classified to the corresponding class. %There is a~good chance that some foreign patterns will be assigned to a class with a~corresponding ellipsoid that will be able to reject them. 
+This is somewhat different from the previous approach because patterns can be rejected even if there is an ellipsoid that would pass inclusion test. The schema of this classification/rejection scenario can be seen in the right side of Figure~\ref{fig:nativeforeignpatternsClassification1}. Because rejection occurs at the local level of each native class we call this approach a \textit{local rejection} scheme.
 
-%\begin{figure}[!h]
-%	\centering
-%	\includegraphics[width=0.5\textwidth]{_Figures/Classification2.jpg}
-%	\caption{Ellipsoids as correctors. Classifiers try to classify foreign elements that will be rejected later}
-%	\label{fig:nativeforeignpatternsClassification2}
-%\end{figure}
-
-
+\vspace{-6pt}
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \subsection{Quality Evaluation}
+\label{subsec:QualityEvaluation}
+\vspace{-3pt}
 
-In order to evaluate the quality of proposed methods the patterns from the following groups are counted:
+In order to evaluate the quality of the proposed methods patterns from the following groups are counted:
 \begin{itemize}
-\item CC  (Correctly Classified) - correctly classified patterns, i.e. native patterns classified as native ones with the correct class,
-\item TP  (True Positives) - native patterns classified as native (no matter, into which native class),
-\item FN  (False Negatives) - native patterns incorrectly classified as foreign,
-\item FP  (False Positives) - foreign patterns incorrectly classified as native,
-\item TN  (True Negatives) - foreign patterns correctly classified as foreign.
+\vspace{-6pt}
+  \item CC  (Correctly Classified) -- the number of correctly classified patterns, i.e. native patterns classified as native ones with correct class label,
+  \item TP  (True Positives) -- native patterns classified as native (no matter, into which native class),
+  \item FN  (False Negatives) -- native patterns incorrectly classified as foreign,
+  \item FP  (False Positives) -- foreign patterns incorrectly accounted as native,
+  \item TN  (True Negatives) -- foreign patterns correctly accounted as foreign.
 \end{itemize}
-These numbers are then used to form measures reflecting specific aspects of classification and rejection, cf. Table~\ref{tab:measures}. Notions that we use are well-known in the domain of pattern recognition. We have included a detailed description of those measures in our previous paper \cite{HomendaICAART2015}.
-\begin{table}[!htbp]
+
+These numbers are then used to form measures reflecting specific aspects of classification and rejection, cf. Table~\ref{tab:measures}. Notions that we use are well-known in the domain of pattern recognition, cf.~\cite{HomendaICAART2015}:
+\begin{itemize}
+\vspace{-6pt}
+  \item \emph{Strict Accuracy} measures classifier's performance. It is the ratio of the numbers of all \emph{correctly classified} patterns to all ones being processed.
+  \item \emph{Accuracy} is a ``softer'' characteristic derived from the Strict Accuracy. Accuracy describes the ability to distinguish between native and foreign patterns. The difference is that we do not require that the native patterns are labelled with their proper class label.
+  \item \emph{Native Precision} is the ratio of the number of not rejected native patterns to the number of all not rejected patterns (i.e. all not rejected native and foreign ones). The higher the value of this measure, the better ability to distinguish foreign patterns from native ones. Native Precision does not evaluate how effective identification of native patterns is.
+  \item \emph{Native Sensitivity} is the ratio of the number of not rejected native patterns to all native ones. The higher the value of Native Sensitivity, the more effective identification of native patterns. Unlike Native Precision, this measure does not evaluate separation between native and foreign patterns.
+  \item \emph{Strict Native Sensitivity} takes only correctly classified native patterns and does not consider native patterns, which are not rejected and assigned to incorrect classes, unlike Native Sensitivity, where all not rejected native patterns are taken into account.
+  \item \emph{Fine Accuracy} is the ratio of the number of native patterns classified to correct classes, i.e. assigned to their respective classes, to the number of all native patterns not rejected. This measure conveys how precise is correct classification of not rejected patterns.
+  \item \emph{Foreign Precision} corresponds to Native Precision, i.e. it is the ratio of the number of rejected foreign patterns  to the number of all rejected elements.
+  \item \emph{Foreign Sensitivity} corresponds to Native Sensitivity. %, i.e. it is the ratio of rejected foreign patterns to all foreign patterns.
+  \item  Precision and Sensitivity are complementary and there exists yet another characteristic that combines them: the \textit{F--measure}. It is there to express the balance between precision and sensitivity since these two measures affect each other. Increasing sensitivity can cause a~drop in precision since, along with correctly classified patterns, there might be more incorrectly classified.
+\vspace{-12pt}
+\end{itemize}
+
+\begin{table}[!tbp]
+\vspace{-6pt}
 \centering
-\caption{Quality measures for classification and rejection}
+\caption{Quality measures for classification and rejection.}
+\vspace{-6pt}
 {\footnotesize
 \begin{tabular}{rclrcl}
   $\textnormal{Native Precision}$ &$=$& $\displaystyle\frac{\textnormal{TP}}{\textnormal{TP+FP}}$ & 
@@ -286,45 +280,39 @@ These numbers are then used to form measures reflecting specific aspects of clas
   $\textnormal{Fine Accuracy}$ &$=$& $\displaystyle\frac{\textnormal{CC}}{\textnormal{TP}}$ \\
   &&&&&\vspace{-3pt}\\
   $\textnormal{Foreign Sensitivity}$ &$=$& $\displaystyle\frac{\textnormal{TN}}{\textnormal{TN+FP}}$ &
-  $\hspace{18pt}\textnormal{Strict Native Senssitivity}$ &$=$& $\displaystyle\frac{\textnormal{CC}}{\textnormal{TP+FN}}$\\
+  $\hspace{18pt}\textnormal{Strict Native Sensitivity}$ &$=$& $\displaystyle\frac{\textnormal{CC}}{\textnormal{TP+FN}}$\\
   &&&&&\vspace{-3pt}\\
-  \multicolumn{6}{c}{$\textnormal{F--measure}=2\cdot\displaystyle\frac{\textnormal{Precision}\cdot\textnormal{Sensitivity}}{\textnormal{Precision}+\textnormal{Sensitivity}}$}\\
+  \multicolumn{6}{c}{$\textnormal{F--measure}=2\cdot\displaystyle\frac{\textnormal{Precision}\cdot\textnormal{Sensitivity}}{\textnormal{Precision}+\textnormal{Sensitivity}}$}
 \end{tabular}
 }
 \label{tab:measures}
-\vspace{-6pt}
+\vspace{-12pt}
 \end{table}
 
-\begin{itemize}
-  \item \emph{Strict Accuracy} measures classifier's performance. It is the ratio of the number of all \emph{correctly classified} patterns to the number of all patterns being processed.
-  \item \emph{Accuracy} is a "softer" characteristic derived from the Strict Accuracy. Accuracy describes the ability to distinguish between native and foreign patterns. The difference is that we do not require that the native patterns are labelled with their proper class label.
-  \item \emph{Native Precision} is the ratio of the number of not rejected native patterns to the number of all not rejected patterns (i.e. all not rejected native and foreign ones). The higher the value of this measure, the better ability to distinguish foreign elements from native ones. Native Precision does not evaluate how effective identification of native elements is.
-  \item \emph{Native Sensitivity} is the ratio of the number of not rejected native patterns to all native ones. The higher the value of Native Sensitivity, the more effective identification of native elements. Unlike the Native Precision, this measure does not evaluate the effectiveness of separation between native and foreign elements.
-  \item \emph{Strict Native Sensitivity} takes only correctly classified native patterns and does not consider native patterns, which are not rejected and assigned to incorrect classes, unlike Native Sensitivity, where all not rejected native patterns are taken into account.
-  \item \emph{Fine Accuracy} is the ratio of the number of native patterns classified to correct classes, i.e. assigned to their respective classes, to the number of all native patterns not rejected. This measure conveys how precise is correct classification of not rejected patterns.
-  \item \emph{Foreign Precision} corresponds to Native Precision.
-  \item \emph{Foreign Sensitivity} corresponds to Native Sensitivity.
-  \item  Precision and Sensitivity are complementary and there exists yet another characteristic that combines them: the \textit{F--measure}. It is there to express the balance between precision and sensitivity since these two measures affect each other. Increasing sensitivity can cause a~drop in precision since, along with correctly classified elements, there might be more incorrectly classified.
-\end{itemize}
 
-
+\vspace{-12pt}
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \section{Experiments}
   \label{sec:Experiments}
+\vspace{-3pt}
 
-In this section we move towards description of a series of experiments where we apply rejection strategies discussed theoretically in Sections~\ref{subsec:GlobalLocalRejecting}. In what follows we describe the datasets, experiments' settings and the results. 
+In this section we move towards description of a series of experiments where we apply rejection strategies discussed theoretically in Sections~\ref{subsec:GlobalLocalRejecting}. In what follows we describe datasets, experiments' settings, and results. 
 
+\vspace{-6pt}
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \subsection{Datasets}
+\vspace{-3pt}
 
-The Experiments' section is devoted to a study on handwritten digits recognition and handwritten letters rejection. 
+We present a study on handwritten digits recognition and handwritten letters (from the Latin alphabet) rejection. In other words, native patterns set is made of digits (it is a ten class problem), while foreign patterns are 26 different handwritten letters. The justification to assume such foreign dataset for testing purposes is that appearance of other real-world symbols, but not belonging to any proper class, is a common issue in a~character recognition problem. 
 
-Foreign patterns are usually unknown. In this study as foreign patterns we assume a dataset of handwritten letters from the Latin alphabet. The justification to assume such foreign dataset for testing purposes is that appearance of other real symbols, not belonging to any proper class, is a common issue in a character recognition problem. 
+We would like to stress again, that foreign patterns do not participate in the model building phase. The entire scheme is based on native patterns only. Handwritten letters are used only for rejection mechanisms quality evaluation. Samples of processed patterns are displayed in Figure \ref{fig:nativeforeignpatterns}.
 
-We would like to stress again, that foreign patterns do not participate in model building phase. The entire scheme is based on native patterns only. Handwritten letters are used only for rejection mechanisms quality evaluation. Samples of processed patterns are displayed in Figure \ref{fig:nativeforeignpatterns}.
+The native training dataset consisted of 10,000 handwritten digits with approximately 1,000 observations in each class taken from publicly available MNIST database, \cite{LeCunCortesBurges}. We split each class in proportion ca. 7:3 and as a result we got two sets. The first one includes 6,996 patterns and is used for training. The second set, the test set, contains 3,004 patterns. The dataset of foreign patterns contains 26,383 handwritten Latin letters, ca. 1,000 letters in each class. This dataset was created by 16 students, writing about 70 copies of each letter.
+
+All patterns were normalized and feature vectors comprising of 106 numerical features were created. Examples of features are: maximum/position of maximum values of projections, histograms of projections, transitions, offsets; raw moments, central moments, Euler numbers etc.  The best first search for the optimal feature subset has been performed using FSelector R package, \cite{Romanski} and then analysis of variance was employed to select good features. The final feature vector contained 24 elements. We considered features standardization but the training data is sufficiently consistent (there are no outliers), so we normalized those features to bring linearly all values into the range [0,1]. 
 
 \begin{figure}[!tbp]
 \vspace{-6pt}
@@ -337,43 +325,30 @@ We would like to stress again, that foreign patterns do not participate in model
 \vspace{-12pt}
 \end{figure}
 
-The training dataset was made of 10,000 handwritten digits with approximately 1,000 observations in each class taken from publicly available MNIST database, \cite{LeCunCortesBurges}. We split each class in proportion ca. 7:3 and in a process we got two sets. The first one includes 6,996 patterns and is used for training. The second set, the test set, contains 3,004 patterns. The dataset of foreign patterns contains 26,383 handwritten Latin letters, ca. 1,000 letters in each class. This dataset was created by 16 students, writing about 70 copies of each letter.
-
-All patterns were normalized and feature vectors comprising of 106 numerical features were created. Examples of features are: maximum/position of maximum values of projections, histograms of projections, transitions, offsets; raw moments, central moments, Euler numbers etc.  The best first search for the optimal feature subset has been performed using FSelector R package, \cite{Romanski} and then ANOVA was employed to select independent features. The final feature vector contained 24 features. We considered features standardization but the training data is sufficiently consistent (there is no outliers), so we normalized those features to bring linearly all values into the range [0,1]. 
-
-%Best first search is one of popular wrapper feature selection methods. Wrapper methods select multiple subsets of features, for all those subsets they train a classifier (in general: a model) and they select this subset for which numerical quality was the best. In our particular case as quality evaluator we used a 10-class SVM. A commonly known advantage of wrapper feature selection methods is that the subsets they select usually provide satisfying performance. The disadvantage is their computational complexity. The best first search for the optimal feature subset has been performed using FSelector R package, \cite{Romanski}. The final feature vector contained 24 features. We considered features standardization but the training data is sufficiently consistent (there is no outliers), so we normalized those features to bring linearly all values into the range [0,1].
-%\begin{equation}\label{eqn:normalization}
-%    X'_{i,j} = \frac{X_{i,j} - Min_{j}}{Max_{j}-Min_{j}}
-%\end{equation}
-%where $X_{i,j}$ is the value of $j^{th}$ feature in $i^{th}$ observation, $Min_{j}$ and $Max_{j}$ are respectively the minimum and maxium value of $j^{th}$ feature.
-
-
 \vspace{-6pt}
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \subsection{Experimental Settings}
 \vspace{-3pt}
 
-Solutions presented in this paper has been implemented in Python programming language, using scientific libraries \cite{MatLab,NumPy,Scikit}. %- NumPy\footnote{NumPy website: http://www.numpy.org/}, Scikit\footnote{Scikit website: http://scikit-learn.org/stable/}. Implementations of classifiers described in this article have been imported from Scikit library \cite{Scikit}
-%{ScikitSVM,ScikitRF,ScikitKNN}.\\
-The MVEE algorithm, available as MATLAB code \footnote{http://www.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid/content/MinVolEllipse.m} has been rewritten in Python language, using NumPy library for matrix representation and operations. Several tests have been performed in order to find best suited method parameters for both classifiers and identifiers. For finding those values the Grid Search~\cite{Scikit} %\footnote{Link to Python implementation: http://scikit-learn.org/stable/modules/grid\_search.html} 
-has been used for SVM and Random Forests. Ellipsoids and KNN methods had their values assigned manually. 
+Solutions presented in this paper have been implemented in Python programming language, using scientific libraries \cite{MatLab,NumPy,Scikit}. The MVEE algorithm, available as MATLAB code  %\footnote{http://www.mathworks.com/matlabcentral/fileexchange/9542-minimum-volume-enclosing-ellipsoid/content/MinVolEllipse.m} 
+has been rewritten in Python language, using NumPy library for matrix representation and operations. Several tests have been performed in order to find best suited method parameters for both classifiers and identifiers. For finding those values the Grid Search~\cite{Scikit} %\footnote{Link to Python implementation: http://scikit-learn.org/stable/modules/grid\_search.html} 
+has been used for SVM and RF. % \textcolor{red}{Ellipsoids and kNN methods had their values assigned manually. }
 
-\vspace{-6pt}
+\vspace{-9pt}
 %-------------------------------------------------------------------
-\subsubsection{MVEE method parameters}
-Each ellipsoid was created and used with two parameters: tolerance and acceptance. The tolerance argument was used during creation phase, as "accuracy measurement". Lower value means that created enclosing figure is more fitted to the construction set. Acceptance parameter defines how far can point lie outside the ellipsoid to still be identified as belonging to it. In other words, it treats enclosing ellipsoid as being bigger than it really is.
-Parameters tests involved computing effectiveness of MVEE algorithm for certain tolerance and acceptance values. We tested values from such ranges:\vspace{-6pt}
+\subsubsection{MVEE parameters.}
+Each ellipsoid was created and used with two parameters: tolerance and acceptance. The tolerance argument was used during creation phase, as ``accuracy measurement''. Lower value means that created enclosing figure is more fitted to the construction set. Acceptance parameter defines how far can a point lie outside the ellipsoid to still be identified as belonging to it. In other words, it treats enclosing ellipsoid as being bigger than it really is. Parameters tests involved computing effectiveness of MVEE algorithm for certain tolerance and acceptance values. We tested values from such ranges:\vspace{-6pt}
 \begin{itemize}
 	\item tolerance = [0.5, 0.2, 0.1, 0.01]
 	\item accuracy = [0.1, 0.01, 0.001, 0.0005]
 \end{itemize} 
-The results revealed that for given training and test sets the best parameter combination was tolerance=0.5 and accuracy=0.1 and those values were used in final, combined method described later in this document.
+The results revealed that for the given training and test sets the best parameter combination was tolerance=0.5 and accuracy=0.1 and those values were used in the final, combined method described later in this document.
 
-\vspace{-6pt}
+\vspace{-9pt}
 %-------------------------------------------------------------------
-\subsubsection{SVM method parameters}
-SVM method available in Scikit package offers a few built-in kernels that were used during computations: radial basis function and polynomial. Additionally, there are two more parameters that were tested: C (described as penalty parameter C of the error term), and $\gamma$ (known as kernel coefficient). Values that were tested:\vspace{-6pt}
+\subsubsection{SVM parameters.}
+SVM method available in the Scikit package offers a few built-in kernels that were used during computations: radial basis function and polynomial. Additionally, there are two more parameters that were tested: C (described as penalty parameter C of the error term), and $\gamma$ (known as kernel coefficient). Values that were tested:\vspace{-6pt}
 \begin{itemize}
 	\item kernel = ['rbf', 'poly']
 	\item C = [1, 2, 4, 5, 16]
@@ -381,15 +356,188 @@ SVM method available in Scikit package offers a few built-in kernels that were u
 \end{itemize}
 The best found combination of those parameters used rbf kernel along with C=8 and $\gamma = 2^{-1}$ values.
 
-\vspace{-6pt}
+\vspace{-9pt}
 %-------------------------------------------------------------------
-\subsubsection{Random Forests method parameters}
-Scikit library was used to test random forests. Random forests with the following number of trees were tested: 1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150. The best number of trees to build the forest is 100.
+\subsubsection{Random Forests parameters.}
+The Scikit library was used to test random forests. Random forests with the following number of trees were tested: 1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150. It turned out that the best number of trees to build the forest was 100.
+
+\vspace{-9pt}
+%-------------------------------------------------------------------
+\subsubsection{kNN parameters.}
+%\textcolor{red}{The package was used for the k-NN classifier testing.}  
+We tested the following values of $k$ (the number of neighbours): 1, 2, 3, 4, 5, 10, 20, 30, 40, 50. The best found value of $k$ was four. There is also one parameter -- metric, but we use the standard Euclidean metric.
+%TODO jaki pakiet?
+
+\vspace{-9pt}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%\subsection{Concept of Classification with Rejection}
+\subsection{Results of Experiments}
+\vspace{-3pt}
+
+In this section we present the results of our experiments. We use quality measures presented in Section~\ref{subsec:QualityEvaluation}. We investigate classification quality, rejection quality and rejection's impact on classification quality. We compare two scenarios: global (rejection on is the entire dataset) and local (rejection mechanism is separate for each native class). 
+
+\vspace{-12pt}
+%-------------------------------------------------------------------
+\subsubsection{Influence of Rejection on Native Patterns Classification}
+Adding a~rejection mechanism, ideally, may be a~method for improvement of classification rates. It would be perceived as a~positive side of the rejection mechanism, if it would be able to reject those native patterns, which would be incorrectly classified when there is no rejection mechanism at all. 
+
+\begin{table}[!b]
+\vspace{-12pt}
+\centering
+\caption{Classification with random forests, svms and knn and rejection with ellipsoids on the set of native patterns: no rejection vs. local and global rejections. Notice that all three measures turn to the same proportion CC/TP for no rejection mode.}
+\vspace{-6pt}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1}
+{\footnotesize
+\begin{tabular}{|r||c|c|c||c|c|c||c|c|c|}
+\hline
+& \multicolumn{3}{c||}{No rejection} & \multicolumn{3}{c||}{Global rejection} & \multicolumn{3}{c|}{Local rejection}\\
+\hline
+  Basic Classifier & $\;\;$RF$\;\;$ & $\,$SVM$\,$ & kNN & $\;\;$RF$\;\;$ & $\,$SVM$\,$ & kNN & $\;\;$RF$\;\;$ & $\,$SVM$\,$ & kNN  \\
+  \hline
+  Data Set & \multicolumn{9}{c|}{Native Patterns, Train Set} \\
+\hline
+Strict Accuracy     & $1$ & $0.985$ & $0.955$ & $0.941$ & $0.938$ & $0.936$ & $0.942$ & $0.942$ & $0.942$ \\
+Fine Accuracy       & $1$ & $0.985$ & $0.955$ & $1$     & $0.987$ & $0.972$ & $1$ & $0.989$ & $0.984$ \\
+Strict Native Sens. & $1$ & $0.985$ & $0.955$ & $0.879$ & $0.852$ & $0.854$ & $0.864$ & $0.857$ & $0.845$ \\
+\hline
+Data Set & \multicolumn{9}{c|}{Native Patterns, Test Set} \\
+\hline
+Strict Accuracy  & $0.952$ & $0.966$ & $0.930$ & $0.946$ & $0.946$ & $0.944$ & $0.951$ & $0.952$ & $0.953$ \\
+Fine Accuracy       & $0.952$ & $0.966$ & $0.930$ & $0.972$ & $0.982$ & $0.959$ & $0.977$ & $0.985$ & $0.976$ \\
+Strict Native Sens. & $0.952$ & $0.966$ & $0.930$ & $0.842$ & $0.852$ & $0.831$ & $0.837$ & $0.845$ & $0.825$ \\
+\hline
+\end{tabular}
+}
+\vspace{-6pt}
+\label{tab:NativeNoForeign}
+\end{table}
+
+Trained models partially fulfill this wish. Conducted tests, reported in Table \ref{tab:NativeNoForeign}, show that Fine Accuracy improved for both local and global rejection schemes and for all classifiers. This means that we have a better recognition rate (the proportion of correctly classified patterns) in the data that was accounted as native. However, we have to notice that both rejection mechanisms rejected some native patterns. Hence, Strict Accuracy and Strict Native Sensitivity are slightly higher when we do not have any rejection mechanism.
+
+Results indicate that performing pattern rejection after their initial classification (the local rejection scheme), brings better results than using the global scheme. This could be explained by the fact that in the local rejection scheme we use one ellipsoid per each class and we apply those ellipsoids after classification. In contrast, in the global scheme we have a~joint set of ellipsoids that we apply to the entire dataset. In the local rejection scenario native patterns identification regions are applied individually to each subset obtained from the classifier. As a~result there is a chance that classification would contribute to foreign patterns filtration. The same conclusion, about superiority of local rejection over global one concerns strict classification error ratios.
+
+When comparing the overall quality achieved by mechanisms based on different classifiers we see a slight advantage of SVM. 
+
+\vspace{-12pt}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\subsubsection{Separating Letters from Digits}
+Figure \ref{fig:Measures} presents rejection results. We compare various quality measures for models constructed based on random forests, SVM, and kNN with ellipsoids for the global and the local rejection schemes. 
+
+\begin{figure}[!t]
+\vspace{-12pt}
+  \centering
+  \includegraphics[width=\textwidth]{_Figures/Measures_BW.png}\\
+  \caption{Quality evaluation for global and local rejection schemes realized with ellipsoids with different classifiers: random forests, SVMs, and kNNs.}
+\label{fig:Measures}
+\vspace{-12pt}
+\end{figure}
+
+First, let us mention that for the global rejection all rejection rates are the same for all classifiers. This is due to the specificity of this model, where rejection occurs first, so classification procedure does not modify the content of the set subjected to rejection. However, the global approach turned out to be slightly worse than the local approach. 
+
+Results show that in the local rejection model all classifiers combined with ellipsoids behave well and provide similar quality of rejection.   
 
 \vspace{-6pt}
 %-------------------------------------------------------------------
-\subsubsection{KNN method parameters}
-The package was used for the k-NN classifier testing. We tested values of K (number of neighbors) such as: 1, 2, 3, 4, 5, 10, 20, 30, 40, 50. The best found value of k is 4. There is also one parameter - metric, but we use default value, which is standard Euclidean metric.
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Conclusions}
+  \label{sec:Conclusion}
+\vspace{-3pt}
+
+Enhancing classifiers' ability to classify objects by coupling them with ellipsoids for foreign patterns rejection has proven to yield good results. Conducted experiment on handwritten digits contaminated with handwritten letters showed that  the local rejection scenario with fine-grained rejection ellipsoids one per each native class perform better than the global approach with a single, but less fine-grained rejection mechanism. We also report that the differences in classification ratios in the local rejection model coupled with different classifiers turned out to be very slight. SVM turned out to be the best, and its advantage is visible when we evaluate the rate of native patterns that were rejected that wanted to reject, because otherwise they would have been classified into incorrect class.
+
+We are aware that to truly confirm obtained results, test should be repeated on different data sets. Described in this paper set consisting of letters and digits, although being very large, might not match wide spectrum of problems.  %consist of enough distinguishable classes.
+
+Let us conclude this paper by saying that various adaptations of the idea of foreign patterns rejection have a vital role in modern machine learning. It is needless to mention areas such as text mining, fraud detection, or medical diagnosis systems where we deal with various reincarnations of the foreign patterns. From this perspective we believe that the study in this direction is worth further efforts.
+
+\vspace{-6pt}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section*{Acknowledgment}
+\vspace{-5pt}
+The research is partially supported  by the National Science Center, grant No 2012/07/B/ST6/01501, decision no \mbox{DEC-2012/07/B/ST6/01501}.
+
+
+\vspace{-6pt}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{thebibliography}{19}
+\vspace{-3pt}
+
+\bibitem{Altman1992}
+Altman N. S., \emph{An introduction to kernel and nearest-neighbor nonparametric regression}. The American Statistician 46 (3), 1992, pp. 175-185.
+
+\bibitem{BertolamiZimmermannBunke2006}
+Bertolami, R., Zimmermann, M., Bunke, H., \emph{Rejection strategies for offline handwritten text line recognition}, Pattern Recogn. Letters 27(16), 2006, pp. 2005-2012.
+
+\bibitem{Breiman2001}
+Breiman, L., \emph{Random Forests}. Machine Learning 45 (1), 2001, pp. 5-32. 
+
+\bibitem{BurgerKessentiniPaquet2011}
+Burger, T., Kessentini, Y., Paquet, T., \emph{Dempster-Shafer based rejection strategy for handwritten word recognition}, Proc. of the 2011 International Conference on Document Analysis and Recognition, 2011, pp. 528-532.
+
+\bibitem{CortesVapnik1995}
+Cortes, C., Vapnik, V., \emph{Support-vector networks}. Machine Learning 20 (3), 1995, pp. 273-297.
+ 
+\bibitem{EladHel-OrKeshet2001}
+Elad, M., Hel-Or, Y., Keshet, R., \emph{Pattern detection using maximal rejection classiffier}, C. Arcelli et al. (Eds.): Proc. International Workshop on Visual Form, Lecture Notes on Computer Science 2059, 2001, pp. 514-524.
+ 
+\bibitem{HempstalkFrankWitten2008}
+Hempstalk, K. et al., \emph{One-class classification by combining density and class probability estimation}, Machine Learn. and Knowl. Disc. in Databases, 2008, pp. 505-519.
+
+\bibitem{HomendaICAART2015}
+Homenda, W., Jastrzebska, A., Pedrycz, W., \emph{Rejecting Foreign Elements in Pattern Recognition Problem. Reinforced Training of Rejection Level}, in: Proc. of ICAART 2015, 2015, pp. 90-99.
+
+%\bibitem{IglewiczHoaglin1993}
+%Iglewicz B., Hoaglin D., \emph{How to Detect and Handle Outliers},  Milwaukee: ASOC Quality Press, 1993.
+
+\bibitem{LeCunCortesBurges}
+LeCun, Y., Cortes, C., and Burges, C., \emph{The MNIST database of handwritten digits}, in: http://yann.lecun.com/exdb/mnist.
+
+\bibitem{Romanski}
+Romanski, P., Kotthoff, L., \emph{Package FSelector}, http://cran.r-project.org/web/packages/FSelector/FSelector.pdf
+
+\bibitem{SchemeHudginsEnglehart2013}
+Scheme, E. J., Hudgins, B. S., Englehart, K. B., \emph{Confidence-based rejection for improved pattern recognition myoelectric control}, IEEE Trans. Biomed. Eng. 60(6), 2013, pp. 1563-1570.
+
+\bibitem{ScholkopfWilliamsonSmola1992}
+Scholkopf, B., Williamson, R., Smola, A., Shawe-Taylort, J., Platt, J., \emph{Support Vector Method for Novelty Detection}, Advances in Neural Information Processing Systems 12, 1992, pp. 582-588. 
+
+\bibitem{TaxDuin2008}
+Tax, D. M. J., Duin, R. P. W., \emph{Growing a multi-class classifier with a reject option}, Pattern Recognition Letters 29, 2008, pp. 1565-1570.
+
+\bibitem{MVEEMichaelTodd2005}
+Todd, M. J., Yildirim, E. A., \emph{On Khachiyan's Algorithm for the Computation of Minimum Volume Enclosing Ellipsoids}, September 30, 2005, article link: http://people.orie.cornell.edu/miketodd/TYKhach.pdf
+
+\bibitem{WangCasasent2009}
+Wang, Y., Casasent, D., \emph{A Support Vector Hierarchical Method for multi-class classification and rejection}, Proc. of Int. Joint Conf. on Neural Networks, 2009, pp. 3281-3288.
+
+\bibitem{MatLab}
+http://www.mathworks.com/
+
+\bibitem{NumPy}
+http://www.numpy.org/
+
+\bibitem{Scikit}
+http://scikit-learn.org/stable/
+
+%\bibitem{ScikitSVM}
+%http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html [2016, 3 April]
+	
+%\bibitem{ScikitRF}
+%http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html [2016, 3 April]
+
+%\bibitem{ScikitKNN}
+%http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html [2016, 3 April]
+ 
+\end{thebibliography}
+
+\end{document}
 
 
 %-------------------------------------------------------------------
@@ -398,7 +546,7 @@ The package was used for the k-NN classifier testing. We tested values of K (num
 \subsection{Results of Experiments}
   \label{subsec:ClassificationAndRejection}
 
-To determine effectiveness of parameter values for each method, confusion matrix has been calculated. Each row of this matrix represents information about distribution of patterns from certain class. For instance, 213 zeros were correctly classified to their class, 4 zeros were incorrectly classified as ones, 2 zeros - as sixes, 17 zeros as eights and 58 zeros were incorrectly rejected as non-digit patters, cf. row "0" in Table~\ref{tab:CofusionTable}. Numbers in each column hold information about quantity of patterns that were classified as belonging to the corresponding class.
+To determine effectiveness of parameter values for each method, confusion matrix has been calculated. Each row of this matrix represents information about distribution of patterns from certain class. For instance, 213 zeros were correctly classified to their class, four zeros were incorrectly classified as ones, two zeros -- as sixes, 17 zeros as eights and 58 zeros were incorrectly rejected as non-digit patters, cf. row ``0'' in Table~\ref{tab:CofusionTable}. Numbers in each column hold information about quantity of patterns that were classified as belonging to the corresponding class.
 
 \begin{table*}[h]
 \centering
@@ -438,168 +586,6 @@ $f$ & 181 & 44 & 155 & 16 & 164  & 104 & 182 & 9 & 211 & 61 & 25256\\
 \vspace{-3pt}
 \label{tab:CofusionTable}
 \end{table*}
-
-Calculations and measurements included in "Quality Evaluation" section were based on confusion matrixes. Information gathered from them will be used in the following sections of this paper. The most interesting aspects of it consist of classification quality, rejection quality and rejection impact on classification quality. Those issues are the main and most important part of problem described in this paper.
-
-%-------------------------------------------------------------------
-\subsubsection{Influence of Rejection on Native Patterns Classification}
-
-%ideally rejection improves classification by rejecting those element that would have been incorrectly classified
-
-\begin{table}[h]
-\centering
-\caption{Results for classification with rejection on train and test sets of native patterns in comparison with classification results without rejection mechanism. RF - results for random forest, SVM - results for Support Vector Machines
-%, .... \color{red}W ponizszej tabelce beda dane dotyczace odrzucania tylko na natives za pomoc� elipsoid i na dwoch poziomach (global i local). Czy jest sens dla train set? Czy nie bedzie 100\%? Na poziomie local chyba nie bedzie 100\%, dlatego jest sens. {\color{blue}Jako ostatnie dodane jest internal rejecting - czy dajemy te wyniki?} 
-}
-%\vspace{3pt}
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{1}
-{\footnotesize
-\begin{tabular}{|r||c|c|c||c|c|c||c|c|c|}
-\hline
-Strict Accuracy & $1$ & $0.985$ & $0.955$ & $0.941$ & $0.938$ & $0.936$ & $0.942$ & $0.942$ & $0.942$ \\
-Fine Accuracy       & $1$ & $0.985$ & $0.955$ & $1$     & $0.987$ & $0.972$ & $1$ & $0.989$ & $0.984$ \\
-Strict Native Sens. & $1$ & $0.985$ & $0.955$ & $0.879$ & $0.852$ & $0.854$ & $0.864$ & $0.857$ & $0.845$ \\
-\hline
-Data Set & \multicolumn{9}{c|}{Native Patterns, Test Set} \\
-\hline
-Strict Accuracy  & $0.952$ & $0.966$ & $0.930$ & $0.946$ & $0.946$ & $0.944$ & $0.951$ & $0.952$ & $0.953$ \\
-Fine Accuracy       & $0.952$ & $0.966$ & $0.930$ & $0.972$ & $0.982$ & $0.959$ & $0.977$ & $0.985$ & $0.976$ \\
-Strict Native Sens. & $0.952$ & $0.966$ & $0.930$ & $0.842$ & $0.852$ & $0.831$ & $0.837$ & $0.845$ & $0.825$ \\
-\hline
-\end{tabular}
-}
-
-% TODO: Poprawić tabelkę
-% To co ma CC w liczniku
-% Strict native 
-
-\vspace{-6pt}
-\label{tab:NativeNoForeign}
-\end{table}
-
-Adding a~rejection mechanism, ideally, may be seen as a~method for improvement of classification rates. It would be perceived as a~positive side of the rejection mechanism, if it would be able to reject those native patterns, which would be incorrectly classified when there is no rejection mechanism at all. Trained models only partially fulfil this wish. Conducted tests show that performing element rejection after their initial classification (local rejection scheme), brings better results. This could be explained by the fact that in the local rejection scheme we use one ellipsoid per each class and we apply those ellipsoids after classification. In contrast, in the global scheme we have a~joint set of ellipsoids that we apply to the entire dataset. In the local rejection scenario native elements identification regions are applied individually to each subset obtained from the classifier. As a result there is a chance that classification would contribute to foreign elements filtration. The same conclusion, about superiority of local rejection over global one concerns strict classification error ratios.
-
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-\subsection{Separating Letters from Digits}
-
-Figure \ref{fig:Measures} presents rejection results. We compare various quality measures for models constructed based on random forest, SVM, and kNN with ellipsoids. 
-
-Results show that all classifiers behave well and provide similar quality of rejection.   
-
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=\textwidth]{_Figures/Measures}\\
-  \caption{Sample of: native patterns (top) and foreign patterns (bottom).}
-\label{fig:Measures}
-\vspace{-6pt}
-\end{figure}
-
-%TODO: na razie wlasciwe wyniki sa w 2 tabelkach, czesciowo sie powtarzaja, jak tabelki zostana uzupelnione bedziemy myslec o atrakcyjniejszym przedstawieniu wynikow (wykresy)}
-
-
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-%\subsection{MVEE Parameters and their Influence on Rejection Quality}
-
-
-%\vfill
-%\pagebreak
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-\section{Conclusion}
-  \label{sec:Conclusion}
-
-Enhancing classifiers' ability to classify objects by coupling them with ellipsoids has proven to yield better results, when working on contaminated data, than using internal rejection techniques. Although there were some differences in classification ratios between different classifiers, none of them turned out to be best when used together with global rejection method. We are aware that to truly confirm obtained results, test should be repeated on different data sets. Described in this paper set consisting of letters and digits, although being very large, might not consist of enough distinguishable classes.
-
-Let us conclude this paper by saying that various adaptations of the idea of foreign elements rejection have a vital role in modern machine learning. It is needless to mention areas such as text mining, fraud detection, or medical diagnosis systems where we deal with various reincarnations of the foreign elements. From this perspective we believe that the study in this direction is worth further efforts.
-
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-
-\section*{Acknowledgment}
-
-\noindent The research is partially supported  by the National Science Center, grant No 2012/07/B/ST6/01501, decision no \mbox{DEC-2012/07/B/ST6/01501}.
-
-
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-%-------------------------------------------------------------------
-\begin{thebibliography}{1}
-
-\bibitem{Altman1992}
-Altman N. S., \emph{An introduction to kernel and nearest-neighbor nonparametric regression}. The American Statistician 46 (3), 1992, pp. 175-185.
-
-\bibitem{BertolamiZimmermannBunke2006}
-Bertolami R., Zimmermann M., Bunke H., \emph{Rejection strategies for offline handwritten text line recognition}, Pattern Recognition Letters 27(16), 2006, pp. 2005-2012.
-
-\bibitem{Breiman2001}
-Breiman L., \emph{Random Forests}. Machine Learning 45 (1), 2001, pp. 5�32. 
-
-\bibitem{BurgerKessentiniPaquet2011}
-Burger T., Kessentini Y., Paquet T., \emph{Dempster-Shafer based rejection strategy for handwritten word recognition}, Proc. of the 2011 International Conference on Document Analysis and Recognition, 2011, pp. 528-532.
-
-\bibitem{CortesVapnik1995}
-Cortes C., Vapnik V., \emph{Support-vector networks}. Machine Learning 20 (3), 1995, pp. 273-297.
- 
-\bibitem{EladHel-OrKeshet2001}
-Elad M., Hel-Or Y., Keshet R., \emph{Pattern detection using maximal rejection classiffier}, C. Arcelli et al. (Eds.): Proc. International Workshop on Visual Form, Lecture Notes on Computer Science 2059, 2001, pp. 514-524.
- 
-\bibitem{HempstalkFrankWitten2008}
-Hempstalk, K., Frank, E., Witten, I., \emph{One-class classification by combining density and class probability estimation}, Machine Learning and Knowl. Disc. in Databases, pp. 505-519, 2008.
-
-\bibitem{HomendaICAART2015}
-Homenda, W., Jastrzebska, A., Pedrycz, W., \emph{Rejecting Foreign Elements in Pattern Recognition Problem. Reinforced Training of Rejection Level}, in: Proc. of ICAART 2015, 2015, pp. 90-99.
-
-%\bibitem{IglewiczHoaglin1993}
-%Iglewicz B., Hoaglin D., \emph{How to Detect and Handle Outliers},  Milwaukee: ASOC Quality Press, 1993.
-
-\bibitem{LeCunCortesBurges}
-LeCun, Y., Cortes, C., and Burges, C., \emph{The MNIST database of handwritten digits}, in: http://yann.lecun.com/exdb/mnist.
-
-\bibitem{Romanski}
-Romanski, P., Kotthoff, L., \emph{Package FSelector}, http://cran.r-project.org/web/packages/FSelector/FSelector.pdf
-
-\bibitem{SchemeHudginsEnglehart2013}
-Scheme E. J., Hudgins B. S., Englehart K. B., \emph{Confidence-based rejection for improved pattern recognition myoelectric control}, IEEE Trans. Biomed. Eng. 60(6), 2013, pp. 1563-1570.
-
-\bibitem{ScholkopfWilliamsonSmola1992}
-Scholkopf B.et al., \emph{Support Vector Method for Novelty Detection}, Advances in Neural Information Processing Systems 12, 1992, pp. 582 - 588. 
-
-\bibitem{TaxDuin2008}
-Tax D. M. J., Duin R. P. W., \emph{Growing a multi-class classifier with a reject option}, Pattern Recognition Letters 29, 2008, pp. 1565-1570.
-
-\bibitem{MVEEMichaelTodd2005}
-Todd M. J., Yildirim E. A., \emph{On Khachiyan's Algorithm for the Computation of Minimum Volume Enclosing Ellipsoids}, September 30, 2005, article link: http://people.orie.cornell.edu/miketodd/TYKhach.pdf
-
-\bibitem{WangCasasent2009}
-Wang Y., Casasent D., \emph{A Support Vector Hierarchical Method for multi-class classification and rejection}, Proc. of International Joint Conference on Neural Networks, 2009, pp. 3281-3288.
-
-\bibitem{MatLab}
-http://www.mathworks.com/
-
-\bibitem{NumPy}
-http://www.numpy.org/
-
-\bibitem{Scikit}
-http://scikit-learn.org/stable/
-
-%\bibitem{ScikitSVM}
-%http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html [2016, 3 April]
-	
-%\bibitem{ScikitRF}
-%http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html [2016, 3 April]
-
-%\bibitem{ScikitKNN}
-%http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html [2016, 3 April]
- 
-\end{thebibliography}
-
-\end{document}
-
 
 
 \begin{table}[!ht]
