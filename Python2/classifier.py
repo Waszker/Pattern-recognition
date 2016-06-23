@@ -4,9 +4,11 @@ import sys
 import loading
 import progress_bar as pb
 import numpy as np
+import multiprocessing
 from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LinearRegression
 
 def _get_number_sets(should_normalize=True):
     """
@@ -54,6 +56,14 @@ def _get_knn(parameters):
             'n_neighbors' : 5,
         }
     return KNeighborsClassifier(**parameters)
+
+
+def _get_linear_regression(parameters):
+    if parameters is None:
+        parameters = {
+            'n_jobs' : multiprocessing.cpu_count(),
+        }
+    return LinearRegression(**parameters)
 
 
 def _get_proper_classifier(classifier_name, parameters=None):
@@ -240,3 +250,27 @@ def get_identification2_results(classifier_name, function, parameters=None, shou
                     conf_matrix[i, 10] += 1
 
     return matrixes
+
+
+def get_linear_regression_predictions(parameters=None, should_normalize=True):
+    """
+    Runs classification for linear regression model and returns its answers.
+    """
+    norm_vector = None
+    if should_normalize:
+        norm_vector = loading.get_normalize_vector()
+    train_points, test_points = None, None
+    letters = loading.load_letter_set(norm_vector=norm_vector)
+
+    for i in range(0, 10):
+        [train, test] = loading.load_number_set(i, norm_vector=norm_vector)
+        if train_points is None: train_points = train
+        else: train_points = np.concatenate((train_points, train), axis=0)
+        if test_points is None: test_points = test
+        else: test_points = np.concatenate((test_points, test), axis=0)
+
+    lr = _get_linear_regression(parameters)
+    # TODO: Something has to be changed in second parameter!!!
+    lr.fit(train_points, [0.5] * train_points.shape[0])
+
+    return lr.predict(np.concatenate((test_points, letters), axis=0))
