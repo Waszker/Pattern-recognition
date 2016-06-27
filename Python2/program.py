@@ -54,9 +54,23 @@ def _start_knn():
     np.savetxt("Results/KNN_identification_one_vs_one_version2.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
 
 
+def _start_linear_regression():
+    print "Starting linear regression identification 1"
+    m1, m2 = c.get_identification1_results("lr", should_normalize=True, progress=progress)
+    np.savetxt("Results/LR_identification_one_vs_all.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+
+    print "Starting linear regression identification 2"
+    m1, m2 = c.get_identification2_results("lr", _identification2_function1, should_normalize=True, progress=progress)
+    np.savetxt("Results/LR_identification_one_vs_one.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+
+    print "Starting linear regression identification 2 ver. 2"
+    m1, m2 = c.get_identification2_results("lr", _identification2_function2, should_normalize=True, progress=progress)
+    np.savetxt("Results/LR_identification_one_vs_one_version2.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+
+
 if __name__ == "__main__":
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "skrp", [])
+        opts, args = getopt.getopt(sys.argv[1:], "skrlp", [])
     except getopt.GetoptError as err:
         print str(err)
         sys.exit(1)
@@ -74,5 +88,7 @@ if __name__ == "__main__":
             pool.apply_async(_start_rf)
         elif o == "-k":
             pool.apply_async(_start_knn)
+        elif o == "-l":
+            pool.apply_async(_start_linear_regression)
     pool.close()
     pool.join()

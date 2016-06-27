@@ -72,6 +72,7 @@ def _get_proper_classifier(classifier_name, parameters=None):
             'svm' : _get_svm(parameters),
             'rf' : _get_rf(parameters),
             'knn' : _get_knn(parameters),
+            'lr' : _get_linear_regression(parameters),
         }[classifier_name]
     except KeyError:
         print "You must provide proper classifier name!"
@@ -102,6 +103,8 @@ def _get_one_versus_all_classifiers(classifier_name, parameters, should_normaliz
         labels = ["1"] * set1.shape[0]
         labels.extend(["2"] * set2.shape[0])
         s = _get_proper_classifier(classifier_name, parameters)
+        # Fix for linear regression
+        if type(s) == type(LinearRegression()): labels = [int(i) for i in labels]
         s.fit(np.concatenate((set1, set2), axis=0), labels)
         classifiers.append(s)
 
@@ -127,6 +130,8 @@ def _get_one_versus_one_classifiers(classifier_name, parameters, should_normaliz
             labels = ["1"] * set1.shape[0]
             labels.extend(["2"] * set2.shape[0])
             s = _get_proper_classifier(classifier_name, parameters)
+            # Fix for linear regression
+            if type(s) == type(LinearRegression()): labels = [int(i) for i in labels]
             s.fit(np.concatenate((set1, set2), axis=0), labels)
             classifiers.append(s)
 
@@ -138,7 +143,7 @@ def _identify_and_classify_point(classifiers, point, conf_matrix, origin):
     for j in range(0, 10):
         # Check which class wants this sample
         result = classifiers[j].predict(point.reshape(1, -1))
-        if result[0] == '1':
+        if float(result[0]) < 1.5:
             prediction = j
             break
     # Save result
@@ -207,7 +212,7 @@ def _get_prediction_vector(classifiers, point):
         for j in range(i + 1, 10):
             result = classifiers[index].predict(point.reshape(1, -1))
             index += 1
-            if result[0] == '1':
+            if float(result[0]) < 1.5:
                 predictions[i] += 1
             else:
                 predictions[j] += 1
@@ -250,27 +255,3 @@ def get_identification2_results(classifier_name, function, parameters=None, shou
                     conf_matrix[i, 10] += 1
 
     return matrixes
-
-
-def get_linear_regression_predictions(parameters=None, should_normalize=True):
-    """
-    Runs classification for linear regression model and returns its answers.
-    """
-    norm_vector = None
-    if should_normalize:
-        norm_vector = loading.get_normalize_vector()
-    train_points, test_points = None, None
-    letters = loading.load_letter_set(norm_vector=norm_vector)
-
-    for i in range(0, 10):
-        [train, test] = loading.load_number_set(i, norm_vector=norm_vector)
-        if train_points is None: train_points = train
-        else: train_points = np.concatenate((train_points, train), axis=0)
-        if test_points is None: test_points = test
-        else: test_points = np.concatenate((test_points, test), axis=0)
-
-    lr = _get_linear_regression(parameters)
-    # TODO: Something has to be changed in second parameter!!!
-    lr.fit(train_points, [0.5] * train_points.shape[0])
-
-    return lr.predict(np.concatenate((test_points, letters), axis=0))
