@@ -9,6 +9,7 @@ from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression
 
 def _get_number_sets(should_normalize=True):
     """
@@ -66,6 +67,14 @@ def _get_linear_regression(parameters):
     return LinearRegression(**parameters)
 
 
+def _get_logistic_regression(parameters):
+    if parameters is None:
+        parameters = {
+            'n_jobs' : multiprocessing.cpu_count(),
+        }
+    return LogisticRegression(**parameters)
+
+
 def _get_proper_classifier(classifier_name, parameters=None):
     try:
         return {
@@ -73,6 +82,7 @@ def _get_proper_classifier(classifier_name, parameters=None):
             'rf' : _get_rf(parameters),
             'knn' : _get_knn(parameters),
             'lr' : _get_linear_regression(parameters),
+            'llr' : _get_logistic_regression(parameters),
         }[classifier_name]
     except KeyError:
         print "You must provide proper classifier name!"
