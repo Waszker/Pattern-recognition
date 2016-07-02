@@ -9,6 +9,7 @@ from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import BayesianRidge
 from sklearn.linear_model import LogisticRegression
 
 def _get_number_sets(should_normalize=True):
@@ -71,8 +72,16 @@ def _get_logistic_regression(parameters):
     if parameters is None:
         parameters = {
             'n_jobs' : multiprocessing.cpu_count(),
+            'solver' : 'newton-cg'
         }
     return LogisticRegression(**parameters)
+
+
+def _get_bayesian_regression(parameters):
+    if parameters is None:
+        parameters = {
+        }
+    return BayesianRidge(**parameters)
 
 
 def _get_proper_classifier(classifier_name, parameters=None):
@@ -82,6 +91,7 @@ def _get_proper_classifier(classifier_name, parameters=None):
             'rf' : _get_rf(parameters),
             'knn' : _get_knn(parameters),
             'lr' : _get_linear_regression(parameters),
+            'br' : _get_bayesian_regression(parameters),
             'llr' : _get_logistic_regression(parameters),
         }[classifier_name]
     except KeyError:
@@ -112,9 +122,8 @@ def _get_one_versus_all_classifiers(classifier_name, parameters, should_normaliz
         # Having two sets prepared it's time to train svm
         labels = ["1"] * set1.shape[0]
         labels.extend(["2"] * set2.shape[0])
+        labels = [int(i) for i in labels]
         s = _get_proper_classifier(classifier_name, parameters)
-        # Fix for linear regression
-        if type(s) == type(LinearRegression()): labels = [int(i) for i in labels]
         s.fit(np.concatenate((set1, set2), axis=0), labels)
         classifiers.append(s)
 
@@ -139,9 +148,8 @@ def _get_one_versus_one_classifiers(classifier_name, parameters, should_normaliz
             # Having two sets prepared it's time to train svm
             labels = ["1"] * set1.shape[0]
             labels.extend(["2"] * set2.shape[0])
+            labels = [int(i) for i in labels]
             s = _get_proper_classifier(classifier_name, parameters)
-            # Fix for linear regression
-            if type(s) == type(LinearRegression()): labels = [int(i) for i in labels]
             s.fit(np.concatenate((set1, set2), axis=0), labels)
             classifiers.append(s)
 

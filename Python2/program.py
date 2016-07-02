@@ -68,6 +68,20 @@ def _start_linear_regression():
     np.savetxt("Results/LR_identification_one_vs_one_version2.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
 
 
+def _start_bayesian_regression():
+    print "Starting bayesian regression identification 1"
+    m1, m2 = c.get_identification1_results("br", should_normalize=True, progress=progress)
+    np.savetxt("Results/BR_identification_one_vs_all.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+
+    print "Starting bayesian regression identification 2"
+    m1, m2 = c.get_identification2_results("br", _identification2_function1, should_normalize=True, progress=progress)
+    np.savetxt("Results/BR_identification_one_vs_one.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+
+    print "Starting bayesian regression identification 2 ver. 2"
+    m1, m2 = c.get_identification2_results("br", _identification2_function2, should_normalize=True, progress=progress)
+    np.savetxt("Results/BR_identification_one_vs_one_version2.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+
+
 def _start_logistic_regression():
     print "Starting logistic regression identification 1"
     m1, m2 = c.get_identification1_results("llr", should_normalize=True, progress=progress)
@@ -84,7 +98,7 @@ def _start_logistic_regression():
 
 if __name__ == "__main__":
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "skrlzp", [])
+        opts, args = getopt.getopt(sys.argv[1:], "skrlbzp", [])
     except getopt.GetoptError as err:
         print str(err)
         sys.exit(1)
@@ -104,6 +118,8 @@ if __name__ == "__main__":
             pool.apply_async(_start_knn)
         elif o == "-l":
             pool.apply_async(_start_linear_regression)
+        elif o == "-b":
+            pool.apply_async(_start_bayesian_regression)
         elif o == "-z":
             pool.apply_async(_start_logistic_regression)
     pool.close()
