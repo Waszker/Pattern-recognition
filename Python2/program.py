@@ -96,9 +96,23 @@ def _start_logistic_regression():
     np.savetxt("Results/LLR_identification_one_vs_one_version2.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
 
 
+def _start_polynomial_regression():
+    print "Starting polynomial regression identification 1"
+    m1, m2 = c.get_identification1_results("plr", should_normalize=True, progress=progress)
+    np.savetxt("Results/PLR_identification_one_vs_all.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+
+    print "Starting polynomial regression identification 2"
+    m1, m2 = c.get_identification2_results("plr", _identification2_function1, should_normalize=True, progress=progress)
+    np.savetxt("Results/PLR_identification_one_vs_one.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+
+    print "Starting polynomial regression identification 2 ver. 2"
+    m1, m2 = c.get_identification2_results("plr", _identification2_function2, should_normalize=True, progress=progress)
+    np.savetxt("Results/PLR_identification_one_vs_one_version2.txt", np.concatenate((m1, m2), axis=0), delimiter=',')
+
+
 if __name__ == "__main__":
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "skrlbzp", [])
+        opts, args = getopt.getopt(sys.argv[1:], "skrlbzyp", [])
     except getopt.GetoptError as err:
         print str(err)
         sys.exit(1)
@@ -122,5 +136,7 @@ if __name__ == "__main__":
             pool.apply_async(_start_bayesian_regression)
         elif o == "-z":
             pool.apply_async(_start_logistic_regression)
+        elif o == "-y":
+            pool.apply_async(_start_polynomial_regression)
     pool.close()
     pool.join()

@@ -93,6 +93,7 @@ def _get_proper_classifier(classifier_name, parameters=None):
             'lr' : _get_linear_regression(parameters),
             'br' : _get_bayesian_regression(parameters),
             'llr' : _get_logistic_regression(parameters),
+            'plr' : _get_logistic_regression(parameters),
         }[classifier_name]
     except KeyError:
         print "You must provide proper classifier name!"
