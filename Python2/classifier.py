@@ -11,6 +11,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import BayesianRidge
 from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import Pipeline
 
 def _get_number_sets(should_normalize=True):
     """
@@ -84,6 +86,14 @@ def _get_bayesian_regression(parameters):
     return BayesianRidge(**parameters)
 
 
+def _get_polynomial_regression(parameters):
+    if parameters is None:
+        parameters = {
+        }
+    return Pipeline([('poly', PolynomialFeatures(degree=3)),
+                     ('linear', LinearRegression(fit_intercept=False))])
+
+
 def _get_proper_classifier(classifier_name, parameters=None):
     try:
         return {
@@ -93,7 +103,7 @@ def _get_proper_classifier(classifier_name, parameters=None):
             'lr' : _get_linear_regression(parameters),
             'br' : _get_bayesian_regression(parameters),
             'llr' : _get_logistic_regression(parameters),
-            'plr' : _get_logistic_regression(parameters),
+            'plr' : _get_polynomial_regression(parameters),
         }[classifier_name]
     except KeyError:
         print "You must provide proper classifier name!"
