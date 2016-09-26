@@ -163,7 +163,16 @@ The last prepared and examined method, presented in this work, bases on the way 
 %-------------------------------------------------------------------
 \subsection{Presentation of Datasets}
 \textcolor{red} {AJ}
-Figure \ref{fig:nativeforeignpatterns} presents native and foreign patterns ...
+\vspace{-3pt}
+
+We present a study on handwritten digits recognition and handwritten letters (from the Latin alphabet) rejection. In other words, native patterns set is made of digits (it is a ten class problem), while foreign patterns are 26 different handwritten letters. The justification to assume such foreign dataset for testing purposes is that appearance of other real-world symbols, but not belonging to any proper class, is a common issue in a~character recognition problem. 
+
+We would like to stress again, that foreign patterns do not participate in the model building phase. The entire scheme is based on native patterns only. Handwritten letters are used only for rejection mechanisms quality evaluation. Samples of processed patterns are displayed in Figure \ref{fig:nativeforeignpatterns}.
+
+The native training dataset consisted of 10,000 handwritten digits with approximately 1,000 observations in each class taken from publicly available MNIST database, \cite{LeCunCortesBurges}. We split each class in proportion ca. 7:3 and as a result we got two sets. The first one includes 6,996 patterns and is used for training. The second set, the test set, contains 3,004 patterns. The dataset of foreign patterns contains 26,383 handwritten Latin letters, ca. 1,000 letters in each class. This dataset was created by 16 students, writing about 70 copies of each letter.
+
+All patterns were normalized and feature vectors comprising of 106 numerical features were created. Examples of features are: maximum/position of maximum values of projections, histograms of projections, transitions, offsets; raw moments, central moments, Euler numbers etc.  The best first search for the optimal feature subset has been performed using FSelector R package, \cite{Romanski} and then analysis of variance was employed to select good features. The final feature vector contained 24 elements. We considered features standardization but the training data is sufficiently consistent (there are no outliers), so we normalized those features to bring linearly all values into the range [0,1]. 
+
 
 \begin{figure}[!t]
   \centering
@@ -202,6 +211,51 @@ Figure \ref{fig:nativeforeignpatterns} presents native and foreign patterns ...
 \subsection{Rejection Quality}
 \textcolor{red} {AZ, PW}
 
+The results of our study is presented in Table \ref{tab:NativeNoForeign2}. As it can be seen Polynomial Regression model achieved better accuracy in classifying native patterns and was better at rejecting the foreign ones. It turned out that the third approach (Method 3) yielded the best results whereas the second one performed the worst. Method 2 was the one that "destroyed" classification capabilities of classifiers and had tendency to reject native patterns. On the other hand Method 1 accepted most of the foreign elements. Those results become more obvious if one look at them from the methods' construction point of view. \\
+
+The first approach rejected input only after n failed tests which makes rejection less probable the more tests are performed (more native classes means more tests). Provided pattern was treated as native and labelled as an element from the first class that had its test passed. Because tests were done in order (from class 1 to class n) we observed increased number of classified elements in the first few classes.\\
+
+The second method required certain class to be obviously "stronger" than the others in terms of classification. All patterns that had similarities between two or more different classes were rejected which resulted in poor classification capabilities. \\
+
+The third way provided some sort of equilibrium between classification and rejection by modifying method 2. Elements were rejected only when there was no strong evidence that they belong to certain class. This evidence was in fact the number of times pattern was assigned certain class' label. If there was no class with required number of labels the element was identified as foreign one.
+
+\begin{table}[!b]
+	\vspace{-12pt}
+	\centering
+	\caption{Results for classification with rejection when using only classifiers with three different approaches.}
+	\vspace{-6pt}
+	\setlength{\tabcolsep}{3pt}
+	\renewcommand{\arraystretch}{1}
+	{\footnotesize
+		\begin{tabular}{|r||c|c|c||c|c|c||c|c|c|}
+			\hline
+			& \multicolumn{2}{c||}{Method 1} & \multicolumn{2}{c||}{Method 2} & \multicolumn{2}{c|}{Method 3}\\
+			\hline
+			Regression type & $\;\;$Polynomial$\;\;$ & $\,$Logistic$\;\;$ & $\,$Polynomial$\;\;$ & $\,$Logistic$\;\;$ & $\,$Polynomial$\;\;$ & $\,$Logistic  \\
+			\hline
+			Data Set & \multicolumn{6}{c|}{Native Patterns, Train Set} \\
+			\hline
+			Strict Accuracy     & $0.137$ & $0.186$ & $0.716$ & $0.726$ & $0.888$ & $0.236$ \\
+			Fine Accuracy       & $0.645$     & $0.731$ & $1$ & $0.897$ & $1$ & $0.926$ \\
+			Strict Native Sens. & $0.645$ & $0.720$ & $0.610$ & $0.030$ & $1$ & $0.921$ \\
+			\hline
+			Data Set & \multicolumn{6}{c|}{Native Patterns, Test Set} \\
+			\hline
+			Strict Accuracy  & $0.064$ & $0.114$ & $0.719$ & $0.820$ & $0.853$ & $0.143$ \\
+			Fine Accuracy       & $0.602$ & $0.738$ & $0.969$ & $0.882$ & $0.959$ & $0.925$ \\
+			Strict Native Sens. & $0.601$ & $0.727$ & $0.494$ & $0.030$ & $0.811$ & $0.920$ \\
+			\hline
+		\end{tabular}
+	}
+	\vspace{-6pt}
+	\label{tab:NativeNoForeign2}
+\end{table}
+
+
+\subsection{Experimental Settings}
+\vspace{-3pt}
+
+Solutions presented in this paper have been implemented in Python programming language, using scientific libraries \cite{NumPy,Scikit} and their implementations for logistic and polynomial regression. Several tests have been performed in order to find best suited method parameters for both classifiers. For finding those values the Grid Search~\cite{Scikit} has been used.
 
 
 %-------------------------------------------------------------------
@@ -231,6 +285,17 @@ In future ...
 \bibitem{HempstalkFrankWitten2008}
 Hempstalk, K., Frank, E., Witten, I., \emph{One-class classification by combining density and class probability estimation}, Machine Learning and Knowl. Disc. in Databases, pp. 505-519, 2008.
 
+\bibitem{LeCunCortesBurges}
+LeCun, Y., Cortes, C., and Burges, C., \emph{The MNIST database of handwritten digits}, in: http://yann.lecun.com/exdb/mnist.
+
+\bibitem{Romanski}
+Romanski, P., Kotthoff, L., \emph{Package FSelector}, http://cran.r-project.org/web/packages/FSelector/FSelector.pdf
+
+\bibitem{NumPy}
+http://www.numpy.org/
+
+\bibitem{Scikit}
+http://scikit-learn.org/stable/
 
 \end{thebibliography}
 
