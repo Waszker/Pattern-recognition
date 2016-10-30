@@ -44,8 +44,6 @@ In the article we present
 
 \section{Introduction}
   \label{sec:Introduction}
-
-\textcolor{red} {AJ}
 %difference between native and foreign
 
 %why this problem is important
@@ -56,8 +54,14 @@ In the article we present
 
 %The paper is structured as follows. Section \ref{sec:Literature Review} presents the background knowledge on foreign elements detection present in the literature. Section \ref{sec:preliminaries}
 
+Pattern recognition is a well known, classical machine learning problem. Its aim is to form a model (called classifier) that, after initial training, can assign correct class labels to provided patterns. The training process usually consists of feeding example data to classifier and providing answers in form of proper labels for each pattern in a training set. The ideal situation occurs when trained model is properly classifying patterns from outside of training dataset which means it gained ability to generalise information. \\
 
+It is important to have in mind that patterns in their original form are often some sort of signal, for instance images or voice recordings. Due to the fact that the original patterns are often collected using some signal-acquiring devices, patterns that do not belong to any of the proper classes may be encountered. Such situation may happen, when the device that has been used to acquire data was automatically reset due to power outage and poor default calibration distorts the segmentation process. Another scenario is when we collect data in a noisy (out of lab) environment and apart from proper patterns there are a lot of unexpected residual ones. The main problem with such patterns, called garbage patterns, is that their characteristics cannot be easily predicted and therefore cannot be included in the model training process. \\
 
+The motivation for our study is to provide algorithmic approaches used for distinguishing proper patterns (called native patterns) from garbage and erroneous ones (called foreign patterns) by using only classifiers for both rejection and classification. The design assumption is to provide methods based on native patterns only so that the approach could be truly versatile and be adapted to any pattern recognition problem in an uncertain environment, where foreign patterns may appear. The study focuses on providing novelty methods for classifier results interpretation that result in obtaining enhanced classifier with rejection capabilities. It should be emphasised that the novelty of the contribution presented in this paper lies not in the methods that are used, but in the proposed changes for already existing solutions. \\
+
+The remainder of this paper is organized as follows. Section \ref{sec:Literature Review} presents the background knowledge on foreign patterns detection present in the literature. Section \ref{sec:Known algorithms} presents the backbone algorithms, known in the literature, that were used to construct our models. Section \ref{sec:rejectionmechanism} presents the proposed approach. Section 
+\ref{sec:Experiments} discusses a series of experiments. Section \ref{sec:Conclusion} concludes the paper and highlights future research directions.
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -85,19 +89,15 @@ In the article we present
   %……
   
   %Zagadnienie rozpoznawania wzorca jest często rozważanym problemem praktycznym. Potencjalne źródła wzorców, z których chcemy korzystać to skanowane dokumenty, nagrana mowa, zdjęcia, itp. Niestety, akwizycja oraz wstępna obróbka danych wejściowych często są procesami stratnymi, a nawet wprowadzającymi błędy. Mocno zaszumione, uszkodzone lub po prostu niepoprane wzorce nie powinny być poddane dalszemu przetwarzaniu, jako że nie są poprawnymi elementami w zbiorze danych, są elementami-śmieciami. ………
-    
-Data collection and processing are vital study problems across multiple domains of science. Along with a substantial automation of data acquisition we face difficulties that appear due to poor data quality. The research we present in this paper has been motivated by the issue of contaminated datasets, that apart from proper patterns contain garbage. \\
 
-
-In this section we start the discussion with a review of relevant literature positions in machine learning that tackle the issue of contaminated datasets. Then, in order to provide a self-contained description of the employed methods we present backbone literature algorithms applied. In what follows we present the Minimum Volume Enclosing Ellipsoid (MVEE) algorithm and a suite of three classification methods: Random Forests (RF), Support Vector Machines (SVM), and K-Nearest Neighbors algorithm (kNN). Listed methods are employed in various configurations to native patterns classification with foreign patterns rejection. Our approach, based on those algorithms, is discussed in Section \ref{sec:Methodology}.
+Modern studies often face the situation of contaminated datasets. This issue emerges from a substantial automation of data acquisition and processing, that results in poor data quality. The research we present in this paper has been motivated by the problem of purging datasets: accepting proper patterns and rejecting garbage ones. In this paper we concentrate on enhancing classifiers, such as SVM, Random Forests, KNN and regression-based solutions, with rejection mechanism. Our approach, based on those algorithms, is discussed in Section \ref{sec:rejectionmechanism}. \\
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \subsection{The Task of Classification with Rejection}
-\textcolor{red} {AJ}
-%the task of classification is ...
+	\label{sec:Known algorithms}
 
-%...
+The task of classification is to categorize unknown elements to their appropriate groups basing on their characteristics. Ideally, a category illuminates a relationship between the subjects and objects of knowledge. There are many mathematical models that can be used as classifiers in computer science studies, such as SVM, Random Forests, KNN, Regression model or Neural Networks. Their main disadvantage lies in their need to be trained prior to usage, which makes them unable to recognize elements from a completely new class, not used during training process. This unwanted behaviour can be especially troublesome in an unstable, noisy environment where patterns sent for classification can become corrupt, distorted or otherwise indistinguishable. In such situation a proper mechanism for rejecting garbage patterns could be used to provide better results. \\
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -109,29 +109,25 @@ Logistic regression relies on the assumption that independent variables are dich
 
 Linear regression models relationship between a scalar dependent variable y and one or more explanatory variables denoted X. In linear regression, the relationships are modelled using linear predictor functions in form of [\ref{eq:lineraregression}] whose unknown model parameters are estimated from the data.
 \begin{equation} \label{eq:lineraregression} y = a_{0} + a_{1}x_{1} + a_{2}x_{2} + \dots + a_{k}x_{k} + \epsilon_{0} \end{equation} where:
-\begin{enumerate}
+\begin{itemize}
 	\item $y$ - dependent variable \\
 	\item $x_{i}$ - explanatory variable \\
 	\item $a_{i}$ - parameter variable \\
 	\item $\epsilon$ - error term (ideally equals zero) \\
-\end{enumerate}
+\end{itemize}
 
-Polynomial regression can be viewed as a model that uses linear regression extended by constructing polynomial features from the coefficients. This approach maintains the generally fast performance of linear methods, while allowing them to fit a much wider range of data. The predictors resulting from the polynomial expansion of the "baseline" predictors are known as interaction features, and can be used in classification problem. Just like linear regression, polynomial regression models are usually fit using the method of least squares. \\
-
-
-% how to perform classification using regression
-
-
+Polynomial regression can be viewed as a model that uses linear regression extended by constructing polynomial features from the coefficients. This approach maintains the generally fast performance of linear methods, while allowing them to fit a much wider range of data. The predictors resulting from the polynomial expansion of the "baseline" predictors are known as interaction features, and can be used in classification problem. Just like linear regression, polynomial regression models are usually fit using the method of least squares.
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
-\subsection{Rejection Mechanism Based on Regression}
+\subsection{Rejection Mechanism for Classifiers}
+\label{sec:rejectionmechanism}
 %description of the idea of rejection using regression
 Calculations presented in this paper were conducted on a mixed set consisting of letters and digits. Because the aim of our work was to provide classifier-based solution for classifying digits and rejecting other symbols, we decided to compare three different approaches towards this problem. All of them based on the assumption that there is no information regarding outliers during classifier training. \\
 
 As the first way to deal with presented issue "one-versus-all" method was prepared. This approach requires creating a vector of classifiers constructed in a specific way. Each classifier has to be trained on a specially prepared training data, consisting of two sets: the first one (denoted as class\_1) holding all training data entries for certain native class, and the second one (denoted as class\_2) being the result of a subset sum operation performed on the rest of the classes except for the class used in class\_1 set. Please note that both class\_1 and class\_2 sets should have the same size, so it is advisable to randomly choose elements when creating class\_2. One classifier for each native class has to be present in a final vector. The actual classification with rejection is performed by presenting the unknown pattern to each of the classifiers from the vector. When the classifier recognizes element as a native one (belonging to class\_1) then the pattern is treated as a recognized, and classified native element. In case of all classifiers rejecting such pattern (classifying it as element from class\_2), it is treated as outlier and rejected. It is also worth noting that there is a possibility of more than one classifier recognizing the pattern as a native element. In such case randomly chosen class is assigned to this pattern. \\
 
-The second approach uses "one-versus-one" method. Similarly to the previous one it requires preparing vector of classifiers, but this time it consists of ${n}\choose{2}$ classifiers, where n is the number of unique native classes. Each classifier is trained on data consisting of two sets: the first one (denoted as class\_1) holding all training data entries for certain native class, and the second one (denoted as class\_2) holding all training data entries for some other class (not the same as class\_1). In the end there is one classifier for each pair of classes: 1 vs. 2, 1 vs. 3, \dots, 1 vs. n, \dots, (n-1) vs. n. Classification with rejection mechanism is based on presenting unknown pattern to every classifier in the vector and remembering their answers (e.g. classifier constructed for 1 vs. n classes can classify pattern as belonging to class 1 or class n). In the end those answers can be presented as a n-wide array with each element being the number of times pattern was classified as belonging to certain class. The pattern is rejected when difference between two biggest values in the result array is smaller than two. In such case it is assumed that classifiers were uncertain as to which class should this unknown element belong to. Otherwise the pattern is classified as an element from the class which had the biggest value in the result array. \textcolor{green}{tutaj można dodać schemat prezentujący opisaną koncepcję?} \\\\
+The second approach uses "one-versus-one" method. Similarly to the previous one it requires preparing vector of classifiers, but this time it consists of ${n}\choose{2}$ classifiers, where n is the number of unique native classes. Each classifier is trained on data consisting of two sets: the first one (denoted as class\_1) holding all training data entries for certain native class, and the second one (denoted as class\_2) holding all training data entries for some other class (not the same as class\_1). In the end there is one classifier for each pair of classes: 1 vs. 2, 1 vs. 3, \dots, 1 vs. n, \dots, (n-1) vs. n. Classification with rejection mechanism is based on presenting unknown pattern to every classifier in the vector and remembering their answers (e.g. classifier constructed for 1 vs. n classes can classify pattern as belonging to class 1 or class n). In the end those answers can be presented as a n-wide array with each element being the number of times pattern was classified as belonging to certain class. The pattern is rejected when difference between two biggest values in the result array is smaller than two. In such case it is assumed that classifiers were uncertain as to which class should this unknown element belong to. Otherwise the pattern is classified as an element from the class which had the biggest value in the result array. \textcolor{green}{tutaj można dodać schemat prezentujący opisaną koncepcję?} \\
 
 The last prepared and examined method, presented in this work, bases on the way of constructing classifiers vector used in the second approach ("one-versus-one"). The difference between those two methods lies in a rejection mechanism. In this method an unknown pattern is treated as a foreign element if its biggest value in the result array is lesser than (n-1). What it actually means is that there must be a certain class that has always been chosen by a classifier from the vector. \textcolor{green}{tutaj można dodać schemat prezentujący opisaną koncepcję?} \\
 
@@ -141,42 +137,23 @@ The last prepared and examined method, presented in this work, bases on the way 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \subsection{Quality Evaluation}
-\textcolor{red} {AJ}
-%measures for quality evaluation: precision, recall, ...
+
 \begin{itemize}
-\item CC  (Correctly Classified) - the number of correctly classified patterns, i.e. native patterns classified as native ones with the correct class, % and foreign patterns classified as foreign ones,
-\item TP  (True Positives) - the number of native patterns classified as native (no matter, into which native class),
-\item FN  (False Negatives) - the number of native patterns incorrectly classified as foreign,
-\item FP  (False Positives) - the number of foreign patterns incorrectly classified as native,
-\item TN  (True Negatives) - the number of foreign patterns correctly classified as foreign.
+  \item \emph{Correctly Classified} is the number of correctly classified patterns, i.e. native patterns classified as native ones with the correct class.
+  \item \emph{True Positives} is the number of native patterns classified as native (no matter, into which native class),
+  \item \emph{False Negatives} is the number of native patterns incorrectly classified as foreign,
+  \item \emph{False Positives} is the number of foreign patterns incorrectly classified as native,
+  \item \emph{True Negatives} is the number of foreign patterns correctly classified as foreign.
+  \item \emph{Strict Accuracy} is the absolute measure of the classifier's performance. It is the ratio of the number of all \emph{correctly} classified patterns, i.e. native patterns classified to their respective classes and rejected foreign ones to the number of all patterns being processed.
+  \item \emph{Accuracy} is a characteristic derived from strict accuracy by ignoring the need to classify native patterns to their respective classes; in other words, it is sufficient to correctly identify whether a~pattern is native or foreign one. This measure describes the ability to distinguish between native and foreign patterns.
+  \item \emph{Native Precision} is the ratio of the number of not rejected native patterns to the number of all not rejected patterns (i.e. all not rejected native and foreign ones). Native Precision evaluates the ability of the classifier to distinguish native patterns from foreign ones. The higher the value of this measure, the better ability to distinguish foreign elements from native ones. Native Precision does not evaluate how effective identification of native elements is.
+  \item \emph{Native Sensitivity} is the ratio of the number of not rejected native patterns to all native ones. This measure evaluates the ability of the classifier to identify native elements. The higher the value of Native Sensitivity, the more effective identification of native elements. Unlike the Native Precision, this measure does not evaluate the effectiveness of separation between native and foreign elements.
+  \item \emph{Strict Native Sensitivity} takes only correctly classified native patterns and does not consider native patterns, which are not rejected and assigned to incorrect classes, unlike \emph{Native Sensitivity}, where all not rejected native patterns are taken into account.
+  \item \emph{Fine Accuracy} is the ratio of the number of native patterns classified to correct classes, i.e. assigned to their respective classes, to the number of all native patterns not rejected. This measure conveys how precise is correct classification of not rejected patterns.
+  \item \emph{Foreign Precision} corresponds to Native Precision.
+  \item \emph{Foreign Sensitivity} corresponds to Native Sensitivity.
+  \item  Precision and Sensitivity are complementary and there exists yet another characteristic that combines them: the \textit{F--measure}. It is there to express the balance between precision and sensitivity since these two measures affect each other. Increasing sensitivity can cause a~drop in precision since, along with correctly classified elements, there might be more incorrectly classified,
 \end{itemize}
-
-
-%
-%\begin{eqnarray}
-%            \textnormal{Accuracy} &\!\!=\!\!& \frac{\textnormal{TP+TN}}{\textnormal{TP+FN+FP+TN}}\nonumber\\\nonumber\\
-%     \textnormal{Strict Accuracy} &\!\!=\!\!& \frac{\textnormal{CC+TN}}{\textnormal{TP+FN+FP+TN}}\nonumber\\\nonumber\\
-%    \textnormal{Native Precision} &\!\!=\!\!& \frac{\textnormal{TP}}{\textnormal{TP+FP}}\nonumber\\\nonumber\\
-%  \textnormal{Native Sensitivity} &\!\!=\!\!& \frac{\textnormal{TP}}{\textnormal{TP+FN}}\nonumber\\\nonumber\\
-%  \textnormal{Strict Native Sensitivity} &\!\!=\!\!& \frac{\textnormal{CC}}{\textnormal{TP+FN}}\nonumber\\\nonumber\\
-%          \textnormal{Fine Accuracy} &\!\!=\!\!& \frac{\textnormal{CC}}{\textnormal{TP}}\nonumber\\\nonumber\\
-%   \textnormal{Foreign Precision} &\!\!=\!\!& \frac{\textnormal{TN}}{\textnormal{TN+FN}}\nonumber\\\nonumber\\
-% \textnormal{Foreign Sensitivity} &\!\!=\!\!& \frac{\textnormal{TN}}{\textnormal{TN+FP}}\nonumber\\\nonumber\\
-%          \textnormal{F--measure} &\!\!=\!\!& 2\cdot\frac{\textnormal{Precision}\cdot\textnormal{Sensitivity}} {\textnormal{Precision}+\textnormal{Sensitivity}}\nonumber\\\nonumber
-%\end{eqnarray}
-%
-%
-%\begin{itemize}
-%  \item \emph{Strict Accuracy} is the absolute measure of the classifier's performance. It is the ratio of the number of all \emph{correctly} classified patterns, i.e. native patterns classified to their respective classes and rejected foreign ones to the number of all patterns being processed.
-%  \item \emph{Accuracy} is a characteristic derived from strict accuracy by ignoring the need to classify native patterns to their respective classes; in other words, it is sufficient to correctly identify whether a~pattern is native or foreign one. This measure describes the ability to distinguish between native and foreign patterns.
-%  \item \emph{Native Precision} is the ratio of the number of not rejected native patterns to the number of all not rejected patterns (i.e. all not rejected native and foreign ones). Native Precision evaluates the ability of the classifier to distinguish native patterns from foreign ones. The higher the value of this measure, the better ability to distinguish foreign elements from native ones. Native Precision does not evaluate how effective identification of native elements is.
-%  \item \emph{Native Sensitivity} is the ratio of the number of not rejected native patterns to all native ones. This measure evaluates the ability of the classifier to identify native elements. The higher the value of Native Sensitivity, the more effective identification of native elements. Unlike the Native Precision, this measure does not evaluate the effectiveness of separation between native and foreign elements.
-%  \item \emph{Strict Native Sensitivity} takes only correctly classified native patterns and does not consider native patterns, which are not rejected and assigned to incorrect classes, unlike \emph{Native Sensitivity}, where all not rejected native patterns are taken into account.
-%  \item \emph{Fine Accuracy} is the ratio of the number of native patterns classified to correct classes, i.e. assigned to their respective classes, to the number of all native patterns not rejected. This measure conveys how precise is correct classification of not rejected patterns.
-%  \item \emph{Foreign Precision} corresponds to Native Precision.
-%  \item \emph{Foreign Sensitivity} corresponds to Native Sensitivity.
-%  \item  Precision and Sensitivity are complementary and there exists yet another characteristic that combines them: the \textit{F--measure}. It is there to express the balance between precision and sensitivity since these two measures affect each other. Increasing sensitivity can cause a~drop in precision since, along with correctly classified elements, there might be more incorrectly classified,
-%\end{itemize}
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
@@ -211,13 +188,14 @@ All patterns were normalized and feature vectors comprising of 106 numerical fea
 \subsection{Experimental Settings}
 \vspace{-3pt}
 
-Solutions presented in this paper have been implemented in Python programming language, using scientific libraries \cite{NumPy,Scikit} and their implementations for logistic and polynomial regression. Several tests have been performed in order to find best suited method parameters for both classifiers. For finding those values the Grid Search~\cite{Scikit} has been used.
+Solutions presented in this paper have been implemented in Python programming language, using scientific libraries \cite{NumPy,Scikit} and their implementations for SVM, Random Forests, KNN, logistic and polynomial regression. Several tests have been performed in order to find best suited method parameters for all classifiers by using Grid Search~\cite{Scikit} algorithm.
 
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 
 
 \subsection{Rejection Quality}
+	\label{sec:Experiments}
 
 The results of our study is presented in Table \ref{tab:NativeNoForeign2}. As it can be seen Polynomial Regression model achieved better accuracy in classifying native patterns and was better at rejecting the foreign ones. It turned out that the third approach (Method 3) yielded the best results whereas the second one performed the worst. Method 2 was the one that "destroyed" classification capabilities of classifiers and had tendency to reject native patterns. On the other hand Method 1 accepted most of the foreign elements. Those results become more obvious if one looks at them from the methods' construction point of view. \\
 
@@ -263,7 +241,7 @@ The third method provided some sort of equilibrium between classification and re
 %-------------------------------------------------------------------
 %-------------------------------------------------------------------
 \section{Conclusion}
-  \label{Conclusion}
+  \label{sec:Conclusion}
 
 \textcolor{red} {AJ}
 Proposed ...
