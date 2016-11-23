@@ -384,12 +384,12 @@ Experimental results are summarized in Tables~\ref{tab:results_classification_st
 			\hline
 			Regression type & $\;\;$Polynomial$\;\;$ & $\,$Logistic$\;\;$ & $\,$Polynomial$\;\;$ & $\,$Logistic$\;\;$ & $\,$Polynomial$\;\;$ & $\,$Logistic  \\
 			\hline
-			Native Precision       & &&&&& \\
-			Native Sensitivity &&&&&&\\
-			Native F--measure &&&&&&\\
-			Foreign Precision &&&&&&\\
-			Foreign Sensitivity &&&&&&\\
-			Foreign F--measure &&&&&&\\			
+			Native Precision       & $0.102$ & $0.105$ & $0.185$ & $0.041$ & $0.405$ & $0.107$ \\
+			Native Sensitivity & $0.998$ & $0.984$ & $0.509$ & $0.034$ & $0.846$ & $0.995$ \\
+			Native F--measure & $0.186$ & $0.190$ & $0.271$ & $0.037$ & $0.548$ & $0.193$ \\
+			Foreign Precision & $0.929$ & $0.962$ & $0.930$ & $0.892$ & $0.980$ & $0.990$ \\
+			Foreign Sensitivity & $0.003$ & $0.045$ & $0.744$ & $0.911$ & $0.858$ & $0.055$ \\
+			Foreign F--measure & $0.006$ & $0.086$ & $0.827$ & $0.901$ & $0.915$ & $0.103$ \\			
 			\hline			
 		\end{tabular}	
 	}
@@ -397,7 +397,26 @@ Experimental results are summarized in Tables~\ref{tab:results_classification_st
 	\label{tab:results_rejection_regression}
 \end{table}
 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=1.0\textwidth]{_Figures/Method1_Chart.png}
+	\caption{ Charts holding the values of quality measurements for each one of the classifiers, while using "one-versus-all" rejection method.  }
+	\label{fig:resultcharts}
+\end{figure}
 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=1.0\textwidth]{_Figures/Method2_Chart.png}
+	\caption{ Charts holding the values of quality measurements for each one of the classifiers, while using "one-versus-one" rejection method.  }
+	\label{fig:resultcharts}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=1.0\textwidth]{_Figures/Method3_Chart.png}
+	\caption{ Charts holding the values of quality measurements for each one of the classifiers, while using "one-versus-one version 2" rejection method.  }
+	\label{fig:resultcharts}
+\end{figure}
 
 
 \textcolor{blue}{Tu skonczylam czytac -- dokoncze sprawdzanie jak beda uzupelnione tabelki/wykresy, bo chce sie do nich odniesc w tekscie.}
